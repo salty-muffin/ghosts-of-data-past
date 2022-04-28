@@ -1,0 +1,17 @@
+name: ghosts-cpu
+channels:
+  - huggingface
+  - pytorch
+dependencies:
+  - python=3.9
+  - pip
+  - yapf=0.31
+  - numpy=1.21
+  - click=8.0
+  - pillow=9.0
+  - pytorch=1.11
+  - cpuonly=2.0
+  - tensorflow=2.4
+  - transformers=4.14
+  - pip:
+      - aitextgen==0.5.2
