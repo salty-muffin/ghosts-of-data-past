@@ -7,7 +7,7 @@
 	interface ChatItem {
 		type: string;
 		text: string;
-		imageData?: ArrayBuffer;
+		imageData: ArrayBuffer;
 	}
 
 	const socket = io();

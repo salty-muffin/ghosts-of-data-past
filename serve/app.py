@@ -36,8 +36,11 @@ def chat():
         socketio.sleep(10)
 
         socketio.emit(
-            'chat_item', {
-                'type': 'message', 'text': f'a new message at {time.time()}'
+            'chat_item',
+            {
+                'type': 'message',
+                'imageData': '',
+                'text': f'a new message at {time.time()}'
                 }
             )
 

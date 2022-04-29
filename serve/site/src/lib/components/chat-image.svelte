@@ -1,5 +1,5 @@
 <script lang="ts">
-	export let imageData: any;
+	export let imageData: ArrayBuffer;
 	export let text: string;
 
 	const arrayBufferView = new Uint8Array(imageData);
