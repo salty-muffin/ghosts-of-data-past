@@ -18,3 +18,4 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 1. to create the envorinment: `conda env create -f environment.yml`
 2. activate the enviroment: `conda activate ghosts`
 3. changes to the environment can be saved with: `conda env export --no-builds | grep -v "prefix" > environment.yml`
+4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
