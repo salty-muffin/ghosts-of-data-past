@@ -19,3 +19,9 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 2. activate the enviroment: `conda activate ghosts`
 3. changes to the environment can be saved with: `conda env export --no-builds | grep -v "prefix" > environment.yml`
 4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
+
+## to do
+- [ ] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
+- [ ] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
+- [ ] initialize socket communication in onMount https://svelte.dev/tutorial/onmount
+- [ ] autoscroll to the bottom https://svelte.dev/tutorial/update
