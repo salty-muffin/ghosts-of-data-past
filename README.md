@@ -11,6 +11,8 @@ requires dataset recording, preperation and model finetuning with the following 
 - finetuning a stylegan3 model with face images by performers: https://github.com/papayapeter/stylegan3
 - generating notification sound abstractions: \_
 
+using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & [stylegan3](https://github.com/NVlabs/stylegan3). some code has been copies over from the original stylegan3 repo to make image generation and textgeneration work seamlessly together.
+
 ## setup
 
 1. to create the envorinment: `conda env create -f environment.yml`

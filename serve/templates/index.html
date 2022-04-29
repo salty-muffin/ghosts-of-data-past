@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>Index</title>
+</head>
+
+<body>
+    <main id="wrapper"><h1>messages</h1></main>
+
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+        integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+        crossorigin="anonymous"></script>
+    <script type="text/javascript">
+        (() => {
+            const sock = io();
+            sock.on('chat_message', data => {
+                const p = document.createElement('p');
+                p.innerHTML = data.data
+
+                document.getElementById('wrapper').appendChild(p)
+                console.log(data)
+            });
+            sock.on('chat_image', data => {
+                const arrayBufferView = new Uint8Array(data['data']);
+                const blob = new Blob([arrayBufferView], { type: "image/jpeg" });
+
+                const img_url = URL.createObjectURL(blob);
+
+                const p = document.createElement('img');
+                p.src = img_url
+
+                document.getElementById('wrapper').appendChild(p)
+                console.log(data)
+            });
+        })();
+    </script>
+</body>
+
+</html>
