@@ -25,3 +25,4 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 - [ ] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
 - [ ] initialize socket communication in onMount https://svelte.dev/tutorial/onmount
 - [ ] autoscroll to the bottom https://svelte.dev/tutorial/update
+- [ ] optimize https://svelte.dev/tutorial/svelte-options
