@@ -1,0 +1,10 @@
+@use './variables' as *;
+
+body {
+	margin: 0;
+
+	font-size: 100%;
+	font-family: $font-family-text;
+	color: map-get($colors, 'foreground');
+	background-color: map-get($colors, 'background');
+}

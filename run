@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# build static site
+cd serve/site
+npm run build
+cd ../..
+
+# generator
+conda run -n ghosts-cpu python3 generate/generator.py &
+
+# server
+conda run -n ghosts-cpu python3 serve/app.py

@@ -5,7 +5,7 @@ from threading import Lock
 import flask
 from flask import Flask
 from flask_socketio import SocketIO
-
+import shortuuid
 import time
 
 # flask & socketio setup
@@ -20,7 +20,10 @@ thread = None
 thread_lock = Lock()
 
 
+# background task function
 def chat():
+    id_counter = 0
+
     while True:
         socketio.sleep(10)
 
@@ -28,23 +31,53 @@ def chat():
         with open(os.path.join('images', filename), 'rb') as file:
             image_data = file.read()
         socketio.emit(
-            'chat_item', {
-                'type': 'image', 'imageData': image_data, 'text': filename
+            'chat_message',
+            {
+                'id': shortuuid.uuid(),
+                'sender': 'artist',
+                'text': '',
+                'imageData': image_data,
+                'alt': filename,
+                'timestamp': int(time.time() * 1000)
                 }
             )
+        id_counter += 1
 
         socketio.sleep(10)
 
         socketio.emit(
-            'chat_item',
+            'chat_message',
             {
-                'type': 'message',
-                'imageData': '',
-                'text': f'a new message at {time.time()}'
+                'id': shortuuid.uuid(),
+                'sender': 'artist',
+                'text': 'Lorem ipsum dolor sit amet',
+                'imageData': b'',
+                'alt': '',
+                'timestamp': int(time.time() * 1000)
                 }
             )
 
+        id_counter += 1
 
+        socketio.sleep(10)
+
+        socketio.emit(
+            'chat_message',
+            {
+                'id': shortuuid.uuid(),
+                'sender': 'scientist',
+                'text':
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in erat sagittis, consectetur nulla eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ante ipsum primis in faucibus orci luctus et ultrices',
+                'imageData': b'',
+                'alt': '',
+                'timestamp': int(time.time() * 1000)
+                }
+            )
+
+        id_counter += 1
+
+
+# on connect start the background thread (if it's the first connect)
 @socketio.on('connect')
 def connect():
     print('client connected')
@@ -55,12 +88,14 @@ def connect():
             thread = socketio.start_background_task(chat)
 
 
+# server page
 @app.route('/')
 def index():
     # return flask.render_template('index.html')
     return flask.send_file('site/build/index.html')
 
 
+# run server
 if __name__ == '__main__':
     # socketio.run(app, host='0.0.0.0')
     socketio.run(app)

@@ -21,8 +21,8 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
 
 ## to do
+
 - [ ] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
 - [ ] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
-- [ ] initialize socket communication in onMount https://svelte.dev/tutorial/onmount
-- [ ] autoscroll to the bottom https://svelte.dev/tutorial/update
+- [ ] autoscroll to the bottom https://svelte.dev/tutorial/update (doesn't work with images yet on the desktop) including notifications for new messages if not scrolled to the bottom
 - [ ] optimize https://svelte.dev/tutorial/svelte-options
