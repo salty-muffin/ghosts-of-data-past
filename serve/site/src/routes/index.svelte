@@ -34,23 +34,23 @@
 		<div class="chat__placeholder" />
 		<MessageDummy
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
-			sender="artist"
-			text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in eqat sagittis, consectetur nulqa eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae"
+			sender="scientist"
+			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
 			imageURL=""
 			alt=""
 			timestamp={1651313396942}
 		/>
 		<MessageDummy
 			id="aSwWASETCcg3QaukkAFesN"
-			sender="scientist"
+			sender="artist"
 			text=""
 			imageURL="seed0000.jpg"
 			alt="seed0000"
 			timestamp={1651313416949}
 		/>
-		{#each $messages as message (message.id)}
+		<!-- {#each $messages as message (message.id)}
 			<Message {...message} />
-		{/each}
+		{/each} -->
 	</div>
 	<Nav class="nav" />
 </div>
