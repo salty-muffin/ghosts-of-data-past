@@ -22,7 +22,10 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 
 ## to do
 
-- [ ] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
+- [x] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
 - [ ] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
-- [ ] autoscroll to the bottom https://svelte.dev/tutorial/update (doesn't work with images yet on the desktop) including notifications for new messages if not scrolled to the bottom
+- [x] autoscroll to the bottom https://svelte.dev/tutorial/update (doesn't work with images yet on the desktop) including notifications for new messages if not scrolled to the bottom
 - [ ] optimize https://svelte.dev/tutorial/svelte-options
+- [ ] pause css animations when not visible https://css-tricks.com/how-to-play-and-pause-css-animations-with-css-custom-properties/, https://abcdinamo.com/news/using-variable-fonts-on-the-web, https://svelte.dev/repl/c461dfe7dbf84998a03fdb30785c27f3?version=3.16.7, https://www.npmjs.com/package/svelte-intersection-observer
+- [ ] implement soft transitions between pages https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
+- [ ] scroll down on return from about

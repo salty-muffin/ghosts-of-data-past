@@ -7,8 +7,6 @@
 	export let alt: string;
 	export let timestamp: number;
 
-	import Image from '$lib/components/image.svelte';
-
 	// types
 	interface Attributes {
 		[key: string]: Attribute;
@@ -25,27 +23,48 @@
 	const date = new Date(timestamp);
 </script>
 
-<div class="message-wrapper {attributes[sender]['position']}" {id}>
-	<h6 class="sender">{sender}</h6>
+<div class="message__wrapper message--{attributes[sender]['position']}" {id}>
+	<h6 class="message__sender">{sender}</h6>
 	{#if imageURL}
-		<Image class="message-image" src={imageURL} {alt} />
+		<img class="message__image" src={imageURL} {alt} width="1024" height="1024" />
 	{/if}
 	{#if text}
-		<span class="text">{text}</span>
+		<span class="message__text">{text}</span>
 	{/if}
-	<span class="timestamp">{date.getHours()}:{date.getMinutes()}</span>
+	<span class="message__timestamp"
+		>{date.getHours()}:{date.getMinutes().toString().padStart(2, '0')}</span
+	>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use '../scss/variables' as *;
 
-	.sender {
-		margin: 0 0 0.5em 0;
-
-		font-size: 0.8rem;
+	@keyframes breathe-sender {
+		from {
+			font-variation-settings: 'wght' 400, 'ital' 0;
+		}
+		to {
+			font-variation-settings: 'wght' 600, 'ital' 10;
+		}
+	}
+	@keyframes breathe-text {
+		from {
+			font-variation-settings: 'wght' 425, 'ital' 0;
+		}
+		to {
+			font-variation-settings: 'wght' 375, 'ital' 3;
+		}
+	}
+	@keyframes breathe-timestamp {
+		from {
+			font-variation-settings: 'wght' 200, 'ital' 0;
+		}
+		to {
+			font-variation-settings: 'wght' 400, 'ital' 10;
+		}
 	}
 
-	.message-wrapper {
+	.message__wrapper {
 		max-width: 60%;
 		margin: 0.5em;
 		padding: 0.5em 1em;
@@ -53,29 +72,38 @@
 		border: 1px solid map-get($colors, 'foreground');
 		border-radius: 1em;
 	}
-
-	:global(.message-image) {
-		max-width: 100%;
+	.message--left {
+		align-self: flex-start;
+	}
+	.message--right {
+		align-self: flex-end;
 	}
 
-	.text {
+	.message__sender {
+		margin: 0 0 0.2em 0;
+
+		font-size: 0.9rem;
+		animation: 3s ease-in-out 1s infinite alternate both breathe-sender;
+	}
+
+	.message__image {
+		max-width: 100%;
+		height: auto;
+	}
+
+	.message__text {
 		margin: 0;
 
-		font-size: 0.8rem;
+		font-size: 0.9rem;
+		/* font-variation-settings: 'wght' 400, 'ital' 0; */
+		animation: 5s ease-in-out 1s infinite alternate both breathe-text;
 	}
 
-	.timestamp {
+	.message__timestamp {
 		float: right;
 		margin: 0.5em 0 0 0.5em;
 
 		font-size: 0.6rem;
-	}
-
-	.left {
-		align-self: flex-start;
-	}
-
-	.right {
-		align-self: flex-end;
+		animation: 3s ease-in-out 1s infinite alternate both breathe-timestamp;
 	}
 </style>

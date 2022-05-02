@@ -1,20 +1,11 @@
 <script lang="ts">
 	import { beforeUpdate, afterUpdate } from 'svelte';
-	import { io } from 'socket.io-client';
+
+	import { messages } from '$lib/stores/messages';
 
 	import Message from '$lib/components/message.svelte';
 	import Nav from '$lib/components/nav.svelte';
 	import MessageDummy from '$lib/components/message-dummy.svelte';
-
-	// types
-	interface ChatMessage {
-		id: string;
-		sender: string;
-		text: string;
-		imageData: ArrayBuffer;
-		alt: string;
-		timestamp: number;
-	}
 
 	// handle automatic scrolling
 	let messagesWrapper: any;
@@ -32,34 +23,22 @@
 		console.log(`height: ${messagesWrapper.scrollHeight} pos: ${messagesWrapper.scrollTop}`);
 		if (autoscroll) messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight);
 	});
-
-	// initialize websocket
-	const socket = io();
-
-	// handle incoming messages
-	let messages: ChatMessage[] = [];
-
-	socket.on('chat_message', (item) => {
-		messages = [...messages, item];
-
-		console.log(item);
-	});
 </script>
 
 <svelte:head>
 	<title>ghosts of data past</title>
 </svelte:head>
 
-<div class="wrapper">
-	<div class="messages" bind:this={messagesWrapper}>
-		<div class="placeholder" />
-		<!-- <MessageDummy
+<div class="chat">
+	<div class="chat__messages" bind:this={messagesWrapper}>
+		<div class="chat__placeholder" />
+		<MessageDummy
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="artist"
-			text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in erat sagittis, consectetur nulla eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ante ipsum primis in faucibus orci luctus et ultrices"
+			text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in eqat sagittis, consectetur nulqa eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae"
 			imageURL=""
 			alt=""
-			timestamp={1651313396.9421964}
+			timestamp={1651313396942}
 		/>
 		<MessageDummy
 			id="aSwWASETCcg3QaukkAFesN"
@@ -67,27 +46,23 @@
 			text=""
 			imageURL="seed0000.jpg"
 			alt="seed0000"
-			timestamp={1651313416.9493775}
-		/> -->
-		{#each messages as message}
+			timestamp={1651313416949}
+		/>
+		{#each $messages as message (message.id)}
 			<Message {...message} />
 		{/each}
 	</div>
-	<Nav />
+	<Nav class="nav" />
 </div>
 
-<style lang="scss">
-	.wrapper {
+<style global lang="scss">
+	.chat {
 		display: flex;
 		flex-direction: column;
 		height: 100vh;
 	}
 
-	.placeholder {
-		flex-grow: 1;
-	}
-
-	.messages {
+	.chat__messages {
 		display: flex;
 		flex-direction: column;
 		flex-grow: 1;
@@ -95,5 +70,13 @@
 		overflow-y: auto;
 
 		width: 100%;
+	}
+
+	.chat__placeholder {
+		flex-grow: 1;
+	}
+
+	.nav {
+		flex-shrink: 0;
 	}
 </style>

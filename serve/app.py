@@ -67,7 +67,7 @@ def chat():
                 'id': shortuuid.uuid(),
                 'sender': 'scientist',
                 'text':
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in erat sagittis, consectetur nulla eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ante ipsum primis in faucibus orci luctus et ultrices',
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in eqat sagittis, consectetur nulqa eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ante ipsum primis in faucibus orci luctus et ultrices',
                 'imageData': b'',
                 'alt': '',
                 'timestamp': int(time.time() * 1000)
@@ -88,11 +88,16 @@ def connect():
             thread = socketio.start_background_task(chat)
 
 
-# server page
+# index page
 @app.route('/')
 def index():
-    # return flask.render_template('index.html')
     return flask.send_file('site/build/index.html')
+
+
+# about page
+@app.route('/about')
+def about():
+    return flask.send_file('site/build/about.html')
 
 
 # run server
