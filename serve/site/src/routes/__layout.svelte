@@ -1,6 +1,6 @@
-<script context="module">
-	/** @type {import('@sveltejs/kit').Load} */
-	export const load = async ({ url }) => ({ props: { url } });
+<script context="module" lang="ts">
+	import type { Load } from '@sveltejs/kit';
+	export const load: Load = async ({ url }) => ({ props: { url } });
 </script>
 
 <script lang="ts">
@@ -16,13 +16,28 @@
 
 	const socket = io();
 
+	// on incoming chat message from server
 	socket.on('chat_message', (message) => {
-		messages.add(message);
+		// process image data and if there, create a blob from it
+		let imageURL = '';
+		if (message.imageData.byteLength > 0) {
+			const arrayBufferView = new Uint8Array(message.imageData);
+			const blob = new Blob([arrayBufferView], { type: 'image/jpeg' });
 
-		console.log(message);
+			imageURL = URL.createObjectURL(blob);
+		}
+		// add new message to messages store
+		messages.add({
+			id: message.id,
+			sender: message.sender,
+			text: message.text,
+			imageURL: imageURL,
+			alt: message.alt,
+			timestamp: message.timestamp
+		});
 	});
 </script>
 
-<PageTransition {url} duration={2000}>
+<PageTransition {url} duration={1500}>
 	<slot />
 </PageTransition>

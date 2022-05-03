@@ -5,7 +5,7 @@ interface Message {
 	id: string;
 	sender: string;
 	text: string;
-	imageData: ArrayBuffer;
+	imageURL: string;
 	alt: string;
 	timestamp: number;
 }

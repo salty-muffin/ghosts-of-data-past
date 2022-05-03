@@ -38,39 +38,23 @@
 
 <style global lang="scss">
 	@use '../scss/variables' as *;
-
-	@keyframes breathe-sender {
-		from {
-			font-variation-settings: 'wght' 400, 'ital' 0;
-		}
-		to {
-			font-variation-settings: 'wght' 600, 'ital' 10;
-		}
-	}
-	@keyframes breathe-text {
-		from {
-			font-variation-settings: 'wght' 425, 'ital' 0;
-		}
-		to {
-			font-variation-settings: 'wght' 375, 'ital' 3;
-		}
-	}
-	@keyframes breathe-timestamp {
-		from {
-			font-variation-settings: 'wght' 200, 'ital' 0;
-		}
-		to {
-			font-variation-settings: 'wght' 400, 'ital' 10;
-		}
-	}
+	@use '../scss/animations' as *;
 
 	.message__wrapper {
 		max-width: 60%;
-		margin: 0.5em;
-		padding: 0.5em 1em;
 
-		border: 1px solid map-get($colors, 'foreground');
-		border-radius: 1em;
+		border: map-get($border-width, 'sm') solid map-get($colors, 'foreground');
+		border-radius: map-get($margin-primary, 'sm');
+
+		margin: map-get($margin-secondary, 'sm');
+		padding: map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
+		@media only screen and (min-width: $breakpoint) {
+			border-width: map-get($border-width, 'lg');
+			border-radius: map-get($margin-primary, 'lg');
+
+			margin: map-get($margin-secondary, 'lg');
+			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
+		}
 	}
 	.message--left {
 		align-self: flex-start;
@@ -82,8 +66,12 @@
 	.message__sender {
 		margin: 0 0 0.2em 0;
 
-		font-size: 0.9rem;
 		animation: 3s ease-in-out 1s infinite alternate both breathe-sender;
+
+		font-size: map-get($sender-size, 'sm');
+		@media only screen and (min-width: $breakpoint) {
+			font-size: map-get($sender-size, 'lg');
+		}
 	}
 
 	.message__image {
@@ -94,16 +82,24 @@
 	.message__text {
 		margin: 0;
 
-		font-size: 0.9rem;
-		/* font-variation-settings: 'wght' 400, 'ital' 0; */
 		animation: 5s ease-in-out 1s infinite alternate both breathe-text;
+
+		line-height: $message-line-height;
+		font-size: map-get($message-text-size, 'sm');
+		@media only screen and (min-width: $breakpoint) {
+			font-size: map-get($message-text-size, 'lg');
+		}
 	}
 
 	.message__timestamp {
 		float: right;
 		margin: 0.5em 0 0 0.5em;
 
-		font-size: 0.6rem;
 		animation: 3s ease-in-out 1s infinite alternate both breathe-timestamp;
+
+		font-size: map-get($timestamp-size, 'sm');
+		@media only screen and (min-width: $breakpoint) {
+			font-size: map-get($timestamp-size, 'lg');
+		}
 	}
 </style>

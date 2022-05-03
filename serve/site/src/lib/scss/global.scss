@@ -2,32 +2,42 @@
 
 body {
 	margin: 0;
-
-	font-size: 100%;
 	background-color: map-get($colors, 'background');
+
+	// fonts
+	font-size: 100%;
+
+	font-family: $font-family-text;
+	color: map-get($colors, 'foreground');
 }
 
-h1,
-h2,
-h3,
-h4,
-h5,
-h6,
+h1 {
+	font-size: map-get($heading1-size, 'sm');
+	@media only screen and (min-width: $breakpoint) {
+		font-size: map-get($heading1-size, 'lg');
+	}
+}
+
+h2 {
+	font-size: map-get($heading2-size, 'sm');
+	@media only screen and (min-width: $breakpoint) {
+		font-size: map-get($heading2-size, 'lg');
+	}
+}
+
+h3 {
+	font-size: map-get($heading3-size, 'sm');
+	@media only screen and (min-width: $breakpoint) {
+		font-size: map-get($heading3-size, 'lg');
+	}
+}
+
 p,
-li,
-span,
-a {
-	// fonts
-	// font-family: 'ABC Prophet';
-	// font-feature-settings: 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss01' 1, 'calt' 1;
-
-	font-family: 'ABC Diatype';
-	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss01' 1,
-		'ss03' 1, 'ss02' 1, 'ss04' 1, 'ss05' 1, 'ss09' 1, 'ss10' 1, 'ss11' 1, 'ss12' 1;
-
-	// font-family: 'NewPanam Skyline';
-
-	color: map-get($colors, 'foreground');
+li {
+	font-size: map-get($text-size, 'sm');
+	@media only screen and (min-width: $breakpoint) {
+		font-size: map-get($text-size, 'lg');
+	}
 }
 
 a {

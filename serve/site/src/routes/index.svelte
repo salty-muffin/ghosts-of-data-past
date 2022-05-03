@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { beforeUpdate, afterUpdate } from 'svelte';
+	import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte';
 
 	import { messages } from '$lib/stores/messages';
 
@@ -11,16 +11,15 @@
 	let messagesWrapper: any;
 	let autoscroll: boolean;
 
+	// check scroll position before update (enable autoscrolling if it as the bottom)
 	beforeUpdate(() => {
-		messagesWrapper &&
-			console.log(`height: ${messagesWrapper.scrollHeight} pos: ${messagesWrapper.scrollTop}`);
 		autoscroll =
 			messagesWrapper &&
 			messagesWrapper.offsetHeight + messagesWrapper.scrollTop > messagesWrapper.scrollHeight - 20;
 	});
 
+	// autoscroll to the bottom after update
 	afterUpdate(() => {
-		console.log(`height: ${messagesWrapper.scrollHeight} pos: ${messagesWrapper.scrollTop}`);
 		if (autoscroll) messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight);
 	});
 </script>
@@ -30,7 +29,7 @@
 </svelte:head>
 
 <div class="chat">
-	<div class="chat__messages" bind:this={messagesWrapper}>
+	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
 		<MessageDummy
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
@@ -48,18 +47,30 @@
 			alt="seed0000"
 			timestamp={1651313416949}
 		/>
-		<!-- {#each $messages as message (message.id)}
+		{#each $messages as message (message.id)}
 			<Message {...message} />
-		{/each} -->
+		{/each}
 	</div>
 	<Nav class="nav" />
 </div>
 
 <style global lang="scss">
+	@use '../lib/scss/variables' as *;
+
 	.chat {
+		height: 100vh;
+
+		max-width: $container-width;
+		margin: auto;
+
 		display: flex;
 		flex-direction: column;
-		height: 100vh;
+
+		// add borders as the screen grows
+		@media only screen and (min-width: $container-width) {
+			border-left: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
+			border-right: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
+		}
 	}
 
 	.chat__messages {

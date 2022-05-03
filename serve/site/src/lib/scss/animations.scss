@@ -1,0 +1,24 @@
+@keyframes breathe-sender {
+	from {
+		font-variation-settings: 'wght' 400, 'ital' 0;
+	}
+	to {
+		font-variation-settings: 'wght' 600, 'ital' 10;
+	}
+}
+@keyframes breathe-text {
+	from {
+		font-variation-settings: 'wght' 425, 'ital' 0;
+	}
+	to {
+		font-variation-settings: 'wght' 375, 'ital' 3;
+	}
+}
+@keyframes breathe-timestamp {
+	from {
+		font-variation-settings: 'wght' 200, 'ital' 0;
+	}
+	to {
+		font-variation-settings: 'wght' 400, 'ital' 10;
+	}
+}
