@@ -1,26 +1,50 @@
 <script lang="ts">
-	import { beforeUpdate, afterUpdate, onMount, onDestroy } from 'svelte';
+	// imports
+	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
 
 	import { messages } from '$lib/stores/messages';
 
 	import Message from '$lib/components/message.svelte';
 	import Nav from '$lib/components/nav.svelte';
-	import MessageDummy from '$lib/components/message-dummy.svelte';
+
+	// intersection observer
+	let observer: IntersectionObserver | undefined;
+	onMount(() => {
+		observer = new IntersectionObserver(function (entries, observer) {
+			entries.forEach(function (entry) {
+				// Pause/Play the animation
+				if (entry.isIntersecting) entry.target.classList.add('message--breathing');
+				else entry.target.classList.remove('message--breathing');
+			});
+		});
+	});
 
 	// handle automatic scrolling
 	let messagesWrapper: any;
 	let autoscroll: boolean;
 
-	// check scroll position before update (enable autoscrolling if it as the bottom)
 	beforeUpdate(() => {
+		// check scroll position before update (enable autoscrolling if it as the bottom)
 		autoscroll =
 			messagesWrapper &&
 			messagesWrapper.offsetHeight + messagesWrapper.scrollTop > messagesWrapper.scrollHeight - 20;
+
+		// unobserve all elements (so there are no duplictes in the list)
+		let messageElemets = document.querySelectorAll('.message__wrapper');
+		messageElemets?.forEach((el) => {
+			observer?.unobserve(el);
+		});
 	});
 
-	// autoscroll to the bottom after update
 	afterUpdate(() => {
+		// autoscroll to the bottom after update
 		if (autoscroll) messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight);
+
+		// // add all elements to intersection observer
+		let messageElemets = document.querySelectorAll('.message__wrapper');
+		messageElemets?.forEach((el) => {
+			observer?.observe(el);
+		});
 	});
 </script>
 
@@ -31,7 +55,7 @@
 <div class="chat">
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
-		<MessageDummy
+		<Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
 			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -39,7 +63,7 @@
 			alt=""
 			timestamp={1651313396942}
 		/>
-		<MessageDummy
+		<Message
 			id="aSwWASETCcg3QaukkAFesN"
 			sender="artist"
 			text=""

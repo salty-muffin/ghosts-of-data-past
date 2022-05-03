@@ -1,4 +1,5 @@
 <script lang="ts">
+	// props
 	let className = '';
 	export { className as class };
 </script>
@@ -36,6 +37,7 @@
 
 		h3 {
 			font-weight: normal;
+			margin: 0;
 		}
 	}
 </style>

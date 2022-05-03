@@ -1,3 +1,5 @@
+<svelte:options immutable />
+
 <script lang="ts">
 	// props
 	export let id: string;
@@ -23,7 +25,7 @@
 	const date = new Date(timestamp);
 </script>
 
-<div class="message__wrapper message--{attributes[sender]['position']}" {id}>
+<div class="message__wrapper message--{attributes[sender]['position']} message--breathing" {id}>
 	<h6 class="message__sender">{sender}</h6>
 	{#if imageURL}
 		<img class="message__image" src={imageURL} {alt} width="1024" height="1024" />
@@ -38,7 +40,6 @@
 
 <style global lang="scss">
 	@use '../scss/variables' as *;
-	@use '../scss/animations' as *;
 
 	.message__wrapper {
 		max-width: 60%;
@@ -46,13 +47,13 @@
 		border: map-get($border-width, 'sm') solid map-get($colors, 'foreground');
 		border-radius: map-get($margin-primary, 'sm');
 
-		margin: map-get($margin-secondary, 'sm');
+		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
 		padding: map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
 		@media only screen and (min-width: $breakpoint) {
 			border-width: map-get($border-width, 'lg');
 			border-radius: map-get($margin-primary, 'lg');
 
-			margin: map-get($margin-secondary, 'lg');
+			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
 			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
 		}
 	}
@@ -65,8 +66,6 @@
 
 	.message__sender {
 		margin: 0 0 0.2em 0;
-
-		animation: 3s ease-in-out 1s infinite alternate both breathe-sender;
 
 		font-size: map-get($sender-size, 'sm');
 		@media only screen and (min-width: $breakpoint) {
@@ -82,7 +81,7 @@
 	.message__text {
 		margin: 0;
 
-		animation: 5s ease-in-out 1s infinite alternate both breathe-text;
+		font-variation-settings: 'wght' 400, 'ital' 0;
 
 		line-height: $message-line-height;
 		font-size: map-get($message-text-size, 'sm');
@@ -91,11 +90,15 @@
 		}
 	}
 
+	.message--breathing {
+		.message__text {
+			font-variation-settings: 'wght' var(--weight), 'ital' var(--italic);
+		}
+	}
+
 	.message__timestamp {
 		float: right;
 		margin: 0.5em 0 0 0.5em;
-
-		animation: 3s ease-in-out 1s infinite alternate both breathe-timestamp;
 
 		font-size: map-get($timestamp-size, 'sm');
 		@media only screen and (min-width: $breakpoint) {
