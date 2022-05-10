@@ -84,14 +84,14 @@
 	.chat {
 		height: 100vh;
 
-		max-width: $container-width;
+		max-width: $chat-width;
 		margin: auto;
 
 		display: flex;
 		flex-direction: column;
 
 		// add borders as the screen grows
-		@media only screen and (min-width: $container-width) {
+		@media only screen and (min-width: $chat-width) {
 			border-left: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-right: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 		}

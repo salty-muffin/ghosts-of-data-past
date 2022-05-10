@@ -15,6 +15,12 @@ body {
 	color: map-get($colors, 'foreground');
 }
 
+// h1,
+// h2,
+// h3 {
+// 	font-family: $font-family-underline;
+// }
+
 h1 {
 	font-size: map-get($heading1-size, 'sm');
 	@media only screen and (min-width: $breakpoint) {
@@ -50,6 +56,12 @@ a {
 
 	&:hover {
 		color: map-get($colors, 'foreground');
-		text-decoration: underline;
+		// text-decoration: underline;
+		font-family: $font-family-underline;
+	}
+
+	@media (hover: none) {
+		// text-decoration: underline;
+		font-family: $font-family-underline;
 	}
 }

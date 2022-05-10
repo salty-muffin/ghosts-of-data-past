@@ -50,7 +50,7 @@ def chat():
             {
                 'id': shortuuid.uuid(),
                 'sender': 'artist',
-                'text': 'Lorem ipsum dolor sit amet',
+                'text': 'First, I find your quite negative assessment',
                 'imageData': b'',
                 'alt': '',
                 'timestamp': int(time.time() * 1000)
@@ -67,7 +67,7 @@ def chat():
                 'id': shortuuid.uuid(),
                 'sender': 'scientist',
                 'text':
-                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec in eqat sagittis, consectetur nulqa eu, volutpat orci. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum ante ipsum primis in faucibus orci luctus et ultrices',
+                'First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face.',
                 'imageData': b'',
                 'alt': '',
                 'timestamp': int(time.time() * 1000)

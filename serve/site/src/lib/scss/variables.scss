@@ -6,9 +6,9 @@ $colors: (
 );
 
 // fonts
-$font-family-text: 'ABC Diatype', sans-serif;
-$font-family-header: 'ABC Diatype', sans-serif;
-$font-family-code: monospace;
+$font-family-text: 'ABC Favorit', sans-serif;
+$font-family-underline: 'ABC Favorit Lining', sans-serif;
+$font-family-code: 'ABC Favorit Mono', monospace;
 
 // sizes
 $heading1-size: (
@@ -51,7 +51,8 @@ $border-width: (
 $line-height: 1.5;
 $message-line-height: 1;
 
-$container-width: 30em;
+$chat-width: 30em;
+$container-width: 40em;
 
 // margins
 $margin-primary: (
