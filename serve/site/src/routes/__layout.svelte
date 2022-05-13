@@ -13,25 +13,32 @@
 
 	import { onMount } from 'svelte';
 	import { cubicInOut } from 'svelte/easing';
-	import { io } from 'socket.io-client';
-	import { messages } from '$lib/stores/messages';
 
+	import { io } from 'socket.io-client';
+
+	import { FontAnimator } from '$lib/components/font-animation';
+	import { messages } from '$lib/stores/messages';
 	import PageTransition from '$lib/components/page-transition.svelte';
 
 	// breathing animation
 	const duration = 5000;
-	const start = { weight: 300, italic: 0 };
-	const end = { weight: 500, italic: 5 };
-	let current = start;
+	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
+	let headerC = headerAnimation.getStart();
+	const bodyAnimation = new FontAnimator({ weight: 325, italic: 0 }, { weight: 375, italic: 3 });
+	let bodyC = bodyAnimation.getStart();
+	const timestampAnimation = new FontAnimator(
+		{ weight: 300, italic: 0 },
+		{ weight: 350, italic: 10 }
+	);
+	let timestampC = timestampAnimation.getStart();
 	onMount(() => {
 		let animation = window.requestAnimationFrame(function update(timestamp: number) {
 			const pos = Math.abs(((timestamp % (duration * 2)) - duration) / duration);
 			const interpolated = cubicInOut(pos);
 
-			current = {
-				weight: Math.round((end.weight - start.weight) * interpolated + start.weight),
-				italic: Math.round((end.italic - start.italic) * interpolated + start.italic)
-			};
+			headerC = headerAnimation.update(interpolated);
+			bodyC = bodyAnimation.update(interpolated);
+			timestampC = timestampAnimation.update(interpolated);
 
 			// append next animation frame
 			animation = window.requestAnimationFrame(update);
@@ -67,7 +74,9 @@
 </script>
 
 <PageTransition {url} duration={1500}>
-	<div style="--weight:{current.weight}; --italic:{current.italic}">
+	<div
+		style="--h-weight:{headerC.weight}; --h-italic:{headerC.italic}; --b-weight:{bodyC.weight}; --b-italic:{bodyC.italic}; --t-weight:{timestampC.weight}; --t-italic:{timestampC.italic}"
+	>
 		<slot />
 	</div>
 </PageTransition>

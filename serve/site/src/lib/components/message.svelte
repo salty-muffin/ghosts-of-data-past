@@ -67,6 +67,8 @@
 	.message__sender {
 		margin: 0 0 0.2em 0;
 
+		font-variation-settings: 'wght' 550, 'ital' 0;
+
 		font-size: map-get($sender-size, 'sm');
 		@media only screen and (min-width: $breakpoint) {
 			font-size: map-get($sender-size, 'lg');
@@ -91,14 +93,22 @@
 	}
 
 	.message--breathing {
+		.message__sender {
+			font-variation-settings: 'wght' var(--h-weight), 'ital' var(--h-italic);
+		}
 		.message__text {
-			font-variation-settings: 'wght' var(--weight), 'ital' var(--italic);
+			font-variation-settings: 'wght' var(--b-weight), 'ital' var(--b-italic);
+		}
+		.message__timestamp {
+			font-variation-settings: 'wght' var(--t-weight), 'ital' var(--t-italic);
 		}
 	}
 
 	.message__timestamp {
 		float: right;
 		margin: 0.5em 0 0 0.5em;
+
+		font-variation-settings: 'wght' 325, 'ital' 0;
 
 		font-size: map-get($timestamp-size, 'sm');
 		@media only screen and (min-width: $breakpoint) {
