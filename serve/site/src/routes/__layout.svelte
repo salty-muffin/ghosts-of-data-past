@@ -21,6 +21,7 @@
 	import PageTransition from '$lib/components/page-transition.svelte';
 
 	// breathing animation
+	// setting up starting parameters & animators
 	const duration = 5000;
 	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
 	let headerC = headerAnimation.getStart();
@@ -33,9 +34,11 @@
 	let timestampC = timestampAnimation.getStart();
 	onMount(() => {
 		let animation = window.requestAnimationFrame(function update(timestamp: number) {
+			// calculation ratio
 			const pos = Math.abs(((timestamp % (duration * 2)) - duration) / duration);
 			const interpolated = cubicInOut(pos);
 
+			// updating all font animations
 			headerC = headerAnimation.update(interpolated);
 			bodyC = bodyAnimation.update(interpolated);
 			timestampC = timestampAnimation.update(interpolated);

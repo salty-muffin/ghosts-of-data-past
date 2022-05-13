@@ -9,7 +9,7 @@ const mapInterpolation = (start: number, end: number, fraction: number) => {
 	return Math.trunc((end - start) * fraction + start);
 };
 
-// clases
+// classes
 export class FontAnimator {
 	start: FontVariation;
 	end: FontVariation;
