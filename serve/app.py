@@ -47,13 +47,13 @@ def flow(sender: str, text: str = '', image_path: str = None) -> None:
 # background task function
 def chat():
     while True:
-        socketio.sleep(10)
+        socketio.sleep(20)
         flow('scientist', text='Are you still there?')
-        socketio.sleep(10)
+        socketio.sleep(15)
         flow('artist', text='Yes, I\'m here')
-        socketio.sleep(5)
+        socketio.sleep(10)
         flow('artist', image_path=os.path.join('images', 'seed0000.jpg'))
-        socketio.sleep(12)
+        socketio.sleep(20)
         flow(
             'scientist',
             text=
