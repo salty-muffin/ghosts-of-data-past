@@ -55,7 +55,7 @@
 <div class="chat">
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
-		<Message
+		<!-- <Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
 			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -70,7 +70,7 @@
 			imageURL="seed0000.jpg"
 			alt="seed0000"
 			timestamp={1651313416949}
-		/>
+		/> -->
 		{#each $messages as message (message.id)}
 			<Message {...message} />
 		{/each}

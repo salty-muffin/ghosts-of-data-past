@@ -20,61 +20,45 @@ thread = None
 thread_lock = Lock()
 
 
+# TEMPORARY
+def flow(sender: str, text: str = '', image_path: str = None) -> None:
+    alt = ''
+    if image_path:
+        with open(image_path, 'rb') as file:
+            image_data = file.read()
+
+        alt = os.path.basename(image_path)
+    else:
+        image_data = b''
+
+    socketio.emit(
+        'chat_message',
+        {
+            'id': shortuuid.uuid(),
+            'sender': sender,
+            'text': text,
+            'imageData': image_data,
+            'alt': alt,
+            'timestamp': int(time.time() * 1000)
+            }
+        )
+
+
 # background task function
 def chat():
-    id_counter = 0
-
     while True:
         socketio.sleep(10)
-
-        filename = 'seed0000.jpg'
-        with open(os.path.join('images', filename), 'rb') as file:
-            image_data = file.read()
-        socketio.emit(
-            'chat_message',
-            {
-                'id': shortuuid.uuid(),
-                'sender': 'artist',
-                'text': '',
-                'imageData': image_data,
-                'alt': filename,
-                'timestamp': int(time.time() * 1000)
-                }
-            )
-        id_counter += 1
-
+        flow('scientist', text='Are you still there?')
         socketio.sleep(10)
-
-        socketio.emit(
-            'chat_message',
-            {
-                'id': shortuuid.uuid(),
-                'sender': 'artist',
-                'text': 'First, I find your quite negative assessment',
-                'imageData': b'',
-                'alt': '',
-                'timestamp': int(time.time() * 1000)
-                }
+        flow('artist', text='Yes, I\'m here')
+        socketio.sleep(5)
+        flow('artist', image_path=os.path.join('images', 'seed0000.jpg'))
+        socketio.sleep(12)
+        flow(
+            'scientist',
+            text=
+            'It is rather fascinating to think that we would give up absolute control over computers - one of the few domain where we ever held "absolute control", in favor of them doing more things for us'
             )
-
-        id_counter += 1
-
-        socketio.sleep(10)
-
-        socketio.emit(
-            'chat_message',
-            {
-                'id': shortuuid.uuid(),
-                'sender': 'scientist',
-                'text':
-                'First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face.',
-                'imageData': b'',
-                'alt': '',
-                'timestamp': int(time.time() * 1000)
-                }
-            )
-
-        id_counter += 1
 
 
 # on connect start the background thread (if it's the first connect)
