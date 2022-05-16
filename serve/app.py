@@ -57,7 +57,7 @@ def chat():
         flow(
             'scientist',
             text=
-            'It is rather fascinating to think that we would give up absolute control over computers - one of the few domain where we ever held "absolute control", in favor of them doing more things for us'
+            'It is rather fascinating to think that we would give up absolute control over computers, one of the few domain where we ever held "absolute control", in favor of them doing more things for us'
             )
 
 
