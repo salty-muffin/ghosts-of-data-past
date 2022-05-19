@@ -25,7 +25,7 @@
 	const duration = 5000;
 	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
 	let headerC = headerAnimation.getStart();
-	const bodyAnimation = new FontAnimator({ weight: 325, italic: 0 }, { weight: 375, italic: 5 });
+	const bodyAnimation = new FontAnimator({ weight: 325, italic: 0 }, { weight: 375, italic: 6 });
 	let bodyC = bodyAnimation.getStart();
 	const timestampAnimation = new FontAnimator(
 		{ weight: 300, italic: 0 },
