@@ -33,7 +33,7 @@
 	);
 	let timestampC = timestampAnimation.getStart();
 	onMount(() => {
-		let animation = window.requestAnimationFrame(function update(timestamp: number) {
+		let animation = requestAnimationFrame(function update(timestamp: number) {
 			// calculation ratio
 			const pos = Math.abs(((timestamp % (duration * 2)) - duration) / duration);
 			const interpolated = cubicInOut(pos);
@@ -44,10 +44,10 @@
 			timestampC = timestampAnimation.update(interpolated);
 
 			// append next animation frame
-			animation = window.requestAnimationFrame(update);
+			animation = requestAnimationFrame(update);
 		});
 		return () => {
-			window.cancelAnimationFrame(animation);
+			cancelAnimationFrame(animation);
 		};
 	});
 
