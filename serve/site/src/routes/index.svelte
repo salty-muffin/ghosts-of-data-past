@@ -42,7 +42,6 @@
 		$messages.slice(observedIndex).forEach((message) => {
 			let element = document.getElementById(message.id);
 			if (element) observer?.observe(element);
-			console.log(`observed ${message.id}`);
 		});
 		observedIndex = $messages.length - 1;
 	});
