@@ -23,31 +23,19 @@ body {
 
 h1 {
 	font-size: map-get($heading1-size, 'sm');
-	@media only screen and (min-width: $breakpoint) {
-		font-size: map-get($heading1-size, 'lg');
-	}
 }
 
 h2 {
 	font-size: map-get($heading2-size, 'sm');
-	@media only screen and (min-width: $breakpoint) {
-		font-size: map-get($heading2-size, 'lg');
-	}
 }
 
 h3 {
 	font-size: map-get($heading3-size, 'sm');
-	@media only screen and (min-width: $breakpoint) {
-		font-size: map-get($heading3-size, 'lg');
-	}
 }
 
 p,
 li {
 	font-size: map-get($text-size, 'sm');
-	@media only screen and (min-width: $breakpoint) {
-		font-size: map-get($text-size, 'lg');
-	}
 }
 
 a {
@@ -59,8 +47,29 @@ a {
 		// text-decoration: underline;
 		font-family: $font-family-underline;
 	}
+}
 
-	@media (hover: none) {
+@media only screen and (min-width: $breakpoint) {
+	h1 {
+		font-size: map-get($heading1-size, 'lg');
+	}
+
+	h2 {
+		font-size: map-get($heading2-size, 'lg');
+	}
+
+	h3 {
+		font-size: map-get($heading3-size, 'lg');
+	}
+
+	p,
+	li {
+		font-size: map-get($text-size, 'lg');
+	}
+}
+
+@media (hover: none) {
+	a {
 		// text-decoration: underline;
 		font-family: $font-family-underline;
 	}

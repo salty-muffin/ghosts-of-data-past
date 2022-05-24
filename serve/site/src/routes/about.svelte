@@ -32,13 +32,16 @@
 		margin: auto;
 
 		padding: map-get($margin-primary, 'sm');
-		@media only screen and (min-width: $breakpoint) {
-			padding: map-get($margin-primary, 'lg');
-		}
 
 		img {
 			max-width: 100%;
 			height: auto;
+		}
+	}
+
+	@media only screen and (min-width: $breakpoint) {
+		.about {
+			padding: map-get($margin-primary, 'lg');
 		}
 	}
 </style>

@@ -49,13 +49,6 @@
 
 		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
 		padding: map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
-		@media only screen and (min-width: $breakpoint) {
-			border-width: map-get($border-width, 'lg');
-			border-radius: map-get($margin-primary, 'lg');
-
-			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
-			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
-		}
 	}
 	.message--left {
 		align-self: flex-start;
@@ -67,12 +60,10 @@
 	.message__sender {
 		margin: 0 0 0.2em 0;
 
+		// non-breathing setting
 		font-variation-settings: 'wght' 550, 'ital' 0;
 
 		font-size: map-get($sender-size, 'sm');
-		@media only screen and (min-width: $breakpoint) {
-			font-size: map-get($sender-size, 'lg');
-		}
 	}
 
 	.message__image {
@@ -83,13 +74,21 @@
 	.message__text {
 		margin: 0;
 
+		// non-breathing setting
 		font-variation-settings: 'wght' 400, 'ital' 0;
 
 		line-height: $message-line-height;
 		font-size: map-get($message-text-size, 'sm');
-		@media only screen and (min-width: $breakpoint) {
-			font-size: map-get($message-text-size, 'lg');
-		}
+	}
+
+	.message__timestamp {
+		float: right;
+		margin: 0.5em 0 0 0.5em;
+
+		// non-breathing setting
+		font-variation-settings: 'wght' 325, 'ital' 0;
+
+		font-size: map-get($timestamp-size, 'sm');
 	}
 
 	.message--breathing {
@@ -104,14 +103,24 @@
 		}
 	}
 
-	.message__timestamp {
-		float: right;
-		margin: 0.5em 0 0 0.5em;
+	@media only screen and (min-width: $breakpoint) {
+		.message__wrapper {
+			border-width: map-get($border-width, 'lg');
+			border-radius: map-get($margin-primary, 'lg');
 
-		font-variation-settings: 'wght' 325, 'ital' 0;
+			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
+			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
+		}
 
-		font-size: map-get($timestamp-size, 'sm');
-		@media only screen and (min-width: $breakpoint) {
+		.message__sender {
+			font-size: map-get($sender-size, 'lg');
+		}
+
+		.message__text {
+			font-size: map-get($message-text-size, 'lg');
+		}
+
+		.message__timestamp {
 			font-size: map-get($timestamp-size, 'lg');
 		}
 	}
