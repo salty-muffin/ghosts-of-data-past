@@ -28,7 +28,7 @@
 	let observedIndex = 0;
 
 	beforeUpdate(() => {
-		// check scroll position before update (enable autoscrolling if it as the bottom)
+		// check scroll position before update (enable autoscrolling if is at the bottom)
 		autoscroll =
 			messagesWrapper &&
 			messagesWrapper.offsetHeight + messagesWrapper.scrollTop > messagesWrapper.scrollHeight - 20;
