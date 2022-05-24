@@ -29,3 +29,4 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 - [x] BETTER: pause css animations when not visible https://css-tricks.com/how-to-play-and-pause-css-animations-with-css-custom-properties/, https://abcdinamo.com/news/using-variable-fonts-on-the-web, https://svelte.dev/repl/c461dfe7dbf84998a03fdb30785c27f3?version=3.16.7, https://www.npmjs.com/package/svelte-intersection-observer
 - [x] implement soft transitions between pages https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
 - [ ] scroll down on return from about
+- [x] change intersection observer for better performance an readability by only adding new elements
