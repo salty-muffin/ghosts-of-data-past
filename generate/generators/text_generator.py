@@ -7,7 +7,12 @@ class TextGenerator:
     """
     generates text from prompts with a gpt-2/gpt-2neo model and returns them as a string.
     """
-    def __init__(self, model: str, verbose: bool = True) -> None:
+    def __init__(
+            self,
+            model: str = None,
+            model_folder: str = None,
+            verbose: bool = True
+        ) -> None:
 
         self._verbose = verbose
 
@@ -18,9 +23,11 @@ class TextGenerator:
                 f'cuda is {"not" if not cuda_avail else ""} available for gpt'
                 )
 
-        self._gpt2 = aitextgen(model=model, to_gpu=cuda_avail)
+        self._gpt2 = aitextgen(
+            model=model, model_folder=model_folder, to_gpu=cuda_avail
+            )
 
-        self._model = model
+        self._model = model if model else model_folder
 
     def generate(
         self,

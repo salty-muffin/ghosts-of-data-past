@@ -24,11 +24,11 @@
 	let messagesWrapper: any;
 	let autoscroll: boolean;
 
-	// keep track of how many elements are already being observed by the IntersectionObserver
+	// keep track of how many elements are already being observed by the intersection observer
 	let observedIndex = 0;
 
 	beforeUpdate(() => {
-		// check scroll position before update (enable autoscrolling if is at the bottom)
+		// check scroll position before update (enable autoscrolling, if is at the bottom)
 		autoscroll =
 			messagesWrapper &&
 			messagesWrapper.offsetHeight + messagesWrapper.scrollTop > messagesWrapper.scrollHeight - 20;
