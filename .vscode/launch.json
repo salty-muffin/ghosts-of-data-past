@@ -11,6 +11,24 @@
             "program": "${file}",
             "console": "integratedTerminal",
             "justMyCode": true
-        }
+        },
+        {
+            "name": "generate",
+            "type": "python",
+            "request": "launch",
+            "program": "generate/generate.py",
+            "args": [
+                "--gptdir=generate/models/gpt2_model",
+                "--stylegandir=generate/models",
+                "--prompt=[SCIENTIST:] I can't believe you.",
+                "--roles=artist,scientist",
+                "--basetime=3.0",
+                "--lettertime=0.2",
+                "--imagetime=6.0",
+                "--readfactor=0.8",
+                "--randomfactor=0.9,1.1"
+            ],
+            "console": "integratedTerminal"
+        },
     ]
 }

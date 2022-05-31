@@ -36,10 +36,10 @@ class ImageGenerator:
         # checking for cuda
         cuda_avail = torch.cuda.is_available()
         if cuda_avail:
-            if self._verbose: print('cuda is available for stylegan')
+            print('cuda is available for stylegan')
             self._device = torch.device('cuda')
         else:
-            if self._verbose: print('cuda is not available for stylegan')
+            print('cuda is not available for stylegan')
             self._device = torch.device('cpu')
 
         # loading model
@@ -47,7 +47,7 @@ class ImageGenerator:
             print(f'loading networks from "{network}"... ', end='')
         with open(network, 'rb') as file:
             self._G = pickle.load(file)['G_ema'].to(self._device)
-        if self._verbose: print('done')
+        print('done')
 
         # empty label
         self._label = torch.zeros([1, self._G.c_dim], device=self._device)

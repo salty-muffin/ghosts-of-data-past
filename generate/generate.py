@@ -1,106 +1,178 @@
+from typing import Union, List
+
 import os
 import re
 import time
+import random
+import click
 from io import BytesIO
+from redis_om import HashModel
 
 from generators.image_generator import ImageGenerator
 from generators.text_generator import TextGenerator
 
+# constants
+IMAGE_PLACEHOLDER = '[IMAGE]'  # should be cause for image generation & then removed
+ROLE_PATTERN = r'\[.*:\]'  # used to find where messages begin and end
+SENDER_PATTERN = r'\[|:\]'  # all characters to remove from sender
+SENDER_STRING = '[{}:]'  # how is the sender to be formatted
 
-def generate() -> None:
+
+# click parsers
+def parse_roles(s: Union[str, List]) -> List[str]:
+    if isinstance(s, list):
+        return s
+
+    return [role for role in map(str.strip, str(s).split(','))]
+
+
+def parse_random_factor(s: Union[str, List]) -> List[float]:
+    if isinstance(s, list):
+        return s
+
+    return [float(factor) for factor in map(str.strip, str(s).split(','))]
+
+
+# redis objects
+class ChatMessage(HashModel):
+    sender: str
+    text: str
+    image_data: bytes
+    alt: str
+
+
+class WritingState(HashModel):
+    role: str
+    writing: bool
+
+
+# yapf: disable
+@click.command()
+@click.option('--gptdir',       type=click.Path(exists=True),   help='directory of gpt2 model', required=True)
+@click.option('--stylegandir',  type=click.Path(exists=True),   help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
+@click.option('--prompt',       type=str,                       help='starting prompt', required=True)
+@click.option('--roles',        type=parse_roles,               help='list of roles (e.g \'artist, scientist\')', required=True)
+@click.option('--basetime',     type=float,                     default=3.0, help='minimum time for writing all types of messages', required=True)
+@click.option('--lettertime',   type=float,                     default=0.2, help='time it takes to write one letter', required=True)
+@click.option('--imagetime',    type=float,                     default=6.0, help='time it takes to take an image', required=True)
+@click.option('--readfactor',   type=float,                     default=0.8, help='how long should reading the message take in relation to writing it', required=True)
+@click.option('--randomfactor', type=parse_random_factor,       default=[1.0, 1.0], help='minimun & maximum radom factor to be applied to the time', required=True)
+# yapf: enable
+def generate(
+        gptdir: str,
+        stylegandir: str,
+        prompt: str,
+        roles: List[str],
+        basetime: float,
+        lettertime: float,
+        imagetime: float,
+        readfactor: float,
+        randomfactor: List[float]
+    ) -> None:
     # setup generators
-    image_Gs = {
-        'artist':
-        ImageGenerator(
-            os.path.join('generate', 'models', 'artist_stylegan3_model.pkl')
-            ),
-        'scientist':
-        ImageGenerator(
-            os.path.join('generate', 'models', 'artist_stylegan3_model.pkl')
+    image_Gs = {}
+    for role in roles:
+        image_Gs[role] = ImageGenerator(
+            os.path.join(stylegandir, f'{role}_stylegan3_model.pkl'),
+            verbose=False
             )
-        }
-    text_G = TextGenerator(
-        model_folder=os.path.join('generate', 'models', 'gpt2_model')
-        )
+    text_G = TextGenerator(model_folder=gptdir, verbose=False)
 
-    prompt = '[SCIENTIST:] I can\'t believe you.'
-    image_seed = {'artist': 0, 'scientist': 0}
+    # setup writing states
+    writing_state = {}
+    for role in roles:
+        writing_state[role] = WritingState(role=role, writing=False)
+        # writing_state[role].save() TODO
+
+    # set variables
+    image_seed = {}
+    for role in roles:
+        image_seed[role] = 0
     start = 0
+    write_duration = 0
     try:
         while True:
+            # wait for the read duration
+            wait_time = write_duration * readfactor * random.uniform(
+                randomfactor[0], randomfactor[1]
+                )
+            time.sleep(wait_time)
+
             start = start if start else time.time(
             )  # don't record starttime on repeat generation
 
+            # get the sender and set them to writing
+            sender = roles[random.randint(0, len(roles) - 1)]
+            writing_state[sender].writing = True
+            # writing_state[sender].save() TODO
+
             # get the response without the prompt
+            prompt = f'{prompt}\n{SENDER_STRING.format(sender.upper())}'
             response = text_G.generate(
                 prompt, max_length=128, temperature=0.7
                 ).replace(prompt, '')
 
             # find the next messages
-            matches = [match for match in re.finditer(r'\[.*:\]', response)]
+            matches = [match for match in re.finditer(ROLE_PATTERN, response)]
 
             # TODO optimize: use the whole response
+
             # only go on, if there are matches, else repeat
             if matches:
-                # get sender
-                sender = re.sub(
-                    r'\[|:\]',
-                    '',
-                    response[matches[0].start():matches[0].end()]
-                    ).lower()
+                # get message
+                text = response[:matches[0].start()].strip()
 
-                # only go on, if the sender matches, else repeat
-                if sender in image_Gs.keys():
-                    # get message
-                    if len(matches) == 1:
-                        text = response[matches[0].end():].strip()
-                    else:
-                        text = response[matches[0].end():matches[1].start(
-                        )].strip()
+                # get next prompt
+                prompt = f'[{sender.upper()}:] {text}'
 
-                    # get next prompt
-                    prompt = f'[{sender.upper()}:] {text}'
+                # check for images
+                image_data = b''
+                alt = ''
+                if IMAGE_PLACEHOLDER in text:
+                    image = image_Gs[sender].generate(image_seed[sender])
+                    # save image as binary
+                    image_output = BytesIO()
+                    image.save(
+                        image_output,
+                        "JPEG",
+                        quality=80,
+                        optimize=True,
+                        progressive=True
+                        )
+                    image_data = image_output.getvalue()
+                    image_output.close()
 
-                    # check for images
-                    image_data = b''
-                    alt = ''
-                    if (img_str := '[IMAGE]') in text:
-                        image = image_Gs[sender].generate(image_seed[sender])
-                        # save image as binary
-                        image_output = BytesIO()
-                        image.save(
-                            image_output,
-                            "JPEG",
-                            quality=80,
-                            optimize=True,
-                            progressive=True
-                            )
-                        image_data = image_output.getvalue()
-                        image_output.close()
+                    alt = f'selfie of {sender}'
 
-                        alt = f'selfie of {sender}'
+                    image_seed[sender] += 1
 
-                        image_seed[sender] += 1
+                    text = re.sub(
+                        r' *', ' ', text.replace(IMAGE_PLACEHOLDER, '')
+                        ).strip()  # get rid of duplicate spaces
 
-                        text = re.sub(r' *', ' ', text.replace(img_str, '')
-                                      ).strip()  # get rid of duplicate spaces
+                # wait if message generation was shorter than minimum write_duration
+                min_duration = basetime + len(text) * lettertime
+                if image_data: min_duration += imagetime
+                write_duration = time.time() - start
+                write_duration *= random.uniform(
+                    randomfactor[0], randomfactor[1]
+                    )  # multiply by random factor
+                start = 0
 
-                    # wait if message generation was shorter than minimum duration
-                    min_duration = len(text) * 0.2
-                    if image_data: min_duration += 10
-                    duration = time.time() - start
-                    start = 0
-                    time.sleep(max(0, min_duration - duration))
+                wait_time = max(0, min_duration - write_duration)
+                time.sleep(wait_time)
 
-                    # TODO send message to redis
-                    chat_message = {
-                        'sender': sender,
-                        'text': text,
-                        'imageData': image_data,
-                        'alt': alt
-                        }
+                # send message to redis
+                message = ChatMessage(
+                    sender=sender, text=text, image_data=image_data, alt=alt
+                    )
 
-                    print(sender.upper(), text, bool(image_data))
+                writing_state[sender].writing = False
+                # writing_state[sender].save() TODO
+                # message.save() TODO
+                # message.expire(120)
+
+                print(sender.upper(), text, bool(image_data))
 
     except KeyboardInterrupt:
         raise SystemExit

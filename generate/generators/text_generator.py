@@ -18,10 +18,7 @@ class TextGenerator:
 
         # checking for cuda
         cuda_avail = torch.cuda.is_available()
-        if self._verbose:
-            print(
-                f'cuda is {"not" if not cuda_avail else ""} available for gpt'
-                )
+        print(f'cuda is {"not" if not cuda_avail else ""} available for gpt')
 
         self._gpt2 = aitextgen(
             model=model, model_folder=model_folder, to_gpu=cuda_avail

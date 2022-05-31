@@ -20,7 +20,7 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 3. changes to the environment can be saved with: `conda env export --no-builds | grep -v "prefix" > environment.yml`
 4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
 
-## to do
+## serve - to do
 
 - [x] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
 - [ ] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
@@ -30,3 +30,9 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 - [x] implement soft transitions between pages https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
 - [ ] scroll down on return from about
 - [x] change intersection observer for better performance an readability by only adding new elements
+
+## generate - to do
+
+- [ ] add redis installation to the setup documentation
+- [ ] secure redis
+- [ ] fix saving to redis
