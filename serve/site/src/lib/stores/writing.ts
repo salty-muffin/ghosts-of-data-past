@@ -2,8 +2,26 @@ import { writable } from 'svelte/store';
 
 // types
 interface Writing {
-	writer: string | null;
-	writing: boolean;
+	writer: string;
+	state: boolean;
 }
 
-export const writing = writable<Writing>({ writer: null, writing: false });
+function createWriting() {
+	const { subscribe, set, update } = writable<Writing[]>([]);
+
+	return {
+		subscribe,
+		add: (writing: Writing) => {
+			// if (writing.length && writing.some(element => {element.}))
+			update((writings: Writing[]) => {
+				// remove element with the same writer as incoming, so there are no duplicates
+				const temp_writings = writings.filter((element) => element.writer != writing.writer);
+				// add incoming writer
+				return [...temp_writings, writing];
+			});
+		},
+		reset: () => set([])
+	};
+}
+
+export const writing = createWriting();

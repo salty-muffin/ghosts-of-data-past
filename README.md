@@ -19,6 +19,8 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 2. activate the enviroment: `conda activate ghosts`
 3. changes to the environment can be saved with: `conda env export --no-builds | grep -v "prefix" > environment.yml`
 4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
+5. install redis according to these [instructions](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
+6. start redis with the config file in this project `redis-server redis.conf` (from this directory)
 
 ## serve - to do
 
@@ -33,6 +35,6 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 
 ## generate - to do
 
-- [ ] add redis installation to the setup documentation
-- [ ] secure redis
+- [x] add redis installation to the setup documentation
+- [x] secure redis
 - [ ] fix saving to redis

@@ -1,12 +1,13 @@
-from typing import Union, List
+from typing import Union, List, Optional
 
 import os
 import re
 import time
 import random
 import click
+import shortuuid
 from io import BytesIO
-from redis_om import HashModel
+from walrus import Database
 
 from generators.image_generator import ImageGenerator
 from generators.text_generator import TextGenerator
@@ -33,19 +34,6 @@ def parse_random_factor(s: Union[str, List]) -> List[float]:
     return [float(factor) for factor in map(str.strip, str(s).split(','))]
 
 
-# redis objects
-class ChatMessage(HashModel):
-    sender: str
-    text: str
-    image_data: bytes
-    alt: str
-
-
-class WritingState(HashModel):
-    role: str
-    writing: bool
-
-
 # yapf: disable
 @click.command()
 @click.option('--gptdir',       type=click.Path(exists=True),   help='directory of gpt2 model', required=True)
@@ -69,6 +57,9 @@ def generate(
         readfactor: float,
         randomfactor: List[float]
     ) -> None:
+    # setup redis database
+    db = Database(host='localhost', db=0)
+
     # setup generators
     image_Gs = {}
     for role in roles:
@@ -81,8 +72,8 @@ def generate(
     # setup writing states
     writing_state = {}
     for role in roles:
-        writing_state[role] = WritingState(role=role, writing=False)
-        # writing_state[role].save() TODO
+        writing_state[role] = db.Hash(f'writing:{role}')
+        writing_state[role].update(writer=role, state=0)
 
     # set variables
     image_seed = {}
@@ -90,21 +81,25 @@ def generate(
         image_seed[role] = 0
     start = 0
     write_duration = 0
+    sender = ''
     try:
         while True:
+            # get the sender and set them to writing
+            previous_sender = sender
+            sender = roles[random.randint(0, len(roles) - 1)]
+            sender_readfactor = 0.2 if previous_sender == sender else 1
+
             # wait for the read duration
             wait_time = write_duration * readfactor * random.uniform(
                 randomfactor[0], randomfactor[1]
-                )
+                ) * sender_readfactor
             time.sleep(wait_time)
 
+            writing_state[sender].update(writer=sender, state=1)
+
+            # record start time
             start = start if start else time.time(
             )  # don't record starttime on repeat generation
-
-            # get the sender and set them to writing
-            sender = roles[random.randint(0, len(roles) - 1)]
-            writing_state[sender].writing = True
-            # writing_state[sender].save() TODO
 
             # get the response without the prompt
             prompt = f'{prompt}\n{SENDER_STRING.format(sender.upper())}'
@@ -163,14 +158,12 @@ def generate(
                 time.sleep(wait_time)
 
                 # send message to redis
-                message = ChatMessage(
+                message = db.Hash(shortuuid.uuid())
+                writing_state[sender].update(writer=sender, state=0)
+                message.update(
                     sender=sender, text=text, image_data=image_data, alt=alt
                     )
-
-                writing_state[sender].writing = False
-                # writing_state[sender].save() TODO
-                # message.save() TODO
-                # message.expire(120)
+                message.expire(120)
 
                 print(sender.upper(), text, bool(image_data))
 

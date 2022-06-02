@@ -18,6 +18,7 @@
 
 	import { FontAnimator } from '$lib/components/font-animation';
 	import { messages } from '$lib/stores/messages';
+	import { writing } from '$lib/stores/writing';
 	import PageTransition from '$lib/components/page-transition.svelte';
 
 	// breathing animation
@@ -73,6 +74,13 @@
 			alt: message.alt,
 			timestamp: message.timestamp
 		});
+	});
+
+	// on incoming writing event
+	socket.on('writing_state', (event) => {
+		writing.add({ writer: event.writer, state: event.state });
+		console.log(event);
+		console.log({ writer: event.writer, state: event.state });
 	});
 </script>
 

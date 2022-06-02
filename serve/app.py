@@ -5,6 +5,7 @@ from threading import Lock
 import flask
 from flask import Flask
 from flask_socketio import SocketIO
+import redis
 import shortuuid
 import time
 
@@ -20,45 +21,48 @@ thread = None
 thread_lock = Lock()
 
 
-# TEMPORARY
-def flow(sender: str, text: str = '', image_path: str = None) -> None:
-    alt = ''
-    if image_path:
-        with open(image_path, 'rb') as file:
-            image_data = file.read()
-
-        alt = os.path.basename(image_path)
-    else:
-        image_data = b''
-
-    socketio.emit(
-        'chat_message',
-        {
-            'id': shortuuid.uuid(),
-            'sender': sender,
-            'text': text,
-            'imageData': image_data,
-            'alt': alt,
-            'timestamp': int(time.time() * 1000)
-            }
-        )
-
-
 # background task function
 def chat():
+    print('connecting to redis database')
+    database = redis.Redis(host='localhost', port=6379, db=0)
+    subscriber = database.pubsub()
+    subscriber.psubscribe('__keyspace@0__:*')
+
     while True:
-        socketio.sleep(20)
-        flow('scientist', text='Are you still there?')
-        socketio.sleep(15)
-        flow('artist', text='Yes, I\'m here')
-        socketio.sleep(10)
-        flow('artist', image_path=os.path.join('images', 'seed0000.jpg'))
-        socketio.sleep(20)
-        flow(
-            'scientist',
-            text=
-            'It is rather fascinating to think that we would give up absolute control over computers, one of the few domain where we ever held "absolute control", in favor of them doing more things for us'
-            )
+        message = subscriber.get_message()
+        if message:
+            # get the key of the changed item
+            key = str(message['channel']).split(':', 1)[1].strip('\'')
+
+            if '*' not in key:
+                # get writing event updates
+                print(key)
+                if 'writing' in key:
+                    writing_state = database.hgetall(key)
+                    print(key, int(writing_state[b'state'].decode('utf-8')))
+                    socketio.emit(
+                        'writing_state',
+                        {
+                            'writer': writing_state[b'writer'].decode('utf-8'),
+                            'state':
+                            int(writing_state[b'state'].decode('utf-8'))
+                            }
+                        )
+                # get incoming messages
+                else:
+                    chat_message = database.hgetall(key)
+                    socketio.emit(
+                        'chat_message',
+                        {
+                            'id': key,
+                            'sender': chat_message[b'sender'].decode('utf-8'),
+                            'text': chat_message[b'text'].decode('utf-8'),
+                            'imageData': chat_message[b'image_data'],
+                            'alt': chat_message[b'alt'].decode('utf-8'),
+                            'timestamp': int(time.time() * 1000)
+                            }
+                        )
+        socketio.sleep(0.1)
 
 
 # on connect start the background thread (if it's the first connect)

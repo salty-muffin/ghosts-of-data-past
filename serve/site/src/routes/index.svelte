@@ -3,10 +3,25 @@
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
 
 	import { messages } from '$lib/stores/messages';
+	import { writing } from '$lib/stores/writing';
 
 	import Message from '$lib/components/message.svelte';
+	import Writing from '$lib/components/writing.svelte';
 	import Nav from '$lib/components/nav.svelte';
-	import { element } from 'svelte/internal';
+
+	// types
+	interface Attributes {
+		[key: string]: Attribute;
+	}
+	interface Attribute {
+		position: string;
+	}
+
+	// import chat attributes
+	import data from '$lib/data/chat-attributes.json';
+	const chatAttributes: Attributes = data;
+
+	// handle information on who is writing
 
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
@@ -54,13 +69,14 @@
 <div class="chat">
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
-		<Message
+		<!-- <Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
 			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
 			imageURL=""
 			alt=""
 			timestamp={1651313396942}
+			attributes={chatAttributes}
 		/>
 		<Message
 			id="aSwWASETCcg3QaukkAFesN"
@@ -69,9 +85,15 @@
 			imageURL="seed0000.jpg"
 			alt="seed0000"
 			timestamp={1651313416949}
-		/>
+			attributes={chatAttributes}
+		/> -->
 		{#each $messages as message (message.id)}
-			<Message {...message} />
+			<Message {...message} attributes={chatAttributes} />
+		{/each}
+		{#each $writing as writing_state}
+			{#if writing_state.state}
+				<Writing writer={writing_state.writer} attributes={chatAttributes} />
+			{/if}
 		{/each}
 	</div>
 	<Nav class="nav" />

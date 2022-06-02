@@ -8,18 +8,7 @@
 	export let imageURL: string;
 	export let alt: string;
 	export let timestamp: number;
-
-	// types
-	interface Attributes {
-		[key: string]: Attribute;
-	}
-	interface Attribute {
-		position: string;
-	}
-
-	// import chat attributes
-	import data from '$lib/data/chat-attributes.json';
-	const attributes: Attributes = data;
+	export let attributes: any;
 
 	// get date from timestamp
 	const date = new Date(timestamp);
