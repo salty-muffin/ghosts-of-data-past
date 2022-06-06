@@ -3,7 +3,7 @@
 	export let attributes: any;
 </script>
 
-<div class="writing__wrapper writing--{attributes[writer]['position']}">
+<div class="message__wrapper message--{attributes[writer]['position']}">
 	<div class="writing__animation">
 		<div />
 		<span>x</span>
@@ -11,24 +11,19 @@
 		<span>x</span>
 		<div />
 	</div>
+	<svg
+		class="message__tip"
+		width="25"
+		height="21"
+		viewBox="0 0 25 21"
+		xmlns="http://www.w3.org/2000/svg"
+	>
+		<path d="M9 0C9 16 1 20 1 20C1 20 9 16 25 16" />
+	</svg>
 </div>
 
-<style lang="scss">
+<style global lang="scss">
 	@use '../scss/variables' as *;
-
-	.writing__wrapper {
-		border: map-get($border-width, 'sm') solid map-get($colors, 'foreground');
-		border-radius: map-get($margin-primary, 'sm');
-
-		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
-		padding: map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
-	}
-	.writing--left {
-		align-self: flex-start;
-	}
-	.writing--right {
-		align-self: flex-end;
-	}
 
 	@keyframes fadeInOut {
 		0% {
@@ -47,7 +42,6 @@
 	.writing__animation {
 		display: flex;
 		align-items: center;
-		/* gap: map-get($margin-secondary, 'sm'); */
 
 		div {
 			width: map-get($writing-circle-size, 'sm');
@@ -80,14 +74,6 @@
 	}
 
 	@media only screen and (min-width: $breakpoint) {
-		.writing__wrapper {
-			border-width: map-get($border-width, 'lg');
-			border-radius: map-get($margin-primary, 'lg');
-
-			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
-			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
-		}
-
 		.writing__animation {
 			div {
 				border-width: map-get($border-width, 'lg');
