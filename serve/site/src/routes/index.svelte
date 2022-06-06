@@ -45,7 +45,6 @@
 
 	// remove messages, if there are more than the limit
 	$: if ($messages.length > settings.maxMessages) {
-		console.log('removing message');
 		// unobserve message
 		const element = document.getElementById($messages[0].id);
 		if (element) observer?.unobserve(element);
