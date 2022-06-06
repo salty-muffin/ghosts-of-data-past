@@ -1,9 +1,10 @@
-import data from '$lib/data/chat-attributes.json';
+import chat from '$lib/data/chat-attributes.json';
+import settings from '$lib/data/settings.json';
 
 export const get = async () => {
-	if (data) {
+	if (chat && settings) {
 		return {
-			body: { chatAttributes: data }
+			body: { chatAttributes: chat, settings: settings }
 		};
 	}
 

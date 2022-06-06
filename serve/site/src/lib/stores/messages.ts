@@ -18,6 +18,9 @@ function createMessages() {
 		add: (message: Message) => {
 			update((messages: Message[]) => [...messages, message]);
 		},
+		shift: () => {
+			update((messages: Message[]) => messages.slice(1));
+		},
 		reset: () => set([])
 	};
 }

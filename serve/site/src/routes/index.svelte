@@ -16,9 +16,13 @@
 	interface Attribute {
 		position: string;
 	}
+	interface Settings {
+		maxMessages: number;
+	}
 
 	// get chat attributes from endpoint
 	export let chatAttributes: Attributes;
+	export let settings: Settings;
 
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
@@ -31,6 +35,17 @@
 			});
 		});
 	});
+
+	$: if ($messages.length > settings.maxMessages) {
+		console.log('removing message');
+		// unobserve message
+		const element = document.getElementById($messages[0].id);
+		if (element) observer?.unobserve(element);
+		// remove message
+		messages.shift();
+		// update observed index
+		observedIndex -= 1;
+	}
 
 	// handle automatic scrolling
 	let messagesWrapper: any;
@@ -52,7 +67,7 @@
 
 		// add previously unobserved elements to intersection observer
 		$messages.slice(observedIndex).forEach((message) => {
-			let element = document.getElementById(message.id);
+			const element = document.getElementById(message.id);
 			if (element) observer?.observe(element);
 		});
 		observedIndex = $messages.length - 1;
@@ -66,7 +81,7 @@
 <div class="chat">
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
-		<Message
+		<!-- <Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
 			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -75,6 +90,7 @@
 			timestamp={1651313396942}
 			attributes={chatAttributes}
 		/>
+		<div class="chat__spacer" />
 		<Message
 			id="aSwWASETCcg3QaukkAFesN"
 			sender="artist"
@@ -93,12 +109,21 @@
 			timestamp={1651313416949}
 			attributes={chatAttributes}
 		/>
-		<Writing writer="scientist" attributes={chatAttributes} />
-		{#each $messages as message (message.id)}
+		<Writing writer="scientist" attributes={chatAttributes} /> -->
+		<div class="chat__spacer" />
+		{#each $messages as message, index (message.id)}
+			<!-- add spacer, if this message's sender differs from the previous one -->
+			{#if index > 0 && message.sender !== $messages[index - 1].sender}
+				<div class="chat__spacer" />
+			{/if}
 			<Message {...message} attributes={chatAttributes} />
 		{/each}
 		{#each $writing as writing_state}
 			{#if writing_state.state}
+				<!-- add spacer, if current writer differs from the previous message's sender -->
+				{#if writing_state.writer !== $messages[$messages.length - 1].sender}
+					<div class="chat__spacer" />
+				{/if}
 				<Writing writer={writing_state.writer} attributes={chatAttributes} />
 			{/if}
 		{/each}
@@ -117,6 +142,8 @@
 
 		display: flex;
 		flex-direction: column;
+
+		filter: drop-shadow(0 0 map-get($border-blur, 'sm') map-get($colors, 'foreground'));
 	}
 
 	.chat__messages {
@@ -133,6 +160,11 @@
 		flex-grow: 1;
 	}
 
+	.chat__spacer {
+		height: map-get($margin-secondary, 'sm');
+		flex-shrink: 0;
+	}
+
 	.nav {
 		flex-shrink: 0;
 	}
@@ -142,6 +174,12 @@
 			// add borders as the screen grows
 			border-left: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-right: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
+
+			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
+		}
+
+		.chat__spacer {
+			height: map-get($margin-secondary, 'lg');
 		}
 	}
 </style>

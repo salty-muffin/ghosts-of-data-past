@@ -32,6 +32,7 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 - [x] implement soft transitions between pages https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
 - [ ] scroll down on return from about
 - [x] change intersection observer for better performance an readability by only adding new elements
+- [x] limit the number of chat messages
 
 ## generate - to do
 

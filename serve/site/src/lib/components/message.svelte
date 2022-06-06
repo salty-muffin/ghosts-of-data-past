@@ -47,7 +47,6 @@
 
 		background-color: map-get($colors, 'background');
 		/* border: map-get($border-width, 'sm') solid map-get($colors, 'foreground'); */
-		filter: drop-shadow(0 0 map-get($border-blur, 'sm') map-get($colors, 'foreground'));
 		border-radius: map-get($margin-primary, 'sm');
 
 		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-secondary, 'sm');
@@ -130,7 +129,6 @@
 	@media only screen and (min-width: $breakpoint) {
 		.message__wrapper {
 			/* border-width: map-get($border-width, 'lg'); */
-			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 			border-radius: map-get($margin-primary, 'lg');
 
 			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');

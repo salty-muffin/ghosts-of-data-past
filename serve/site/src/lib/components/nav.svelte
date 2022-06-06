@@ -18,7 +18,6 @@
 		height: map-get($nav-size, 'sm');
 
 		background-color: map-get($colors, 'background');
-		filter: drop-shadow(0 0 map-get($border-blur, 'sm') map-get($colors, 'foreground'));
 	}
 
 	.nav__links {
@@ -39,7 +38,6 @@
 			height: map-get($nav-size, 'lg');
 
 			/* border-width: map-get($border-width, 'lg'); */
-			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 		}
 
 		.nav__links {
