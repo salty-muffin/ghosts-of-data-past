@@ -36,6 +36,14 @@
 		});
 	});
 
+	// handle automatic scrolling
+	let messagesWrapper: any;
+	let autoscroll: boolean;
+
+	// keep track of how many elements are already being observed by the intersection observer
+	let observedIndex = 0;
+
+	// remove messages, if there are more than the limit
 	$: if ($messages.length > settings.maxMessages) {
 		console.log('removing message');
 		// unobserve message
@@ -46,13 +54,6 @@
 		// update observed index
 		observedIndex -= 1;
 	}
-
-	// handle automatic scrolling
-	let messagesWrapper: any;
-	let autoscroll: boolean;
-
-	// keep track of how many elements are already being observed by the intersection observer
-	let observedIndex = 0;
 
 	beforeUpdate(() => {
 		// check scroll position before update (enable autoscrolling, if is at the bottom)
