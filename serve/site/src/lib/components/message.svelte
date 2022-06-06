@@ -15,7 +15,7 @@
 </script>
 
 <div class="message__wrapper message--{attributes[sender]['position']} message--breathing" {id}>
-	<h6 class="message__sender">{sender}</h6>
+	<!-- <h6 class="message__sender">{sender}</h6> -->
 	{#if imageURL}
 		<img class="message__image" src={imageURL} {alt} width="1024" height="1024" />
 	{/if}

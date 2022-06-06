@@ -6,7 +6,9 @@
 <div class="writing__wrapper writing--{attributes[writer]['position']}">
 	<div class="writing__animation">
 		<div />
+		<span>x</span>
 		<div />
+		<span>x</span>
 		<div />
 	</div>
 </div>
@@ -29,40 +31,51 @@
 	}
 
 	@keyframes fadeInOut {
-		from {
+		0% {
 			opacity: 0;
 		}
-		to {
+		30% {
+			opacity: 0;
+			transform: translateY(80%);
+		}
+		100% {
 			opacity: 1;
+			transform: translateY(-20%);
 		}
 	}
 
 	.writing__animation {
 		display: flex;
-		gap: map-get($margin-secondary, 'sm');
+		align-items: center;
+		/* gap: map-get($margin-secondary, 'sm'); */
 
 		div {
-			width: map-get($text-size, 'sm');
-			height: map-get($text-size, 'sm');
+			width: map-get($writing-circle-size, 'sm');
+			height: map-get($writing-circle-size, 'sm');
 
-			border: map-get($border-width, 'sm') solid map-get($colors, 'foreground');
+			background-color: map-get($colors, 'foreground');
 			border-radius: 100%;
 
 			animation-name: fadeInOut;
-			animation-duration: 1s;
-			animation-timing-function: linear;
+			animation-duration: 1.6s;
+			animation-timing-function: ease;
 			animation-iteration-count: infinite;
 			animation-direction: alternate;
 			animation-fill-mode: both;
 		}
-		div:nth-child(1) {
+		div:nth-of-type(1) {
 			animation-delay: 0s;
 		}
-		div:nth-child(2) {
-			animation-delay: 0.5s;
+		div:nth-of-type(2) {
+			animation-delay: 0.2s;
 		}
-		div:nth-child(3) {
-			animation-delay: 1s;
+		div:nth-of-type(3) {
+			animation-delay: 0.4s;
+		}
+
+		span {
+			visibility: hidden;
+			width: map-get($margin-secondary, 'sm');
 		}
 	}
 
@@ -76,10 +89,12 @@
 		}
 
 		.writing__animation {
-			gap: map-get($margin-secondary, 'lg');
-
 			div {
 				border-width: map-get($border-width, 'lg');
+			}
+
+			span {
+				width: map-get($margin-secondary, 'lg');
 			}
 		}
 	}
