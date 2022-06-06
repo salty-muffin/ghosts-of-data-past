@@ -75,13 +75,12 @@
 			alt: message.alt,
 			timestamp: message.timestamp
 		});
+		writing.add({ writer: message.sender, state: false });
 	});
 
 	// on incoming writing event
 	socket.on('writing_state', (event) => {
 		writing.add({ writer: event.writer, state: event.state });
-		console.log(event);
-		console.log({ writer: event.writer, state: event.state });
 	});
 </script>
 

@@ -36,10 +36,8 @@ def chat():
 
             if '*' not in key:
                 # get writing event updates
-                print(key)
                 if 'writing' in key:
                     writing_state = database.hgetall(key)
-                    print(key, int(writing_state[b'state'].decode('utf-8')))
                     socketio.emit(
                         'writing_state',
                         {

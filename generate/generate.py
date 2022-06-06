@@ -159,11 +159,11 @@ def generate(
 
                 # send message to redis
                 message = db.Hash(shortuuid.uuid())
-                writing_state[sender].update(writer=sender, state=0)
                 message.update(
                     sender=sender, text=text, image_data=image_data, alt=alt
                     )
                 message.expire(120)
+                writing_state[sender].update(writer=sender, state=0)
 
                 print(sender.upper(), text, bool(image_data))
 

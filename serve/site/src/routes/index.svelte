@@ -84,6 +84,15 @@
 			timestamp={1651313416949}
 			attributes={chatAttributes}
 		/>
+		<Message
+			id="qDwLOSAKCcg3Qaukkpaesd"
+			sender="artist"
+			text="Here I am."
+			imageURL=""
+			alt=""
+			timestamp={1651313416949}
+			attributes={chatAttributes}
+		/>
 		<Writing writer="scientist" attributes={chatAttributes} />
 		{#each $messages as message (message.id)}
 			<Message {...message} attributes={chatAttributes} />

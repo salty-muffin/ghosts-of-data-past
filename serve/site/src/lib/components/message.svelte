@@ -16,7 +16,7 @@
 
 <div class="message__wrapper message--{attributes[sender]['position']} message--breathing" {id}>
 	<div class="message__body">
-		<!-- <h6 class="message__sender">{sender}</h6> -->
+		<h6 class="message__sender">{sender}</h6>
 		{#if imageURL}
 			<img class="message__image" src={imageURL} {alt} width="1024" height="1024" />
 		{/if}
@@ -42,6 +42,7 @@
 	@use '../scss/variables' as *;
 
 	.message__wrapper {
+		position: relative;
 		max-width: 60%;
 
 		background-color: map-get($colors, 'background');
@@ -49,7 +50,7 @@
 		filter: drop-shadow(0 0 map-get($border-blur, 'sm') map-get($colors, 'foreground'));
 		border-radius: map-get($margin-primary, 'sm');
 
-		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
+		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-secondary, 'sm');
 		padding: map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
 	}
 	.message--left {
@@ -57,6 +58,7 @@
 
 		.message__tip {
 			left: map-get($margin-secondary, 'sm') * (-1);
+			margin-left: -0.03em;
 		}
 	}
 	.message--right {
@@ -64,6 +66,7 @@
 
 		.message__tip {
 			right: map-get($margin-secondary, 'sm') * (-1);
+			margin-right: -0.03em;
 
 			transform: scaleX(-1);
 		}
@@ -79,6 +82,7 @@
 	}
 
 	.message__image {
+		display: block;
 		max-width: 100%;
 		height: auto;
 	}
@@ -104,8 +108,9 @@
 	}
 
 	.message__tip {
+		fill: map-get($colors, 'background');
 		position: absolute;
-		bottom: -0.25em;
+		bottom: -0.3em;
 		width: map-get($margin-primary, 'sm') + map-get($margin-secondary, 'sm');
 		height: auto;
 	}
@@ -134,13 +139,11 @@
 		.message--left {
 			.message__tip {
 				left: map-get($margin-secondary, 'lg') * (-1);
-				margin-left: -0.05em;
 			}
 		}
 		.message--right {
 			.message__tip {
 				right: map-get($margin-secondary, 'lg') * (-1);
-				margin-right: -0.05em;
 			}
 		}
 
@@ -158,7 +161,7 @@
 
 		.message__tip {
 			position: absolute;
-			bottom: -0.4em;
+			bottom: -0.38em;
 			width: (map-get($margin-primary, 'lg') + map-get($margin-secondary, 'lg'));
 		}
 	}
