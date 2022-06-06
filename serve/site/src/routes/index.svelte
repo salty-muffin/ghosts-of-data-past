@@ -17,11 +17,8 @@
 		position: string;
 	}
 
-	// import chat attributes
-	import data from '$lib/data/chat-attributes.json';
-	const chatAttributes: Attributes = data;
-
-	// handle information on who is writing
+	// get chat attributes from endpoint
+	export let chatAttributes: Attributes;
 
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
@@ -69,7 +66,7 @@
 <div class="chat">
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
-		<!-- <Message
+		<Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
 			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -86,7 +83,7 @@
 			alt="seed0000"
 			timestamp={1651313416949}
 			attributes={chatAttributes}
-		/> -->
+		/>
 		{#each $messages as message (message.id)}
 			<Message {...message} attributes={chatAttributes} />
 		{/each}
