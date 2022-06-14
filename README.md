@@ -33,9 +33,11 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 - [ ] scroll down on return from about
 - [x] change intersection observer for better performance an readability by only adding new elements
 - [x] limit the number of chat messages
+- [ ] decrease the distance between messages from the same sender
+- [ ] remove the name of messages by the same sender
 
 ## generate - to do
 
 - [x] add redis installation to the setup documentation
 - [x] secure redis
-- [ ] fix saving to redis
+- [x] fix saving to redis

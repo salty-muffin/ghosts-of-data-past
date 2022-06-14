@@ -77,8 +77,10 @@ def generate(
 
     # set variables
     image_seed = {}
+    seed = 0
     for role in roles:
-        image_seed[role] = 0
+        image_seed[role] = seed
+        seed += 100
     start = 0
     write_duration = 0
     sender = ''
@@ -142,7 +144,11 @@ def generate(
                     image_seed[sender] += 1
 
                     text = re.sub(
-                        r' *', ' ', text.replace(IMAGE_PLACEHOLDER, '')
+                        r' *',
+                        ' ',
+                        text.replace(
+                            IMAGE_PLACEHOLDER, ''
+                            )  # TODO currently inserts a space between every character
                         ).strip()  # get rid of duplicate spaces
 
                 # wait if message generation was shorter than minimum write_duration
