@@ -81,7 +81,8 @@
 <div class="chat">
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
-		<!-- <Message
+		<div class="chat__spacer" />
+		<Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
 			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -107,16 +108,20 @@
 			imageURL=""
 			alt=""
 			timestamp={1651313416949}
+			displaySender={false}
 			attributes={chatAttributes}
 		/>
-		<Writing writer="scientist" attributes={chatAttributes} /> -->
-		<div class="chat__spacer" />
+		<Writing writer="scientist" attributes={chatAttributes} />
+
+		<!-- <div class="chat__spacer" /> -->
 		{#each $messages as message, index (message.id)}
 			<!-- add spacer, if this message's sender differs from the previous one -->
 			{#if index > 0 && message.sender !== $messages[index - 1].sender}
 				<div class="chat__spacer" />
+				<Message {...message} displaySender={true} attributes={chatAttributes} />
+			{:else}
+				<Message {...message} displaySender={false} attributes={chatAttributes} />
 			{/if}
-			<Message {...message} attributes={chatAttributes} />
 		{/each}
 		{#each $writing as writing_state}
 			{#if writing_state.state}
@@ -151,6 +156,8 @@
 		flex-direction: column;
 		flex-grow: 1;
 
+		margin-bottom: map-get($nav-size, 'sm');
+
 		overflow-y: auto;
 
 		width: 100%;
@@ -166,6 +173,10 @@
 	}
 
 	.nav {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
 		flex-shrink: 0;
 	}
 
@@ -174,8 +185,16 @@
 			// add borders as the screen grows
 			border-left: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-right: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
+		}
+	}
 
+	@media only screen and (min-width: $breakpoint) {
+		.chat {
 			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
+		}
+
+		.chat__messages {
+			margin-bottom: map-get($nav-size, 'lg');
 		}
 
 		.chat__spacer {

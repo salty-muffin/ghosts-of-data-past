@@ -25,7 +25,7 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 ## serve - to do
 
 - [x] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
-- [ ] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
+- [x] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
 - [x] autoscroll to the bottom https://svelte.dev/tutorial/update (doesn't work with images yet on the desktop) including notifications for new messages if not scrolled to the bottom
 - [x] optimize https://svelte.dev/tutorial/svelte-options
 - [x] BETTER: pause css animations when not visible https://css-tricks.com/how-to-play-and-pause-css-animations-with-css-custom-properties/, https://abcdinamo.com/news/using-variable-fonts-on-the-web, https://svelte.dev/repl/c461dfe7dbf84998a03fdb30785c27f3?version=3.16.7, https://www.npmjs.com/package/svelte-intersection-observer
@@ -33,8 +33,8 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 - [ ] scroll down on return from about
 - [x] change intersection observer for better performance an readability by only adding new elements
 - [x] limit the number of chat messages
-- [ ] decrease the distance between messages from the same sender
-- [ ] remove the name of messages by the same sender
+- [x] decrease the distance between messages from the same sender
+- [x] remove the name of messages by the same sender
 
 ## generate - to do
 

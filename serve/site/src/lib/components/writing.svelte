@@ -76,7 +76,8 @@
 	@media only screen and (min-width: $breakpoint) {
 		.writing__animation {
 			div {
-				border-width: map-get($border-width, 'lg');
+				width: map-get($writing-circle-size, 'lg');
+				height: map-get($writing-circle-size, 'lg');
 			}
 
 			span {

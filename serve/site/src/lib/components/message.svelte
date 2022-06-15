@@ -9,6 +9,7 @@
 	export let alt: string;
 	export let timestamp: number;
 	export let attributes: any;
+	export let displaySender = true;
 
 	// get date from timestamp
 	const date = new Date(timestamp);
@@ -16,7 +17,9 @@
 
 <div class="message__wrapper message--{attributes[sender]['position']} message--breathing" {id}>
 	<div class="message__body">
-		<h6 class="message__sender">{sender}</h6>
+		{#if displaySender}
+			<h6 class="message__sender">{sender}</h6>
+		{/if}
 		{#if imageURL}
 			<img class="message__image" src={imageURL} {alt} width="1024" height="1024" />
 		{/if}
@@ -131,7 +134,7 @@
 			/* border-width: map-get($border-width, 'lg'); */
 			border-radius: map-get($margin-primary, 'lg');
 
-			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
+			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-secondary, 'lg');
 			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
 		}
 		.message--left {
@@ -159,7 +162,7 @@
 
 		.message__tip {
 			position: absolute;
-			bottom: -0.38em;
+			bottom: -0.35em;
 			width: (map-get($margin-primary, 'lg') + map-get($margin-secondary, 'lg'));
 		}
 	}
