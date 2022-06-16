@@ -2,10 +2,35 @@
 	// props
 	let className = '';
 	export { className as class };
+
+	// imports
+	import { muted } from '$lib/stores/muted';
+	import { audio } from '$lib/stores/audio';
 </script>
 
 <div class="nav__wrapper {className}">
-	<nav class="nav__links"><h3><a href="/about">about</a></h3></nav>
+	<nav class="nav__links">
+		<button
+			class="nav__mute-button"
+			on:click={() => {
+				$muted = !$muted;
+
+				// if the audio element hasn't been set, instanciate it
+				if (!$audio) {
+					audio.instanciate('fused.mp3');
+				}
+			}}
+		>
+			<h3>
+				{#if $muted}
+					unmute
+				{:else}
+					mute
+				{/if}
+			</h3>
+		</button>
+		<h3><a href="/about">about</a></h3>
+	</nav>
 </div>
 
 <style global lang="scss">
@@ -23,7 +48,7 @@
 	.nav__links {
 		width: 100%;
 		display: flex;
-		justify-content: flex-end;
+		justify-content: space-between;
 
 		margin: 0 map-get($margin-primary, 'sm');
 
@@ -31,6 +56,13 @@
 			font-weight: normal;
 			margin: 0;
 		}
+	}
+
+	.nav__mute-button {
+		background: none;
+		border: none;
+		padding: 0;
+		cursor: pointer;
 	}
 
 	@media only screen and (min-width: $breakpoint) {

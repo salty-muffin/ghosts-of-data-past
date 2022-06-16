@@ -82,6 +82,7 @@
 	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 		<div class="chat__placeholder" />
 		<div class="chat__spacer" />
+
 		<Message
 			id="Zp7nVKxeiaY3UE5B9Ptjnm"
 			sender="scientist"
@@ -113,7 +114,6 @@
 		/>
 		<Writing writer="scientist" attributes={chatAttributes} />
 
-		<!-- <div class="chat__spacer" /> -->
 		{#each $messages as message, index (message.id)}
 			<!-- add spacer, if this message's sender differs from the previous one -->
 			{#if index > 0 && message.sender !== $messages[index - 1].sender}

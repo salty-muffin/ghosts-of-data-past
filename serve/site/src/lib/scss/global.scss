@@ -15,6 +15,10 @@ body {
 	color: map-get($colors, 'foreground');
 }
 
+button {
+	font-family: $font-family-text;
+}
+
 // h1,
 // h2,
 // h3 {
@@ -38,7 +42,8 @@ li {
 	font-size: map-get($text-size, 'sm');
 }
 
-a {
+a,
+button {
 	color: map-get($colors, 'link');
 	text-decoration: none;
 
@@ -69,7 +74,8 @@ a {
 }
 
 @media (hover: none) {
-	a {
+	a,
+	button {
 		// text-decoration: underline;
 		font-family: $font-family-underline;
 	}

@@ -17,9 +17,12 @@
 
 	import { io } from 'socket.io-client';
 
-	import { FontAnimator } from '$lib/components/font-animation';
 	import { messages } from '$lib/stores/messages';
 	import { writing } from '$lib/stores/writing';
+	import { muted } from '$lib/stores/muted';
+	import { audio } from '$lib/stores/audio';
+
+	import { FontAnimator } from '$lib/components/font-animation';
 	import PageTransition from '$lib/components/page-transition.svelte';
 
 	// breathing animation
@@ -76,6 +79,13 @@
 			timestamp: message.timestamp
 		});
 		writing.add({ writer: message.sender, state: false });
+
+		// play audio on new message (only if unmuted)
+		if (!$muted && $audio) {
+			// TODO: get the audio with the message and play that
+			$audio.play();
+			console.log('played audio');
+		}
 	});
 
 	// on incoming writing event
