@@ -20,6 +20,8 @@ function createWriting() {
 				return [...temp_writings, writing];
 			});
 		},
+		set: set,
+		update: update,
 		reset: () => set([])
 	};
 }

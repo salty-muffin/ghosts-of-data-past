@@ -21,6 +21,8 @@ function createMessages() {
 		shift: () => {
 			update((messages: Message[]) => messages.slice(1));
 		},
+		set: set,
+		update: update,
 		reset: () => set([])
 	};
 }

@@ -78,72 +78,82 @@
 	<title>ghosts of data past</title>
 </svelte:head>
 
-<div class="chat">
-	<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
-		<div class="chat__placeholder" />
-		<div class="chat__spacer" />
+<div class="chat__center">
+	<div class="chat">
+		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
+			<div class="chat__placeholder" />
+			<div class="chat__spacer" />
 
-		<Message
-			id="Zp7nVKxeiaY3UE5B9Ptjnm"
-			sender="scientist"
-			text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
-			imageURL=""
-			alt=""
-			timestamp={1651313396942}
-			attributes={chatAttributes}
-		/>
-		<div class="chat__spacer" />
-		<Message
-			id="aSwWASETCcg3QaukkAFesN"
-			sender="artist"
-			text=""
-			imageURL="seed0000.jpg"
-			alt="seed0000"
-			timestamp={1651313416949}
-			attributes={chatAttributes}
-		/>
-		<Message
-			id="qDwLOSAKCcg3Qaukkpaesd"
-			sender="artist"
-			text="Here I am."
-			imageURL=""
-			alt=""
-			timestamp={1651313416949}
-			displaySender={false}
-			attributes={chatAttributes}
-		/>
-		<Writing writer="scientist" attributes={chatAttributes} />
+			<Message
+				id="Zp7nVKxeiaY3UE5B9Ptjnm"
+				sender="scientist"
+				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
+				imageURL=""
+				alt=""
+				timestamp={1651313396942}
+				attributes={chatAttributes}
+			/>
+			<div class="chat__spacer" />
+			<Message
+				id="aSwWASETCcg3QaukkAFesN"
+				sender="artist"
+				text=""
+				imageURL="seed0000.jpg"
+				alt="seed0000"
+				timestamp={1651313416949}
+				attributes={chatAttributes}
+			/>
+			<Message
+				id="qDwLOSAKCcg3Qaukkpaesd"
+				sender="artist"
+				text="Here I am."
+				imageURL=""
+				alt=""
+				timestamp={1651313416949}
+				displaySender={false}
+				attributes={chatAttributes}
+			/>
+			<Writing writer="scientist" attributes={chatAttributes} />
 
-		{#each $messages as message, index (message.id)}
-			<!-- add spacer, if this message's sender differs from the previous one -->
-			{#if index > 0 && message.sender !== $messages[index - 1].sender}
-				<div class="chat__spacer" />
-				<Message {...message} displaySender={true} attributes={chatAttributes} />
-			{:else}
-				<Message {...message} displaySender={false} attributes={chatAttributes} />
-			{/if}
-		{/each}
-		{#each $writing as writing_state}
-			{#if writing_state.state}
-				<!-- add spacer, if current writer differs from the previous message's sender -->
-				{#if writing_state.writer !== $messages[$messages.length - 1].sender}
+			{#each $messages as message, index (message.id)}
+				<!-- add spacer, if this message's sender differs from the previous one -->
+				{#if index > 0 && message.sender !== $messages[index - 1].sender}
 					<div class="chat__spacer" />
+					<Message {...message} displaySender={true} attributes={chatAttributes} />
+				{:else}
+					<Message {...message} displaySender={false} attributes={chatAttributes} />
 				{/if}
-				<Writing writer={writing_state.writer} attributes={chatAttributes} />
-			{/if}
-		{/each}
+			{/each}
+			{#each $writing as writing_state}
+				{#if writing_state.state}
+					<!-- add spacer, if current writer differs from the previous message's sender -->
+					{#if writing_state.writer !== $messages[$messages.length - 1].sender}
+						<div class="chat__spacer" />
+					{/if}
+					<Writing writer={writing_state.writer} attributes={chatAttributes} />
+				{/if}
+			{/each}
+		</div>
+		<Nav class="nav" />
 	</div>
-	<Nav class="nav" />
 </div>
 
 <style global lang="scss">
 	@use '../lib/scss/variables' as *;
 
-	.chat {
+	.chat__center {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		height: 100vh;
+	}
+
+	.chat {
+		height: 100%;
 
 		max-width: $chat-width;
-		margin: auto;
+		max-height: $chat-height;
+		/* margin: auto; */
 
 		display: flex;
 		flex-direction: column;
@@ -185,6 +195,14 @@
 			// add borders as the screen grows
 			border-left: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-right: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
+		}
+	}
+
+	@media only screen and (min-height: $chat-height) {
+		.chat {
+			// add borders as the screen grows
+			border-top: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
+			border-bottom: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 		}
 	}
 
