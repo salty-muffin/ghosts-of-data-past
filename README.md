@@ -15,12 +15,20 @@ using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & 
 
 ## setup
 
-1. to create the envorinment: `conda env create -f environment.yml`
-2. activate the enviroment: `conda activate ghosts`
+1. to create the envorinment: `conda env create -f environment.yml` or `conda env create -f environment-cpu.yml` for a cpu only version
+2. activate the enviroment: `conda activate ghosts` or `conda activate ghosts-cpu`
 3. changes to the environment can be saved with: `conda env export --no-builds | grep -v "prefix" > environment.yml`
 4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
 5. install redis according to these [instructions](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
-6. start redis with the config file in this project `redis-server redis.conf` (from this directory)
+
+## run
+
+all the steps below should be executed from individual terminals or at least in individual processes
+
+1. start the redis server: `redis-server redis.conf`
+2. enter the conda environment: `conda activate ghosts` or `conda activate ghosts-cpu`
+3. start the generate script with `python3 generate/generate.py --gptdir=generate/models/gpt2_model --stylegandir=generate/models --prompt=[SCIENTIST:] I can't believe you. --roles=artist,scientist --colors=cyan,green --basetime=3.0 --lettertime=0.2 --imagetime=6.0 --readfactor=0.8 --randomfactor=0.9,1.1` (this is only an example configuration)
+4. start the server with `python3 serve/app.py`
 
 ## serve - to do
 
