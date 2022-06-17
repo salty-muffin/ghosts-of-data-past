@@ -43,6 +43,8 @@ all the steps below should be executed from individual terminals or at least in 
 - [x] limit the number of chat messages
 - [x] decrease the distance between messages from the same sender
 - [x] remove the name of messages by the same sender
+- [ ] implement sidenotes on about
+- [ ] implement proper menu on about with mute controls
 
 ## generate - to do
 

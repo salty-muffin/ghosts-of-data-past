@@ -40,6 +40,8 @@ h3 {
 p,
 li {
 	font-size: map-get($text-size, 'sm');
+	line-height: $line-height;
+	text-align: justify;
 }
 
 a,
