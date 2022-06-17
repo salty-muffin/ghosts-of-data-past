@@ -88,7 +88,7 @@ ipython_config.py
 #Pipfile.lock
 
 # PEP 582; used by e.g. github.com/David-OConnor/pyflow
-__pypackages__/ this should be used with caution though. after pip packages have been installed, no packages should be installed through conda anymore.
+__pypackages__/
 *.sage.py
 
 # Environments
