@@ -4,6 +4,7 @@ import os
 import re
 import time
 import random
+import glob
 import click
 import shortuuid
 from io import BytesIO
@@ -44,7 +45,7 @@ def parse_random_factor(s: Union[str, List]) -> List[float]:
 @click.option('--lettertime',   type=float,                     default=0.2, help='time it takes to write one letter', required=True)
 @click.option('--imagetime',    type=float,                     default=6.0, help='time it takes to take an image', required=True)
 @click.option('--readfactor',   type=float,                     default=0.8, help='how long should reading the message take in relation to writing it', required=True)
-@click.option('--randomfactor', type=parse_random_factor,       default=[1.0, 1.0], help='minimun & maximum radom factor to be applied to the time', required=True)
+@click.option('--randomfactor', type=parse_random_factor,       default=[1.0, 1.0], help='minimun & maximum random factor to be applied to the time', required=True)
 # yapf: enable
 def generate(
         gptdir: str,
@@ -74,6 +75,9 @@ def generate(
     for role in roles:
         writing_state[role] = db.Hash(f'writing:{role}')
         writing_state[role].update(writer=role, state=0)
+
+    # get all notification sound paths in a list
+    sound_paths = glob.glob(os.path.join('generate', 'sounds', '*'))
 
     # set variables
     image_seed = {}
@@ -144,12 +148,24 @@ def generate(
                     image_seed[sender] += 1
 
                     text = re.sub(
-                        r' *',
+                        r'  +',
                         ' ',
                         text.replace(
                             IMAGE_PLACEHOLDER, ''
                             )  # TODO currently inserts a space between every character
                         ).strip()  # get rid of duplicate spaces
+
+                # get a sound sound path and load it
+                sound_path = sound_paths.pop(
+                    random.randint(0, len(sound_paths) - 1)
+                    )
+                with open(sound_path, 'rb') as file:
+                    sound_data = file.read()
+
+                # relaod all sound effects if all of them have been used
+                sound_paths = glob.glob(
+                    os.path.join('generate', 'sounds', '*')
+                    )
 
                 # wait if message generation was shorter than minimum write_duration
                 min_duration = basetime + len(text) * lettertime
@@ -166,7 +182,11 @@ def generate(
                 # send message to redis
                 message = db.Hash(shortuuid.uuid())
                 message.update(
-                    sender=sender, text=text, image_data=image_data, alt=alt
+                    sender=sender,
+                    text=text,
+                    image_data=image_data,
+                    alt=alt,
+                    sound_data=sound_data
                     )
                 message.expire(120)
                 writing_state[sender].update(writer=sender, state=0)

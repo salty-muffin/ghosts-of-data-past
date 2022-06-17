@@ -57,6 +57,7 @@ def chat():
                             'text': chat_message[b'text'].decode('utf-8'),
                             'imageData': chat_message[b'image_data'],
                             'alt': chat_message[b'alt'].decode('utf-8'),
+                            'soundData': chat_message[b'sound_data'],
                             'timestamp': int(time.time() * 1000)
                             }
                         )

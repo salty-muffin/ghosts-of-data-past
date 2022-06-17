@@ -20,7 +20,7 @@
 	import { messages } from '$lib/stores/messages';
 	import { writing } from '$lib/stores/writing';
 	import { muted } from '$lib/stores/muted';
-	import { audio } from '$lib/stores/audio';
+	import { sound } from '$lib/stores/audio';
 
 	import { FontAnimator } from '$lib/components/font-animation';
 	import PageTransition from '$lib/components/page-transition.svelte';
@@ -81,10 +81,17 @@
 		writing.add({ writer: message.sender, state: false });
 
 		// play audio on new message (only if unmuted)
-		if (!$muted && $audio) {
-			// TODO: get the audio with the message and play that
-			$audio.play();
-			console.log('played audio');
+		if (!$muted && $sound) {
+			console.log('notifying');
+
+			// create a blob from sound data
+			const arrayBufferView = new Uint8Array(message.soundData);
+			const blob = new Blob([arrayBufferView], { type: 'audio/mpeg' });
+
+			const soundURL = URL.createObjectURL(blob);
+
+			if ($sound) $sound.src = soundURL;
+			$sound.play();
 		}
 	});
 

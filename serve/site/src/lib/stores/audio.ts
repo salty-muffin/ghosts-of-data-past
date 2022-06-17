@@ -19,8 +19,9 @@ function createAudio() {
 					return null;
 				}
 			}),
+		set: set,
 		reset: () => set(null)
 	};
 }
 
-export const audio = createAudio();
+export const sound = createAudio();
