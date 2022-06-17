@@ -22,6 +22,7 @@
                 "--stylegandir=generate/models",
                 "--prompt=[SCIENTIST:] I can't believe you.",
                 "--roles=artist,scientist",
+                "--colors=cyan,green",
                 "--basetime=3.0",
                 "--lettertime=0.2",
                 "--imagetime=6.0",
