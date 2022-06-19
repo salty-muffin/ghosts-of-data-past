@@ -13,11 +13,17 @@
 		const sidenote = document.getElementById(`sidenote_${id}`);
 		if (sidenote) sidenote.classList.remove('sidenote--selected');
 	}}
+	on:click={() => {
+		const sidenote = document.getElementById(`sidenote_${id}`);
+		if (sidenote) sidenote.classList.toggle('sidenote--clicked');
+	}}
 >
 	<slot />
 </span>
 
 <style global lang="scss">
+	@use '../scss/variables' as *;
+
 	.marker {
 		font-feature-settings: 'sups' 1;
 
@@ -25,11 +31,18 @@
 		cursor: pointer;
 
 		&:hover {
-			text-decoration: underline;
+			font-family: $font-family-underline;
 		}
 
 		&.marker--selected {
-			text-decoration: underline;
+			font-family: $font-family-underline;
+		}
+	}
+
+	@media (hover: none) {
+		.marker {
+			color: map-get($colors, 'link');
+			font-family: $font-family-underline;
 		}
 	}
 </style>
