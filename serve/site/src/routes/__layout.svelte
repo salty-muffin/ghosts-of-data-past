@@ -103,7 +103,7 @@
 
 <PageTransition {url} duration={1500}>
 	<div
-		style="--h-weight:{headerC.weight}; --h-italic:{headerC.italic}; --b-weight:{bodyC.weight}; --b-italic:{bodyC.italic}; --t-weight:{timestampC.weight}; --t-italic:{timestampC.italic}"
+		style="--h-weight: {headerC.weight}; --h-italic: {headerC.italic}; --b-weight: {bodyC.weight}; --b-italic: {bodyC.italic}; --t-weight: {timestampC.weight}; --t-italic: {timestampC.italic};"
 	>
 		<slot />
 	</div>

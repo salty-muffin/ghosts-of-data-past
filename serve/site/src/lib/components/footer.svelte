@@ -8,10 +8,11 @@
 	@use '../scss/variables' as *;
 
 	.footer {
-		max-width: $container-width;
 		display: flex;
+		align-self: stretch;
 
-		margin: map-get($margin-primary, 'sm') 0 map-get($margin-secondary, 'sm');
+		margin: map-get($margin-primary, 'sm') map-get($margin-primary, 'sm')
+			map-get($margin-secondary, 'sm');
 
 		justify-content: space-between;
 
@@ -38,6 +39,9 @@
 
 	@media only screen and (min-width: $breakpoint) {
 		.footer {
+			margin: map-get($margin-primary, 'lg') map-get($margin-primary, 'lg')
+				map-get($margin-secondary, 'lg');
+
 			p {
 				font-size: map-get($footer-size, 'lg');
 			}

@@ -78,8 +78,8 @@
 	<title>ghosts of data past</title>
 </svelte:head>
 
-<div class="chat__center">
-	<div class="chat">
+<div class="chat">
+	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
 			<div class="chat__spacer" />
@@ -141,14 +141,14 @@
 <style global lang="scss">
 	@use '../lib/scss/variables' as *;
 
-	.chat__center {
+	.chat {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		height: 100vh;
 	}
 
-	.chat {
+	.chat__container {
 		height: 100%;
 
 		max-width: $chat-width;
@@ -191,7 +191,7 @@
 	}
 
 	@media only screen and (min-width: $chat-width) {
-		.chat {
+		.chat__container {
 			// add borders as the screen grows
 			border-left: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-right: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
@@ -199,7 +199,7 @@
 	}
 
 	@media only screen and (min-height: $chat-height) {
-		.chat {
+		.chat__container {
 			// add borders as the screen grows
 			border-top: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-bottom: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
@@ -207,7 +207,7 @@
 	}
 
 	@media only screen and (min-width: $breakpoint) {
-		.chat {
+		.chat__container {
 			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 		}
 

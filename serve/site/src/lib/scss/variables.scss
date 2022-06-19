@@ -27,6 +27,10 @@ $text-size: (
 	'sm': 1rem,
 	'lg': 1.1rem
 );
+$sidenote-size: (
+	'sm': 0.9rem,
+	'lg': 1rem
+);
 $footer-size: (
 	'sm': 0.8rem,
 	'lg': 1rem
@@ -66,6 +70,7 @@ $message-line-height: 1;
 $chat-width: 30em;
 $chat-height: 60em;
 $container-width: 40em;
+$sidenote-width: 27em;
 
 // margins
 $margin-primary: (
@@ -79,3 +84,4 @@ $margin-secondary: (
 
 // breakpoints
 $breakpoint: 28em;
+$sidenote-breakpoint: 85em;
