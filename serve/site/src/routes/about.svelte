@@ -97,7 +97,18 @@
 	}
 
 	.about__toc {
+		padding: map-get($margin-primary, 'sm');
+		margin: 0 map-get($margin-primary, 'sm') 0 0;
+		float: left;
+
+		border: solid map-get($border-width, 'sm') map-get($colors, 'foreground');
+
+		& > ol {
+			padding: 0;
+		}
 		ol {
+			margin: 0;
+
 			counter-reset: item;
 		}
 		li {
