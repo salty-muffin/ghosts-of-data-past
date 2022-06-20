@@ -24,6 +24,10 @@
 	export let chatAttributes: Attributes;
 	export let settings: Settings;
 
+	// handle automatic scrolling
+	let messagesWrapper: any;
+	let autoscroll: boolean;
+
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
 	onMount(() => {
@@ -34,11 +38,17 @@
 				else entry.target.classList.remove('message--breathing');
 			});
 		});
-	});
 
-	// handle automatic scrolling
-	let messagesWrapper: any;
-	let autoscroll: boolean;
+		// autoscroll to the bottom after returning to the page
+		messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight);
+
+		// disable scrolling on this page
+		document.body.classList.add('chat--noscroll');
+
+		return () => {
+			document.body.classList.remove('chat--noscroll');
+		};
+	});
 
 	// keep track of how many elements are already being observed by the intersection observer
 	let observedIndex = 0;
@@ -141,6 +151,10 @@
 <style global lang="scss">
 	@use '../lib/scss/variables' as *;
 
+	.chat--noscroll {
+		overflow: hidden;
+	}
+
 	.chat {
 		display: flex;
 		justify-content: center;
@@ -153,7 +167,6 @@
 
 		max-width: $chat-width;
 		max-height: $chat-height;
-		/* margin: auto; */
 
 		display: flex;
 		flex-direction: column;
