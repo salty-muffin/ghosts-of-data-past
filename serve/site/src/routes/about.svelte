@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
+
+	import Nav from '$lib/components/nav.svelte';
 	import Footer from '$lib/components/footer.svelte';
 	import SidenoteColumn from '$lib/components/sidenote-column.svelte';
 	import Sidenote from '$lib/components/sidenote.svelte';
@@ -22,6 +24,9 @@
 			Array.from(headings).forEach((element) => {
 				observer?.observe(element);
 			});
+
+		// remove noscroll
+		document.body.classList.remove('chat--noscroll');
 	});
 
 	// image imports
@@ -49,10 +54,9 @@
 
 		<!-- main content -->
 		<article class="about__content">
-			<header>
+			<header class="about__header">
 				<h1 class="about--breathing">About</h1>
-				<p>this is a placeholder for the documentation</p>
-				<p><a href="/">back to chat</a></p>
+				<Nav links={[{ href: '/', text: 'chat' }]} />
 			</header>
 
 			<!-- table of contents -->
@@ -69,6 +73,17 @@
 					<li><a href="/">Third Chapter</a></li>
 				</ol>
 			</div>
+			<section>
+				<p>
+					this is a placeholder for the documentation. In the end there might be two or three pages
+					descreibing in detail. One may be going over general background stuff, while another will
+					be going over technical backgrounds.
+				</p>
+				<p>
+					This here is just filler text, because I assume the introcution would probably be longer,
+					but we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+				</p>
+			</section>
 			<section>
 				<h2 id="chapter_1" class="about--breathing">First Chapter</h2>
 				<p>
@@ -121,6 +136,25 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 100vh;
+
+		.nav__wrapper {
+			height: unset;
+			margin: 0 0 map-get($margin-primary, 'sm') 0;
+			flex-grow: 1;
+		}
+		.nav__links {
+			margin: 0;
+		}
+	}
+
+	.about__header {
+		display: flex;
+		flex-wrap: wrap;
+
+		h1 {
+			flex-grow: 1;
+			margin-bottom: 0.5em;
+		}
 	}
 
 	.about__container {
@@ -162,6 +196,16 @@
 			height: auto;
 			margin: 0 0 - map-get($margin-primary, 'sm');
 		}
+
+		h1,
+		h2,
+		h3 {
+			scroll-margin-top: 1em;
+		}
+
+		& > section > *:first-child {
+			margin-top: 0;
+		}
 	}
 
 	.about--breathing {
@@ -169,6 +213,10 @@
 	}
 
 	@media only screen and (min-width: $breakpoint) {
+		.about .nav__wrapper {
+			margin: map-get($margin-primary, 'lg') 0;
+		}
+
 		.about__content {
 			margin: 0 map-get($margin-primary, 'lg');
 

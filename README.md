@@ -38,17 +38,17 @@ all the steps below should be executed from individual terminals or at least in 
 - [x] optimize https://svelte.dev/tutorial/svelte-options
 - [x] BETTER: pause css animations when not visible https://css-tricks.com/how-to-play-and-pause-css-animations-with-css-custom-properties/, https://abcdinamo.com/news/using-variable-fonts-on-the-web, https://svelte.dev/repl/c461dfe7dbf84998a03fdb30785c27f3?version=3.16.7, https://www.npmjs.com/package/svelte-intersection-observer
 - [x] implement soft transitions between pages https://dev.to/evanwinter/page-transitions-with-svelte-kit-35o6
-- [ ] scroll down on return from about
+- [x] scroll down on return from about
 - [x] change intersection observer for better performance an readability by only adding new elements
 - [x] limit the number of chat messages
 - [x] decrease the distance between messages from the same sender
 - [x] remove the name of messages by the same sender
 - [x] implement sidenotes on about
-- [ ] implement proper menu on about with mute controls
+- [x] implement proper menu on about with mute controls
 - [x] fix clicking, touching & hovering behaviour on sidenotes (add resize listener, fix clicking vs. hovering, remove clicking behaviour on desktops)
 - [x] check, whether socketio.on is triggered after recieving all data
 - [x] maybe transfer the font animation to the index page (if it is not used in the about pages)
-- [ ] check whether the intersection observer works when returning from the abouts page
+- [x] check whether the intersection observer works when returning from the abouts page
 
 ## generate - to do
 

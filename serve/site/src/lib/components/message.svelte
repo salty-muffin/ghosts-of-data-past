@@ -59,7 +59,7 @@
 {#if imageURL && showLargeImage}
 	<div
 		class="message__image-large"
-		transition:fade
+		transition:fade={{ duration: 1000 }}
 		on:click={() => {
 			showLargeImage = false;
 		}}

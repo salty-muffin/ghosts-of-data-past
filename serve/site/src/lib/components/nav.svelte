@@ -1,7 +1,13 @@
 <script lang="ts">
+	interface Link {
+		href: string;
+		text: string;
+	}
 	// props
 	let className = '';
 	export { className as class };
+	export let links: Link[];
+	export let reverse = false;
 
 	// imports
 	import { muted } from '$lib/stores/muted';
@@ -9,7 +15,7 @@
 </script>
 
 <div class="nav__wrapper {className}">
-	<nav class="nav__links">
+	<nav class="nav__links" class:nav__links--reverse={reverse}>
 		<h4>
 			<button
 				class="nav__mute-button"
@@ -31,7 +37,9 @@
 				{/if}
 			</button>
 		</h4>
-		<h4><a href="/about">about</a></h4>
+		{#each links as link, index (index)}
+			<h4><a href={link.href}>{link.text}</a></h4>
+		{/each}
 	</nav>
 </div>
 
@@ -50,6 +58,7 @@
 	.nav__links {
 		width: 100%;
 		display: flex;
+		flex-direction: row;
 		justify-content: space-between;
 
 		margin: 0 map-get($margin-primary, 'sm');
@@ -60,6 +69,10 @@
 			font-size: map-get($nav-links-size, 'sm');
 			margin: 0;
 		}
+	}
+
+	.nav__links--reverse {
+		flex-direction: row-reverse;
 	}
 
 	.nav__mute-button {
