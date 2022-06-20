@@ -144,7 +144,7 @@ def generate(
                     image.save(
                         image_output,
                         "JPEG",
-                        quality=80,
+                        quality=70,
                         optimize=True,
                         progressive=True
                         )

@@ -13,20 +13,21 @@
 		const marker = document.getElementById(`marker_${id}`);
 
 		// on resize, get the position of it
-		const calculatePosition = () => {
+		const onResize = () => {
 			if (marker) markerPos = marker.offsetTop;
 		};
 		// debounce the resize event listener
-		const onResize = () => {
+		const debounce = () => {
 			clearTimeout(debounceTimer);
-			debounceTimer = setTimeout(calculatePosition, 100);
+			debounceTimer = setTimeout(onResize, 100);
 		};
-		calculatePosition();
+		onResize();
 
-		addEventListener('resize', onResize);
+		addEventListener('resize', debounce);
 
 		return () => {
-			removeEventListener('resize', onResize);
+			removeEventListener('resize', debounce);
+			console.log('removed');
 		};
 	});
 </script>
@@ -52,7 +53,10 @@
 	}}
 >
 	<p class="sidenote__close">close</p>
-	<slot />
+	<div class="sidenote__content">
+		<p class="sidenote__number">{id}</p>
+		<slot />
+	</div>
 </div>
 
 <style global lang="scss">
@@ -97,6 +101,15 @@
 	.sidenote__close {
 		color: map-get($colors, 'link');
 		text-align: right;
+	}
+
+	.sidenote__content {
+		display: flex;
+	}
+
+	.sidenote__number {
+		margin: 0;
+		padding-right: 1em;
 	}
 
 	@media (hover: none) {
