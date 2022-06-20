@@ -1,8 +1,8 @@
 // colors
 $colors: (
-	'foreground': #cacaca,
-	'link': #8a8a8a,
-	'background': #000
+	'foreground': #b8b8b8,
+	'link': #888787,
+	'background': #0f0f0f
 );
 
 // fonts
@@ -12,20 +12,24 @@ $font-family-mono: 'ABC Favorit Mono', monospace;
 
 // sizes
 $heading1-size: (
+	'sm': 1.8rem,
+	'lg': 2rem
+);
+$heading2-size: (
 	'sm': 1.5rem,
 	'lg': 1.7rem
 );
-$heading2-size: (
+$heading3-size: (
 	'sm': 1.3rem,
 	'lg': 1.5rem
 );
-$heading3-size: (
+$nav-links-size: (
 	'sm': 1.1rem,
 	'lg': 1.3rem
 );
 $text-size: (
 	'sm': 1rem,
-	'lg': 1.1rem
+	'lg': 1.2rem
 );
 $sidenote-size: (
 	'sm': 1rem,
@@ -69,8 +73,8 @@ $message-line-height: 1;
 
 $chat-width: 30em;
 $chat-height: 60em;
-$container-width: 40em;
-$sidenote-width: 27em;
+$container-width: 45em;
+$sidenote-width: 30em;
 
 // margins
 $margin-primary: (
@@ -84,4 +88,4 @@ $margin-secondary: (
 
 // breakpoints
 $breakpoint: 28em;
-$sidenote-breakpoint: 85em;
+$sidenote-breakpoint: 95em;

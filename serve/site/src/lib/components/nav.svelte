@@ -10,28 +10,28 @@
 
 <div class="nav__wrapper {className}">
 	<nav class="nav__links">
-		<button
-			class="nav__mute-button"
-			on:click={() => {
-				$muted = !$muted;
+		<h4>
+			<button
+				class="nav__mute-button"
+				on:click={() => {
+					$muted = !$muted;
 
-				// if the audio elements havn't been set, instanciate them
-				if (!$sound) {
-					sound.instanciate(
-						'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
-					);
-				}
-			}}
-		>
-			<h3>
+					// if the audio elements havn't been set, instanciate them
+					if (!$sound) {
+						sound.instanciate(
+							'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
+						);
+					}
+				}}
+			>
 				{#if $muted}
 					unmute
 				{:else}
 					mute
 				{/if}
-			</h3>
-		</button>
-		<h3><a href="/about">about</a></h3>
+			</button>
+		</h4>
+		<h4><a href="/about">about</a></h4>
 	</nav>
 </div>
 
@@ -54,8 +54,10 @@
 
 		margin: 0 map-get($margin-primary, 'sm');
 
-		h3 {
-			font-weight: normal;
+		h4 button,
+		h4 {
+			font-variation-settings: 'wght' 300;
+			font-size: map-get($nav-links-size, 'sm');
 			margin: 0;
 		}
 	}
@@ -76,6 +78,11 @@
 
 		.nav__links {
 			margin: 0 map-get($margin-primary, 'lg');
+
+			h4 button,
+			h4 {
+				font-size: map-get($nav-links-size, 'lg');
+			}
 		}
 	}
 </style>

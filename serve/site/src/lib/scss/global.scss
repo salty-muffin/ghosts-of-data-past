@@ -19,11 +19,13 @@ button {
 	font-family: $font-family-text;
 }
 
-// h1,
-// h2,
-// h3 {
-// 	font-family: $font-family-underline;
-// }
+h1,
+h2,
+h3 {
+	font-variation-settings: 'wght' 550, 'ital' 5;
+	text-transform: uppercase;
+	letter-spacing: 1em;
+}
 
 h1 {
 	font-size: map-get($heading1-size, 'sm');
@@ -42,6 +44,16 @@ li {
 	font-size: map-get($text-size, 'sm');
 	line-height: $line-height;
 	text-align: justify;
+
+	font-variation-settings: 'wght' 350;
+}
+
+i {
+	font-variation-settings: 'ital' 12;
+}
+
+b {
+	font-variation-settings: 'wght' 600;
 }
 
 a,
@@ -53,6 +65,7 @@ button {
 		color: map-get($colors, 'foreground');
 		// text-decoration: underline;
 		font-family: $font-family-underline;
+		font-weight: 350;
 	}
 }
 
@@ -80,5 +93,6 @@ button {
 	button {
 		// text-decoration: underline;
 		font-family: $font-family-underline;
+		font-weight: 350;
 	}
 }
