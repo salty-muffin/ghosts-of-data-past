@@ -165,7 +165,7 @@
 
 	.about__toc {
 		padding: map-get($margin-primary, 'sm');
-		margin: 0 0 map-get($margin-secondary, 'sm') 0;
+		margin: 0 0 map-get($margin-primary, 'sm') 0;
 
 		border: solid map-get($border-width, 'sm') map-get($colors, 'foreground');
 
@@ -200,7 +200,7 @@
 		h1,
 		h2,
 		h3 {
-			scroll-margin-top: 1em;
+			scroll-margin-top: 0.5em;
 		}
 
 		& > section > *:first-child {
@@ -228,7 +228,7 @@
 
 		.about__toc {
 			padding: map-get($margin-primary, 'lg');
-			margin: 0 2 * map-get($margin-primary, 'lg') 2 * map-get($margin-secondary, 'lg') 0;
+			margin: 0 2 * map-get($margin-primary, 'lg') map-get($margin-primary, 'lg') 0;
 			float: left;
 
 			border: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
