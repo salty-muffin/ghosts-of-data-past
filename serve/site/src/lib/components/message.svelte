@@ -11,8 +11,15 @@
 	export let attributes: any;
 	export let displaySender = true;
 
+	import { fade } from 'svelte/transition';
+
 	// get date from timestamp
 	const date = new Date(timestamp);
+
+	// show the image as a banner or not
+	let showLargeImage = false;
+	const width = 1024;
+	const height = 1024;
 </script>
 
 <div class="message__wrapper message--{attributes[sender]['position']} message--breathing" {id}>
@@ -21,7 +28,16 @@
 			<h6 class="message__sender">{sender}</h6>
 		{/if}
 		{#if imageURL}
-			<img class="message__image" src={imageURL} {alt} width="1024" height="1024" />
+			<img
+				class="message__image"
+				src={imageURL}
+				{alt}
+				{width}
+				{height}
+				on:click={() => {
+					showLargeImage = true;
+				}}
+			/>
 		{/if}
 		{#if text}
 			<span class="message__text">{text}</span>
@@ -40,6 +56,17 @@
 		<path d="M9 0C9 16 1 20 1 20C1 20 9 16 25 16" />
 	</svg>
 </div>
+{#if imageURL && showLargeImage}
+	<div
+		class="message__image-large"
+		transition:fade
+		on:click={() => {
+			showLargeImage = false;
+		}}
+	>
+		<img class="message__image" src={imageURL} {alt} {width} {height} />
+	</div>
+{/if}
 
 <style global lang="scss">
 	@use '../scss/variables' as *;
@@ -49,7 +76,6 @@
 		max-width: 60%;
 
 		background-color: map-get($colors, 'background');
-		/* border: map-get($border-width, 'sm') solid map-get($colors, 'foreground'); */
 		border-radius: map-get($margin-primary, 'sm');
 
 		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-secondary, 'sm');
@@ -87,6 +113,23 @@
 		display: block;
 		max-width: 100%;
 		height: auto;
+
+		cursor: pointer;
+	}
+
+	.message__image-large {
+		position: absolute;
+		inset: 0;
+
+		cursor: pointer;
+
+		background-color: transparentize(map-get($colors, 'background'), 0.2);
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		z-index: 1;
 	}
 
 	.message__text {
