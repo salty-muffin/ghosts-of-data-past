@@ -46,6 +46,9 @@ all the steps below should be executed from individual terminals or at least in 
 - [x] implement sidenotes on about
 - [ ] implement proper menu on about with mute controls
 - [x] fix clicking, touching & hovering behaviour on sidenotes (add resize listener, fix clicking vs. hovering, remove clicking behaviour on desktops)
+- [x] check, whether socketio.on is triggered after recieving all data
+- [x] maybe transfer the font animation to the index page (if it is not used in the about pages)
+- [ ] check whether the intersection observer works when returning from the abouts page
 
 ## generate - to do
 
