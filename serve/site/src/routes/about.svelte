@@ -3,9 +3,7 @@
 
 	import Nav from '$lib/components/nav.svelte';
 	import Footer from '$lib/components/footer.svelte';
-	import SidenoteColumn from '$lib/components/sidenote-column.svelte';
 	import Sidenote from '$lib/components/sidenote.svelte';
-	import Marker from '$lib/components/sidenote-marker.svelte';
 	import Image from '$lib/components/image.svelte';
 
 	// intersection observer for the 'breathing' headers
@@ -40,90 +38,70 @@
 </svelte:head>
 
 <div class="about">
-	<div class="about__container">
-		<!-- left sidenote column -->
-		<SidenoteColumn class="sidenote__left">
-			<Sidenote id="1">
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
-					provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-					praesentium, dicta architecto, unde doloremque ab earum.
-				</p>
-			</Sidenote>
-		</SidenoteColumn>
+	<article class="about__container">
+		<header class="about__header">
+			<h1 class="about--breathing">About</h1>
+			<Nav links={[{ href: '/', text: 'chat' }]} />
+		</header>
+
+		<!-- table of contents -->
+		<div class="about__toc">
+			<ol>
+				<li><a href="#chapter_1">First Chapter</a></li>
+				<li>
+					<a href="/">Second Chapter</a>
+					<ol>
+						<li><a href="/">First Subchapter</a></li>
+						<li><a href="/">Second Subchapter</a></li>
+					</ol>
+				</li>
+				<li><a href="/">Third Chapter</a></li>
+			</ol>
+		</div>
 
 		<!-- main content -->
-		<article class="about__content">
-			<header class="about__header">
-				<h1 class="about--breathing">About</h1>
-				<Nav links={[{ href: '/', text: 'chat' }]} />
-			</header>
 
-			<!-- table of contents -->
-			<div class="about__toc">
-				<ol>
-					<li><a href="#chapter_1">First Chapter</a></li>
-					<li>
-						<a href="/">Second Chapter</a>
-						<ol>
-							<li><a href="/">First Subchapter</a></li>
-							<li><a href="/">Second Subchapter</a></li>
-						</ol>
-					</li>
-					<li><a href="/">Third Chapter</a></li>
-				</ol>
-			</div>
-			<section>
-				<p>
-					this is a placeholder for the documentation. In the end there might be two or three pages
-					descreibing in detail. One may be going over general background stuff, while another will
-					be going over technical backgrounds.
-				</p>
-				<p>
-					This here is just filler text, because I assume the introcution would probably be longer,
-					but we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-				</p>
-			</section>
-			<section>
-				<h2 id="chapter_1" class="about--breathing">First Chapter</h2>
-				<p>
-					<i>Lorem ipsum</i> <b>dolor sit</b> <b><i>amet consectetur</i></b> adipisicing elit<Marker
-						id="1">1</Marker
-					>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit,
-					non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
-				</p>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit.<Marker id="2">2</Marker> Similique
-					qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium
-					maxime praesentium, dicta architecto, unde doloremque ab earum.<Marker id="3">3</Marker>
-				</p>
-				<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" />
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
-					provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-					praesentium, dicta architecto, unde doloremque ab earum.
-				</p>
-			</section>
-		</article>
+		<p>
+			this is a placeholder for the documentation. In the end there might be two or three pages
+			descreibing in detail. One may be going over general background stuff, while another will be
+			going over technical backgrounds.
+		</p>
+		<p>
+			This here is just filler text, because I assume the introcution would probably be longer, but
+			we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+		</p>
 
-		<!-- right sidenote column -->
-		<SidenoteColumn class="sidenote__right">
-			<Sidenote id="2">
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
-					provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-					praesentium, dicta architecto, unde doloremque ab earum.
-				</p>
+		<h2 id="chapter_1" class="about--breathing">First Chapter</h2>
+		<p>
+			<i>Lorem ipsum</i> <b>dolor sit</b> <b><i>amet consectetur</i></b> adipisicing elit
+			<Sidenote id={1}>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+				provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
+				praesentium, dicta architecto, unde doloremque ab earum.
+			</Sidenote>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat
+			sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
+		</p>
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit.
+			<Sidenote id={2}>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+				provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
+				praesentium, dicta architecto, unde doloremque ab earum.
+			</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit,
+			non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
+			<Sidenote id={3}>
+				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+				provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
+				praesentium, dicta architecto, unde doloremque ab earum.
 			</Sidenote>
-			<Sidenote id="3" offset={6}>
-				<p>
-					Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
-					provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-					praesentium, dicta architecto, unde doloremque ab earum.
-				</p>
-			</Sidenote>
-		</SidenoteColumn>
-	</div>
+		</p>
+		<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" />
+		<p>
+			Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+			provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium,
+			dicta architecto, unde doloremque ab earum.
+		</p>
+	</article>
 	<Footer />
 </div>
 
@@ -160,7 +138,28 @@
 	.about__container {
 		flex-grow: 1;
 
-		display: flex;
+		max-width: $container-width;
+		margin: 0 map-get($margin-primary, 'sm');
+
+		p:first-of-type {
+			margin-top: 0;
+		}
+
+		img {
+			width: calc(100% + 2 * map-get($margin-primary, 'sm'));
+			height: auto;
+			margin: 0 0 - map-get($margin-primary, 'sm');
+		}
+
+		h1,
+		h2,
+		h3 {
+			scroll-margin-top: 0.5em;
+		}
+
+		& > section > *:first-child {
+			margin-top: 0;
+		}
 	}
 
 	.about__toc {
@@ -186,28 +185,6 @@
 		}
 	}
 
-	.about__content {
-		flex-shrink: 1;
-		max-width: $container-width;
-		margin: 0 map-get($margin-primary, 'sm');
-
-		img {
-			width: calc(100% + 2 * map-get($margin-primary, 'sm'));
-			height: auto;
-			margin: 0 0 - map-get($margin-primary, 'sm');
-		}
-
-		h1,
-		h2,
-		h3 {
-			scroll-margin-top: 0.5em;
-		}
-
-		& > section > *:first-child {
-			margin-top: 0;
-		}
-	}
-
 	.about--breathing {
 		font-variation-settings: 'wght' var(--h-weight), 'ital' var(--h-italic);
 	}
@@ -217,7 +194,7 @@
 			margin: map-get($margin-primary, 'lg') 0;
 		}
 
-		.about__content {
+		.about__container {
 			margin: 0 map-get($margin-primary, 'lg');
 
 			img {
