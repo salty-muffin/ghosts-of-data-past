@@ -96,7 +96,10 @@
 
 	@media only screen and (min-width: $sidenote-breakpoint) {
 		.sidenote {
-			width: $sidenote-width;
+			width: min(
+				$sidenote-width,
+				calc((100vw - $container-width) / 2 - 3 * map-get($margin-primary, 'lg'))
+			);
 
 			margin: unset;
 			margin-bottom: 2 * map-get($margin-primary, 'lg');
@@ -112,7 +115,10 @@
 				float: left;
 				clear: left;
 
-				margin-left: calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1);
+				margin-left: max(
+					calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1),
+					calc((100vw - $container-width) / 2 * -1 + map-get($margin-primary, 'lg'))
+				);
 
 				padding-right: map-get($margin-primary, 'lg');
 				border-right: solid map-get($border-width, 'lg') map-get($colors, 'background');
@@ -125,7 +131,10 @@
 				float: right;
 				clear: right;
 
-				margin-right: calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1);
+				margin-right: max(
+					calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1),
+					calc((100vw - $container-width) / 2 * -1 + map-get($margin-primary, 'lg'))
+				);
 
 				padding-left: map-get($margin-primary, 'lg');
 				border-left: solid map-get($border-width, 'lg') map-get($colors, 'background');
