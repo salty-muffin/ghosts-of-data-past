@@ -5,46 +5,40 @@
 	let show = false;
 </script>
 
-<span class="sidenote__wrapper">
-	<span
-		class="sidenote__marker"
-		class:sidenote--hover={hover}
-		id="marker_{id}"
-		on:mouseenter={() => {
-			hover = true;
-		}}
-		on:mouseleave={() => {
-			hover = false;
-		}}
-		on:click={() => {
-			show = !show;
-		}}
-	>
-		{id}
-	</span>
-	<div
-		id="sidenote_{id}"
-		class="sidenote sidenote--{id % 2 > 0 ? 'left' : 'right'}"
-		class:sidenote--hover={hover}
-		class:sidenote--show={show}
-		on:mouseenter={() => {
-			hover = true;
-		}}
-		on:mouseleave={() => {
-			hover = false;
-		}}
-		on:click={() => {
-			show = !show;
-		}}
-	>
-		<span class="sidenote__number">{id}</span>
-		<span class="sidenote__text"><slot /></span>
-	</div>
-</span>
+<span
+	class="sidenote__marker"
+	class:sidenote--hover={hover}
+	id="marker_{id}"
+	on:mouseenter={() => {
+		hover = true;
+	}}
+	on:mouseleave={() => {
+		hover = false;
+	}}
+	on:click={() => {
+		show = !show;
+	}}>{id}</span
+>
+<div
+	id="sidenote_{id}"
+	class="sidenote sidenote--{id % 2 > 0 ? 'left' : 'right'}"
+	class:sidenote--hover={hover}
+	class:sidenote--show={show}
+	on:mouseenter={() => {
+		hover = true;
+	}}
+	on:mouseleave={() => {
+		hover = false;
+	}}
+	on:click={() => {
+		show = !show;
+	}}
+>
+	<span class="sidenote__number">{id}</span><span class="sidenote__text"><slot /></span>
+</div>
 
 <style global lang="scss">
 	@use '../scss/variables' as *;
-
 	.sidenote__marker {
 		font-feature-settings: 'sups' 1;
 

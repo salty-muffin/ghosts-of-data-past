@@ -73,27 +73,25 @@
 
 		<h2 id="chapter_1" class="about--breathing">First Chapter</h2>
 		<p>
-			<i>Lorem ipsum</i> <b>dolor sit</b> <b><i>amet consectetur</i></b> adipisicing elit
-			<Sidenote id={1}>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+			<i>Lorem ipsum</i> <b>dolor sit</b> <b><i>amet consectetur</i></b> adipisicing elit<Sidenote
+				id={1}
+				>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
 				provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-				praesentium, dicta architecto, unde doloremque ab earum.
-			</Sidenote>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat
-			sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
+				praesentium, dicta architecto, unde doloremque ab earum.</Sidenote
+			>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non
+			accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
 		</p>
 		<p>
-			Lorem ipsum dolor sit amet consectetur adipisicing elit.
-			<Sidenote id={2}>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+			Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={2}
+				>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
 				provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-				praesentium, dicta architecto, unde doloremque ab earum.
-			</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit,
-			non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
-			<Sidenote id={3}>
-				Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+				praesentium, dicta architecto, unde doloremque ab earum.</Sidenote
+			> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium
+			maxime praesentium, dicta architecto, unde doloremque ab earum.<Sidenote id={3}
+				>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
 				provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime
-				praesentium, dicta architecto, unde doloremque ab earum.
-			</Sidenote>
+				praesentium, dicta architecto, unde doloremque ab earum.</Sidenote
+			>
 		</p>
 		<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" />
 		<p>
