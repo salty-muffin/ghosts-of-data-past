@@ -1,0 +1,48 @@
+---
+title: 'About'
+links: [{ 'href': '/', 'text': 'chat' }]
+---
+
+<script>
+    import Sidenote from '$lib/components/sidenote.svelte';
+	import Image from '$lib/components/image.svelte';
+
+    import sampleImage from '$assets/images/seed0000.jpg?w=375;550;720&jpg&srcset';
+	import sampleImagePlaceholder from '$assets/images/seed0000.jpg?w=100&jpg&metadata';
+</script>
+
+<!-- table of contents -->
+<div class="doc__toc">
+    <ol>
+        <li><a href="#chapter_1">First Chapter</a></li>
+        <li>
+            <a href="/">Second Chapter</a>
+            <ol>
+                <li><a href="/">First Subchapter</a></li>
+                <li><a href="/">Second Subchapter</a></li>
+            </ol>
+        </li>
+        <li><a href="/">Third Chapter</a></li>
+    </ol>
+</div>
+
+<!-- main content -->
+
+this is a placeholder for the documentation. In the end there might be two or three pages
+descreibing in detail. One may be going over general background stuff, while another will be
+going over technical backgrounds.
+
+This here is just filler text, because I assume the introcution would probably be longer, but
+we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+
+<h2 id="chapter_1" class="about--breathing">First Chapter</h2>
+
+_Lorem ipsum_ **dolor sit** **_amet consectetur_** adipisicing elit<Sidenote id={1}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, on accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.<Sidenote id={3}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote>
+
+<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" />
+
+Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum
+provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium,
+dicta architecto, unde doloremque ab earum.

@@ -49,6 +49,9 @@ all the steps below should be executed from individual terminals or at least in 
 - [x] check, whether socketio.on is triggered after recieving all data
 - [x] maybe transfer the font animation to the index page (if it is not used in the about pages)
 - [x] check whether the intersection observer works when returning from the abouts page
+- [ ] add rehype plugin for toc
+- [ ] fix breathing intersection observers for heading with automatic toc
+- [ ] beautify layout for about pages
 
 ## generate - to do
 
