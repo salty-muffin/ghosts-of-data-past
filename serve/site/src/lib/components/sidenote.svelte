@@ -18,8 +18,7 @@
 	on:click={() => {
 		show = !show;
 	}}>{id}</span
->
-<div
+><div
 	id="sidenote_{id}"
 	class="sidenote sidenote--{id % 2 > 0 ? 'left' : 'right'}"
 	class:sidenote--hover={hover}
@@ -31,10 +30,10 @@
 		hover = false;
 	}}
 	on:click={() => {
-		show = !show;
+		show = false;
 	}}
 >
-	<span class="sidenote__number">{id}</span><span class="sidenote__text"><slot /></span>
+	<span class="sidenote__number">{id}</span><span class="sidenote__text"><slot /><span class="sidenote__close">close</span></span>
 </div>
 
 <style global lang="scss">
@@ -71,10 +70,32 @@
 		padding-right: 2em;
 	}
 
+	.sidenote__close {
+		color: map-get($colors, 'link');
+
+		padding-left: 2em;
+		float: right;
+
+		cursor: pointer;
+
+		&:hover {
+			color: map-get($colors, 'foreground');
+			// text-decoration: underline;
+			font-family: $font-family-underline;
+			font-weight: 350;
+		}
+	}
+
 	@media (hover: none) {
 		.sidenote__marker {
 			color: map-get($colors, 'link');
 			font-family: $font-family-underline;
+		}
+
+		.sidenote__close {
+			// text-decoration: underline;
+			font-family: $font-family-underline;
+			font-weight: 350;
 		}
 	}
 
@@ -137,6 +158,10 @@
 					border-left: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
 				}
 			}
+		}
+
+		.sidenote__close {
+			display: none;
 		}
 	}
 </style>
