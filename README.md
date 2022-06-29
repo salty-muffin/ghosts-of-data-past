@@ -30,6 +30,10 @@ all the steps below should be executed from individual terminals or at least in 
 3. start the generate script with `python3 generate/generate.py --gptdir=generate/models/gpt2_model --stylegandir=generate/models --prompt=[SCIENTIST:] I can't believe you. --roles=artist,scientist --colors=cyan,green --basetime=3.0 --lettertime=0.2 --imagetime=6.0 --readfactor=0.8 --randomfactor=0.9,1.1` (this is only an example configuration)
 4. start the server with `python3 serve/app.py`
 
+## notes & mentions
+
+this repo includes a modified version of [@jsdevtools/rehype-toc](https://github.com/JS-DevTools/rehype-toc). i had to modify it to get it working with mdsvex and put it in the root of this repo as a .tgz file.
+
 ## serve - to do
 
 - [x] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
@@ -49,6 +53,9 @@ all the steps below should be executed from individual terminals or at least in 
 - [x] check, whether socketio.on is triggered after recieving all data
 - [x] maybe transfer the font animation to the index page (if it is not used in the about pages)
 - [x] check whether the intersection observer works when returning from the abouts page
+- [x] add rehype plugin for toc
+- [x] fix breathing intersection observers for heading with automatic toc
+- [ ] beautify layout for about pages
 
 ## generate - to do
 

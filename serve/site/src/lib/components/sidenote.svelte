@@ -8,7 +8,6 @@
 <span
 	class="sidenote__marker"
 	class:sidenote--hover={hover}
-	id="marker_{id}"
 	on:mouseenter={() => {
 		hover = true;
 	}}
@@ -19,7 +18,6 @@
 		show = !show;
 	}}>{id}</span
 ><div
-	id="sidenote_{id}"
 	class="sidenote sidenote--{id % 2 > 0 ? 'left' : 'right'}"
 	class:sidenote--hover={hover}
 	class:sidenote--show={show}

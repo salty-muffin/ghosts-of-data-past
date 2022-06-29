@@ -31,6 +31,7 @@
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
 	onMount(() => {
+		// only animate when in view
 		observer = new IntersectionObserver((entries, observer) => {
 			entries.forEach(function (entry) {
 				// pause/play the animation
