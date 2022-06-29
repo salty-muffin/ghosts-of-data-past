@@ -11,6 +11,7 @@
 	// intersection observer for the 'breathing' headers
 	let observer: IntersectionObserver | undefined;
 	onMount(() => {
+		// only animate when in view
 		observer = new IntersectionObserver((entries, observer) => {
 			entries.forEach(function (entry) {
 				// pause/play the animation
@@ -19,9 +20,12 @@
 			});
 		});
 
-		const headings = document.getElementsByClassName('doc--breathing');
+		// get all headers by tag
+		const headings = Array.from(document.querySelectorAll('h1, h2, h3'));
+
+		// observe all headers
 		if (headings)
-			Array.from(headings).forEach((element) => {
+			headings.forEach((element) => {
 				observer?.observe(element);
 			});
 
@@ -37,7 +41,7 @@
 <div class="doc">
 	<article class="doc__container">
 		<header class="doc__header">
-			<h1 class="doc--breathing">{title}</h1>
+			<h1>{title}</h1>
 			<Nav {links} />
 		</header>
 
@@ -73,6 +77,8 @@
 		h1 {
 			flex-grow: 1;
 			margin-bottom: 0.5em;
+
+			font-size: map-get($title-size, 'sm');
 		}
 	}
 
@@ -133,6 +139,10 @@
 	@media only screen and (min-width: $breakpoint) {
 		.about .nav__wrapper {
 			margin: map-get($margin-primary, 'lg') 0;
+		}
+
+		.doc__header h1 {
+			font-size: map-get($title-size, 'lg');
 		}
 
 		.doc__container {
