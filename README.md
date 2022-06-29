@@ -56,6 +56,7 @@ this repo includes a modified version of [@jsdevtools/rehype-toc](https://github
 - [x] add rehype plugin for toc
 - [x] fix breathing intersection observers for heading with automatic toc
 - [ ] beautify layout for about pages
+- [ ] seperate the nav out (one for chat and one for the about pages)
 
 ## generate - to do
 

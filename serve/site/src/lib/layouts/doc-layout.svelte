@@ -45,7 +45,9 @@
 			<Nav {links} />
 		</header>
 
-		<slot />
+		<main>
+			<slot />
+		</main>
 	</article>
 	<Footer />
 </div>
