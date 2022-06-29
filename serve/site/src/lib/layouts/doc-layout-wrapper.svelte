@@ -1,5 +1,6 @@
 <script>
-	export let title = ''; // @ts-ignore
+	// @ts-nocheck
+	export let title = '';
 	export let links = [];
 
 	import Layout from './doc-layout.svelte';
