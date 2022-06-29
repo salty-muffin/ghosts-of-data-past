@@ -12,6 +12,7 @@ links: [{ 'href': '/', 'text': 'chat' }]
 </script>
 
 <!-- main content -->
+<!-- table of contents will always appear before the first paragraph -->
 
 this is a placeholder for the documentation. In the end there might be two or three pages
 descreibing in detail. One may be going over general background stuff, while another will be
