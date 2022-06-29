@@ -68,7 +68,7 @@ instance/
 # Scrapy stuff:
 .scrapy
 
-# Sphinx documentation this should be used with caution though. after pip packages have been installed, no packages should be installed through conda anymore.
+# Sphinx documentation
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -123,6 +123,5 @@ dump.rdb
 test.py
 
 models/
-images/
 aitextgen/
 notification-sounds/
