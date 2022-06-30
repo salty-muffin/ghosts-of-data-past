@@ -27,11 +27,15 @@
 	on:mouseleave={() => {
 		hover = false;
 	}}
-	on:click={() => {
-		show = false;
-	}}
 >
-	<span class="sidenote__number">{id}</span><span class="sidenote__text"><slot /><span class="sidenote__close">close</span></span>
+	<span class="sidenote__number">{id}</span><span class="sidenote__text"
+		><slot /><span
+			class="sidenote__close"
+			on:click={() => {
+				show = false;
+			}}>close</span
+		></span
+	>
 </div>
 
 <style global lang="scss">
@@ -111,7 +115,7 @@
 		.sidenote {
 			width: min(
 				$sidenote-width,
-				calc((100vw - $container-width) / 2 - 3 * map-get($margin-primary, 'lg'))
+				calc((100vw - $container-width) / 2 - 4 * map-get($margin-primary, 'lg'))
 			);
 
 			margin: unset;

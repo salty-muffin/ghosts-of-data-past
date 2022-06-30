@@ -10,36 +10,17 @@
 	let className = '';
 	export { className as class };
 	export let links: Link[];
-	export let reverse = false;
 
 	// imports
-	import { muted } from '$lib/stores/muted';
-	import { sound } from '$lib/stores/audio';
+	import MuteButton from '$lib/components/mute-button.svelte';
 </script>
 
 <div class="nav__wrapper {className}">
-	<nav class="nav__links" class:nav__links--reverse={reverse}>
-		<h4>
-			<button
-				class="nav__mute-button"
-				on:click={() => {
-					$muted = !$muted;
-
-					// if the audio elements havn't been set, instanciate them
-					if (!$sound) {
-						sound.instanciate(
-							'data:audio/mpeg;base64,SUQzBAAAAAABEVRYWFgAAAAtAAADY29tbWVudABCaWdTb3VuZEJhbmsuY29tIC8gTGFTb25vdGhlcXVlLm9yZwBURU5DAAAAHQAAA1N3aXRjaCBQbHVzIMKpIE5DSCBTb2Z0d2FyZQBUSVQyAAAABgAAAzIyMzUAVFNTRQAAAA8AAANMYXZmNTcuODMuMTAwAAAAAAAAAAAAAAD/80DEAAAAA0gAAAAATEFNRTMuMTAwVVVVVVVVVVVVVUxBTUUzLjEwMFVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQsRbAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVf/zQMSkAAADSAAAAABVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVVV'
-						);
-					}
-				}}
-			>
-				{#if $muted}
-					unmute
-				{:else}
-					mute
-				{/if}
-			</button>
-		</h4>
+	<nav class="nav__links">
+		<MuteButton>
+			<h4 slot="muted">unmute</h4>
+			<h4 slot="unmuted">mute</h4>
+		</MuteButton>
 		{#each links as link, index (index)}
 			<h4><a href={link.href}>{link.text}</a></h4>
 		{/each}
@@ -61,28 +42,28 @@
 	.nav__links {
 		width: 100%;
 		display: flex;
+		flex-wrap: wrap;
 		flex-direction: row;
 		justify-content: space-between;
 
 		margin: 0 map-get($margin-primary, 'sm');
 
-		h4 button,
-		h4 {
-			font-variation-settings: 'wght' 300;
+		h4,
+		button {
+			font-variation-settings: 'wght' 350;
 			font-size: map-get($nav-links-size, 'sm');
 			margin: 0;
+			text-align: left;
+		}
+		button:hover h4 {
+			font-weight: 350;
 		}
 	}
 
-	.nav__links--reverse {
-		flex-direction: row-reverse;
-	}
-
-	.nav__mute-button {
-		background: none;
-		border: none;
-		padding: 0;
-		cursor: pointer;
+	@media (hover: none) {
+		button h4 {
+			font-weight: 350;
+		}
 	}
 
 	@media only screen and (min-width: $breakpoint) {

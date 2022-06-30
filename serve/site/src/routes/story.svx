@@ -1,6 +1,11 @@
 ---
-title: 'About'
-links: [{ 'href': '/', 'text': 'chat' }]
+title: 'a ghost story'
+links: [
+	{ href: '/', text: 'back to work' },
+	{ href: '/story', text: 'a ghost story' },
+	{ href: '/technical', text: 'technical details' },
+	{ href: '/credits', text: 'credits' }
+]
 ---
 
 <script>
