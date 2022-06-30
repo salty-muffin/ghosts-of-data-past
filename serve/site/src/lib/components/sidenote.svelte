@@ -115,7 +115,7 @@
 		.sidenote {
 			width: min(
 				$sidenote-width,
-				calc((100vw - $container-width) / 2 - 4 * map-get($margin-primary, 'lg'))
+				calc((100vw - $container-width) / 2 - 5 * map-get($margin-primary, 'lg'))
 			);
 
 			margin: unset;
@@ -134,7 +134,7 @@
 
 				margin-left: max(
 					calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1),
-					calc((100vw - $container-width) / 2 * -1 + map-get($margin-primary, 'lg'))
+					calc((100vw - $container-width) / -2 + 2 * map-get($margin-primary, 'lg'))
 				);
 
 				padding-right: map-get($margin-primary, 'lg');
@@ -150,7 +150,7 @@
 
 				margin-right: max(
 					calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1),
-					calc((100vw - $container-width) / 2 * -1 + map-get($margin-primary, 'lg'))
+					calc((100vw - $container-width) / 2 * -1 + 2 * map-get($margin-primary, 'lg'))
 				);
 
 				padding-left: map-get($margin-primary, 'lg');
