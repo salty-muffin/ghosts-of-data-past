@@ -145,7 +145,7 @@
 				{/if}
 			{/each}
 		</div>
-		<Nav class="nav" links={[{ href: '/about', text: 'about' }]} />
+		<Nav class="nav" links={[{ href: '/story', text: 'documentation' }]} />
 	</div>
 </div>
 

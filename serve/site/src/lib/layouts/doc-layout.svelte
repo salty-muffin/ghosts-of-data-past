@@ -40,12 +40,10 @@
 
 <div class="doc">
 	<article class="doc__container">
-		<header class="doc__header">
-			<h1>{title}</h1>
-			<Nav {links} />
-		</header>
+		<h1 class="doc__title">{title}</h1>
 
-		<main>
+		<main class="doc__content">
+			<Nav class="doc__nav" {links} />
 			<slot />
 		</main>
 	</article>
@@ -61,27 +59,31 @@
 		flex-direction: column;
 		align-items: center;
 		min-height: 100vh;
+	}
 
-		.nav__wrapper {
-			height: unset;
-			margin: 0 0 map-get($margin-primary, 'sm') 0;
-			flex-grow: 1;
-		}
+	.doc__nav {
+		height: unset;
+		margin-bottom: map-get($margin-primary, 'sm');
 		.nav__links {
 			margin: 0;
+			gap: map-get($margin-primary, 'sm');
+
+			button {
+				display: flex;
+
+				&::after {
+					display: block;
+					content: '';
+					margin-left: map-get($margin-primary, 'sm');
+					border-right: 1px dotted map-get($colors, 'foreground');
+					width: 100%;
+				}
+			}
 		}
 	}
 
-	.doc__header {
-		display: flex;
-		flex-wrap: wrap;
-
-		h1 {
-			flex-grow: 1;
-			margin-bottom: 0.5em;
-
-			font-size: map-get($title-size, 'sm');
-		}
+	.doc__title {
+		font-size: map-get($title-size, 'sm');
 	}
 
 	.doc__container {
@@ -89,7 +91,9 @@
 
 		max-width: $container-width;
 		margin: 0 map-get($margin-primary, 'sm');
+	}
 
+	.doc__content {
 		p:first-of-type {
 			margin-top: 0;
 		}
@@ -104,10 +108,19 @@
 		h2,
 		h3 {
 			scroll-margin-top: 0.5em;
+
+			text-align: right;
+			margin-top: 1.5em;
 		}
 
-		& > section > *:first-child {
-			margin-top: 0;
+		h1,
+		h2 {
+			&::after {
+				display: block;
+				content: '';
+				border-top: 1px solid map-get($colors, 'foreground');
+				width: 100%;
+			}
 		}
 	}
 
@@ -138,22 +151,53 @@
 		font-variation-settings: 'wght' var(--h-weight), 'ital' var(--h-italic);
 	}
 
-	@media only screen and (min-width: $breakpoint) {
-		.about .nav__wrapper {
-			margin: map-get($margin-primary, 'lg') 0;
-		}
+	@media only screen and (min-width: $sidenote-breakpoint) {
+		.doc__nav {
+			float: left;
 
-		.doc__header h1 {
+			width: 10em;
+			margin-left: calc(-10em - 2 * map-get($margin-primary, 'lg'));
+
+			.nav__links {
+				flex-direction: column;
+				gap: map-get($margin-primary, 'lg');
+				margin: 0;
+
+				button {
+					display: unset;
+
+					&::after {
+						display: block;
+						content: '';
+						margin-left: unset;
+						margin-top: map-get($margin-primary, 'lg');
+						border-left: unset;
+						border-top: 1px dotted map-get($colors, 'foreground');
+						width: 100%;
+					}
+				}
+
+				h4 {
+					text-align: right;
+				}
+			}
+		}
+	}
+
+	@media only screen and (min-width: $breakpoint) {
+		.doc__title {
+			margin: 1.5em 0;
+
 			font-size: map-get($title-size, 'lg');
 		}
 
 		.doc__container {
 			margin: 0 map-get($margin-primary, 'lg');
+		}
 
-			img {
-				width: 100%;
-				margin: 0;
-			}
+		.doc__content img {
+			width: 100%;
+			margin: 0;
 		}
 
 		.doc__toc {
