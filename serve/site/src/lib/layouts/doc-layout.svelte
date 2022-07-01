@@ -5,12 +5,33 @@
 
 	import { onMount } from 'svelte';
 
+	import { FontAnimator } from '$lib/components/font-animation';
+	import { cubicInOut } from 'svelte/easing';
+
 	import Nav from '$lib/components/nav.svelte';
 	import Footer from '$lib/components/footer.svelte';
 
 	// intersection observer for the 'breathing' headers
 	let observer: IntersectionObserver | undefined;
+
+	// setting up breathing animation parameters & animators
+	const duration = 5000;
+	const bodyAnimation = new FontAnimator({ weight: 300, italic: 0 }, { weight: 300, italic: 5 });
+	let bodyC = bodyAnimation.getStart();
 	onMount(() => {
+		// breathing animation
+		let animation = requestAnimationFrame(function update(timestamp: number) {
+			// calculation ratio
+			const pos = Math.abs(((timestamp % (duration * 2)) - duration) / duration);
+			const interpolated = cubicInOut(pos);
+
+			// updating all font animations
+			bodyC = bodyAnimation.update(interpolated);
+
+			// append next animation frame
+			animation = requestAnimationFrame(update);
+		});
+
 		// only animate when in view
 		observer = new IntersectionObserver((entries, observer) => {
 			entries.forEach(function (entry) {
@@ -21,7 +42,7 @@
 		});
 
 		// get all headers by tag
-		const headings = Array.from(document.querySelectorAll('h1, h2, h3'));
+		const headings = Array.from(document.querySelectorAll('p'));
 
 		// observe all headers
 		if (headings)
@@ -31,6 +52,10 @@
 
 		// remove noscroll
 		document.body.classList.remove('chat--noscroll');
+
+		return () => {
+			cancelAnimationFrame(animation);
+		};
 	});
 </script>
 
@@ -38,7 +63,7 @@
 	<title>{title}</title>
 </svelte:head>
 
-<div class="doc">
+<div class="doc" style="--b-weight: {bodyC.weight}; --b-italic: {bodyC.italic};">
 	<article class="doc__container">
 		<h1 class="doc__title">{title}</h1>
 
@@ -148,7 +173,7 @@
 	}
 
 	.doc--breathing {
-		font-variation-settings: 'wght' var(--h-weight), 'ital' var(--h-italic);
+		font-variation-settings: 'wght' var(--b-weight), 'ital' var(--b-italic);
 	}
 
 	@media only screen and (min-width: $sidenote-breakpoint) {

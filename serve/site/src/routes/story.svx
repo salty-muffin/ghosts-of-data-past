@@ -20,7 +20,7 @@ links: [
 <!-- table of contents will always appear before the first paragraph -->
 
 this is a placeholder for the documentation. In the end there might be two or three pages
-descreibing in detail. One may be going over general background stuff, while another will be
+describing in detail. One may be going over general background stuff, while another will be
 going over technical backgrounds.
 
 This here is just filler text, because I assume the introcution would probably be longer, but

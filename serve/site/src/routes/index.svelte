@@ -2,6 +2,9 @@
 	// imports
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
 
+	import { FontAnimator } from '$lib/components/font-animation';
+	import { cubicInOut } from 'svelte/easing';
+
 	import { messages } from '$lib/stores/messages';
 	import { writing } from '$lib/stores/writing';
 
@@ -30,7 +33,34 @@
 
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
+
+	// setting up breathing animation parameters & animators
+	const duration = 5000;
+	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
+	let headerC = headerAnimation.getStart();
+	const bodyAnimation = new FontAnimator({ weight: 325, italic: 0 }, { weight: 375, italic: 8 });
+	let bodyC = bodyAnimation.getStart();
+	const timestampAnimation = new FontAnimator(
+		{ weight: 300, italic: 0 },
+		{ weight: 350, italic: 10 }
+	);
+	let timestampC = timestampAnimation.getStart();
 	onMount(() => {
+		// breathing animation
+		let animation = requestAnimationFrame(function update(timestamp: number) {
+			// calculation ratio
+			const pos = Math.abs(((timestamp % (duration * 2)) - duration) / duration);
+			const interpolated = cubicInOut(pos);
+
+			// updating all font animations
+			headerC = headerAnimation.update(interpolated);
+			bodyC = bodyAnimation.update(interpolated);
+			timestampC = timestampAnimation.update(interpolated);
+
+			// append next animation frame
+			animation = requestAnimationFrame(update);
+		});
+
 		// only animate when in view
 		observer = new IntersectionObserver((entries, observer) => {
 			entries.forEach(function (entry) {
@@ -47,7 +77,7 @@
 		document.body.classList.add('chat--noscroll');
 
 		return () => {
-			document.body.classList.remove('chat--noscroll');
+			cancelAnimationFrame(animation);
 		};
 	});
 
@@ -89,7 +119,10 @@
 	<title>ghosts of data past</title>
 </svelte:head>
 
-<div class="chat">
+<div
+	class="chat"
+	style="--h-weight: {headerC.weight}; --h-italic: {headerC.italic}; --b-weight: {bodyC.weight}; --b-italic: {bodyC.italic}; --t-weight: {timestampC.weight}; --t-italic: {timestampC.italic};"
+>
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />

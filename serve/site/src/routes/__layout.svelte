@@ -22,39 +22,7 @@
 	import { muted } from '$lib/stores/muted';
 	import { sound } from '$lib/stores/audio';
 
-	import { FontAnimator } from '$lib/components/font-animation';
 	import PageTransition from '$lib/components/page-transition.svelte';
-
-	// breathing animation
-	// setting up starting parameters & animators
-	const duration = 5000;
-	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
-	let headerC = headerAnimation.getStart();
-	const bodyAnimation = new FontAnimator({ weight: 325, italic: 0 }, { weight: 375, italic: 8 });
-	let bodyC = bodyAnimation.getStart();
-	const timestampAnimation = new FontAnimator(
-		{ weight: 300, italic: 0 },
-		{ weight: 350, italic: 10 }
-	);
-	let timestampC = timestampAnimation.getStart();
-	onMount(() => {
-		let animation = requestAnimationFrame(function update(timestamp: number) {
-			// calculation ratio
-			const pos = Math.abs(((timestamp % (duration * 2)) - duration) / duration);
-			const interpolated = cubicInOut(pos);
-
-			// updating all font animations
-			headerC = headerAnimation.update(interpolated);
-			bodyC = bodyAnimation.update(interpolated);
-			timestampC = timestampAnimation.update(interpolated);
-
-			// append next animation frame
-			animation = requestAnimationFrame(update);
-		});
-		return () => {
-			cancelAnimationFrame(animation);
-		};
-	});
 
 	// socket communication
 	const socket = io();
@@ -102,9 +70,5 @@
 </script>
 
 <PageTransition {url} duration={1500}>
-	<div
-		style="--h-weight: {headerC.weight}; --h-italic: {headerC.italic}; --b-weight: {bodyC.weight}; --b-italic: {bodyC.italic}; --t-weight: {timestampC.weight}; --t-italic: {timestampC.italic};"
-	>
-		<slot />
-	</div>
+	<slot />
 </PageTransition>

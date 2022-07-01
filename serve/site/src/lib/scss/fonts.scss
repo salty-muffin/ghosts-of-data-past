@@ -27,63 +27,42 @@
 // ABC Favorit Lining
 @font-face {
 	font-family: 'ABC Favorit Lining';
-	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Book.woff2') format('woff2'),
-		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Book.woff') format('woff');
+	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Light.woff2') format('woff2'),
+		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Light.woff') format('woff');
 
 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
 
-	font-weight: 350;
+	font-weight: 300;
 	font-style: normal;
 }
 @font-face {
 	font-family: 'ABC Favorit Lining';
-	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BookItalic.woff2') format('woff2'),
-		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BookItalic.woff') format('woff');
+	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-LightItalic.woff2') format('woff2'),
+		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-LightItalic.woff') format('woff');
 
 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
 
-	font-weight: 350;
+	font-weight: 300;
 	font-style: italic;
 }
-@font-face {
-	font-family: 'ABC Favorit Lining';
-	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Bold.woff2') format('woff2'),
-		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Bold.woff') format('woff');
-
-	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
-
-	font-weight: 700;
-	font-style: normal;
-}
-@font-face {
-	font-family: 'ABC Favorit Lining';
-	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BoldItalic.woff2') format('woff2'),
-		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BoldItalic.woff') format('woff');
-
-	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
-
-	font-weight: 700;
-	font-style: italic;
-}
-
 // @font-face {
 // 	font-family: 'ABC Favorit Lining';
-// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Light.woff2') format('woff2'),
-// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Light.woff') format('woff');
+// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Book.woff2') format('woff2'),
+// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Book.woff') format('woff');
 
 // 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
 
-// 	font-weight: 300;
+// 	font-weight: 350;
 // 	font-style: normal;
 // }
 // @font-face {
 // 	font-family: 'ABC Favorit Lining';
-// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-LightItalic.woff2') format('woff2'),
-// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-LightItalic.woff') format('woff');
+// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BookItalic.woff2') format('woff2'),
+// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BookItalic.woff') format('woff');
 
 // 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
 
-// 	font-weight: 300;
+// 	font-weight: 350;
 // 	font-style: italic;
 // }
 // @font-face {
@@ -106,23 +85,43 @@
 // 	font-weight: 400;
 // 	font-style: italic;
 // }
+@font-face {
+	font-family: 'ABC Favorit Lining';
+	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Medium.woff2') format('woff2'),
+		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Medium.woff') format('woff');
+
+	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
+
+	font-weight: 500;
+	font-style: normal;
+}
+@font-face {
+	font-family: 'ABC Favorit Lining';
+	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-MediumItalic.woff2') format('woff2'),
+		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-MediumItalic.woff') format('woff');
+
+	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
+
+	font-weight: 500;
+	font-style: italic;
+}
 // @font-face {
 // 	font-family: 'ABC Favorit Lining';
-// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Medium.woff2') format('woff2'),
-// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Medium.woff') format('woff');
+// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Bold.woff2') format('woff2'),
+// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Bold.woff') format('woff');
 
 // 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
 
-// 	font-weight: 500;
+// 	font-weight: 700;
 // 	font-style: normal;
 // }
 // @font-face {
 // 	font-family: 'ABC Favorit Lining';
-// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-MediumItalic.woff2') format('woff2'),
-// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-MediumItalic.woff') format('woff');
+// 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BoldItalic.woff2') format('woff2'),
+// 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-BoldItalic.woff') format('woff');
 
 // 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1;
 
-// 	font-weight: 500;
+// 	font-weight: 700;
 // 	font-style: italic;
 // }
