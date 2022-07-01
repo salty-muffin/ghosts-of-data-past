@@ -22,9 +22,10 @@ button {
 h1,
 h2,
 h3 {
-	font-variation-settings: 'wght' 550, 'ital' 5;
+	font-family: $font-family-heading;
+	// font-variation-settings: 'wght' 550, 'ital' 5;
 	text-transform: uppercase;
-	letter-spacing: 0.2em;
+	letter-spacing: 0.5em;
 }
 
 h1 {
@@ -49,13 +50,16 @@ li {
 	font-variation-settings: 'wght' 350;
 }
 
-i {
+i,
+em {
 	font-variation-settings: 'ital' 12;
-	font-style: normal;
+	font-style: italic;
 }
 
-b {
-	font-variation-settings: 'wght' 600;
+b,
+strong {
+	font-variation-settings: 'wght' 700;
+	font-weight: 700;
 }
 
 a,

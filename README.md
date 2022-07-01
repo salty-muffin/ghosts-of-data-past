@@ -57,6 +57,7 @@ this repo includes a modified version of [@jsdevtools/rehype-toc](https://github
 - [x] fix breathing intersection observers for heading with automatic toc
 - [ ] beautify layout for about pages
 - [ ] seperate the nav out (one for chat and one for the about pages)
+- [ ] donate for pw smokey https://www.dafont.com/pwsmokey.font
 
 ## generate - to do
 
