@@ -81,10 +81,22 @@ def index():
     return flask.send_file('site/build/index.html')
 
 
-# about page
-@app.route('/about')
-def about():
-    return flask.send_file('site/build/about.html')
+# 'a ghost story' page
+@app.route('/story')
+def story():
+    return flask.send_file('site/build/story.html')
+
+
+# 'technical details' page
+@app.route('/technical')
+def technical():
+    return flask.send_file('site/build/technical.html')
+
+
+# 'credits' page
+@app.route('/credits')
+def credits():
+    return flask.send_file('site/build/credits.html')
 
 
 # run server

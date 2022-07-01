@@ -28,7 +28,7 @@ we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
 
 # First Chapter
 
-_Lorem ipsum_ **dolor sit** **_amet consectetur_** [**adipisicing** _elit_ **_elit_**](/test)<Sidenote id={1}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
+_Lorem ipsum_ **dolor sit** **_amet consectetur_** adipisicing elit<Sidenote id={1}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
 
 ## First Subchapter
 

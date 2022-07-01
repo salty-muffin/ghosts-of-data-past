@@ -1,7 +1,7 @@
 <footer class="footer">
 	<p>&copy; zeno gries</p>
-	<p><a href="/about">data privacy statement</a></p>
-	<p><a href="/about">imprint</a></p>
+	<p><a href="/">data privacy statement</a></p>
+	<p><a href="/">imprint</a></p>
 </footer>
 
 <style global lang="scss">

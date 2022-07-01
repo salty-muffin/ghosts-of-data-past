@@ -21,8 +21,8 @@
 			<h4 slot="muted">unmute</h4>
 			<h4 slot="unmuted">mute</h4>
 		</MuteButton>
-		{#each links as link, index (index)}
-			<h4><a href={link.href}>{link.text}</a></h4>
+		{#each links as { href, text }, index (index)}
+			<h4><a {href}>{text}</a></h4>
 		{/each}
 	</nav>
 </div>
