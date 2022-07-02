@@ -1,4 +1,4 @@
-# ghosts-of-data-past
+# ghosts of data past
 
 a ghost from data generator - generates a chat with text messages and selfies from recorded conversations
 
@@ -35,13 +35,15 @@ all the steps below should be executed from individual terminals or at least in 
 
 ## notes
 
-this repo includes a modified version of [@jsdevtools/rehype-toc](https://github.com/JS-DevTools/rehype-toc). i had to modify it to get it working with mdsvex and put it in the root of this repo as a .tgz file.
+this repo includes a modified version of [@jsdevtools/rehype-toc](https://github.com/JS-DevTools/rehype-toc). i had to modify it to get the automatically generated table of contents working with mdsvex and put it in the root of this repo as a .tgz file.
+
+the fonts used in this project are [abc favorit](https://abcdinamo.com/typefaces/favorit) variable and [pw smokey](https://www.dafont.com/pwsmokey.font). the fonts are not tracked in this repo for licensing reasons.
 
 ## mentions
 
-the work on this project was sponsored by the [kulturstifrung des freistaates sachsen](https://kdfs.de). this measure is co-financed by tax funds on the basis of the of the budget passed by the saxon state parliament.
+the work on this project was sponsored by the [kulturstiftung des freistaates sachsen](https://kdfs.de). this measure is co-financed by tax funds on the basis of the of the budget passed by the saxon state parliament.
 
-<div style="padding: 1em; background-color: white; max-width: 600px; margin: 1em 0 2em">
+<div style="padding: 1em; background-color: white; max-width: 400px; margin: 1em 0">
     <img src="doc/KDFS_Logo%2BWappen%2BText_2020_RGB.png" alt="kdfs logo">
 </div>
 
@@ -80,7 +82,7 @@ the work on this project was sponsored by the [kulturstifrung des freistaates sa
 
 ## license
 
-parts of this code (specifically `generate/dnnlib`, `generate/torch_utils` & `generate/generators/image_generator`) are taken or derived from [stylegan3](https://github.com/NVlabs/stylegan3) by nvidia in accordance with their the [nvidia source code license](https://github.com/NVlabs/stylegan3/blob/main/LICENSE.txt). nvidia's copyright applies there.
+parts of this code (specifically `generate/dnnlib/*`, `generate/torch_utils/*` & `generate/generators/image_generator.py`) are taken or derived from [stylegan3](https://github.com/NVlabs/stylegan3) by nvidia in accordance with the [nvidia source code license](https://github.com/NVlabs/stylegan3/blob/main/LICENSE.txt). nvidia's copyright applies there.
 
 stylegan3 was autored by tero karras, miika aittala, samuli laine, erik harkonen, janne hellsten, jaakko Lehtinen and timo aila in 2021.
 
