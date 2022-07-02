@@ -199,8 +199,8 @@
 	.chat__container {
 		height: 100%;
 
-		max-width: $chat-width;
-		max-height: $chat-height;
+		width: min($chat-width, 100vw);
+		height: min($chat-height, 100vh);
 
 		display: flex;
 		flex-direction: column;

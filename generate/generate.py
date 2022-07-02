@@ -41,6 +41,7 @@ def parse_random_factor(s: Union[str, List]) -> List[float]:
 @click.command()
 @click.option('--gptdir',       type=click.Path(exists=True),   help='directory of gpt2 model', required=True)
 @click.option('--stylegandir',  type=click.Path(exists=True),   help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
+@click.option('--sounddir',     type=click.Path(exists=True),   help='directory where the notification sounds are located', required=True)
 @click.option('--prompt',       type=str,                       help='starting prompt', required=True)
 @click.option('--roles',        type=parse_comma_list,          help='list of roles (e.g \'artist, scientist\')', required=True)
 @click.option('--colors',       type=parse_comma_list,          help='colors for the roles in the terminal (should be the same count as roles)', required=True)
@@ -53,6 +54,7 @@ def parse_random_factor(s: Union[str, List]) -> List[float]:
 def generate(
         gptdir: str,
         stylegandir: str,
+        sounddir: str,
         prompt: str,
         roles: List[str],
         colors: List[str],
@@ -81,9 +83,7 @@ def generate(
         writing_state[role].update(writer=role, state=0)
 
     # get all notification sound paths in a list
-    sound_paths = glob.glob(
-        os.path.join('generate', 'notification-sounds', '*')
-        )
+    sound_paths = glob.glob(os.path.join(sounddir, '*'))
 
     # set variables
     image_seed = {}
@@ -174,9 +174,7 @@ def generate(
 
                 # relaod all sound effects if all of them have been used
                 if (not sound_paths):
-                    sound_paths = glob.glob(
-                        os.path.join('generate', 'notification-sounds', '*')
-                        )
+                    sound_paths = glob.glob(os.path.join(sounddir, '*'))
 
                 # wait if message generation was shorter than minimum write_duration
                 min_duration = basetime + len(text) * lettertime

@@ -9,17 +9,20 @@ requires dataset recording, preperation and model finetuning with the following 
 - recording a chat between two performers: https://github.com/papayapeter/theater-chat
 - preparing chat and mail data and finetuning a gpt-2 model with it: https://github.com/papayapeter/gpt-2-training
 - finetuning a stylegan3 model with face images by performers: https://github.com/papayapeter/stylegan3
-- generating notification sound abstractions: \_
+- generating notification sound abstractions: https://github.com/papayapeter/nsynth-notification-sound-generation
 
-using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation & [stylegan3](https://github.com/NVlabs/stylegan3). some code has been copies over from the original stylegan3 repo to make image generation and textgeneration work seamlessly together.
+using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation, [stylegan3](https://github.com/NVlabs/stylegan3) and [nsynth](https://github.com/magenta/magenta/tree/main/magenta/models/nsynth) for sound abstractions. some code has been copied over from the original stylegan3 repo to make image generation and text generation work seamlessly together.
+
+all ai models used as part of this work were finetuned with data captured or created by me and are not publicy avaliable. you are however free to use this code with your own models under the licenses below.
+
+the same applies to the sounds used.
 
 ## setup
 
 1. to create the envorinment: `conda env create -f environment.yml` or `conda env create -f environment-cpu.yml` for a cpu only version
 2. activate the enviroment: `conda activate ghosts` or `conda activate ghosts-cpu`
-3. changes to the environment can be saved with: `conda env export --no-builds | grep -v "prefix" > environment.yml`
-4. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
-5. install redis according to these [instructions](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
+3. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
+4. install redis according to these [instructions](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
 
 ## run
 
@@ -27,14 +30,24 @@ all the steps below should be executed from individual terminals or at least in 
 
 1. start the redis server: `redis-server redis.conf`
 2. enter the conda environment: `conda activate ghosts` or `conda activate ghosts-cpu`
-3. start the generate script with `python3 generate/generate.py --gptdir=generate/models/gpt2_model --stylegandir=generate/models --prompt=[SCIENTIST:] I can't believe you. --roles=artist,scientist --colors=cyan,green --basetime=3.0 --lettertime=0.2 --imagetime=6.0 --readfactor=0.8 --randomfactor=0.9,1.1` (this is only an example configuration)
+3. start the generate script with `python3 generate/generate.py --gptdir=generate/models/gpt2_model --stylegandir=generate/models --sounddir=generate/notification-sounds --prompt=[SCIENTIST:] I can't believe you. --roles=artist,scientist --colors=cyan,green --basetime=3.0 --lettertime=0.2 --imagetime=6.0 --readfactor=0.8 --randomfactor=0.9,1.1` (this is only an example configuration)
 4. start the server with `python3 serve/app.py`
 
-## notes & mentions
+## notes
 
 this repo includes a modified version of [@jsdevtools/rehype-toc](https://github.com/JS-DevTools/rehype-toc). i had to modify it to get it working with mdsvex and put it in the root of this repo as a .tgz file.
 
-## serve - to do
+## mentions
+
+the work on this project was sponsored by the [kulturstifrung des freistaates sachsen](https://kdfs.de). this measure is co-financed by tax funds on the basis of the of the budget passed by the saxon state parliament.
+
+<div style="padding: 1em; background-color: white; max-width: 600px; margin: 1em 0 2em">
+    <img src="doc/KDFS_Logo%2BWappen%2BText_2020_RGB.png" alt="kdfs logo">
+</div>
+
+## to dos
+
+### serve
 
 - [x] add keys to svelte each https://svelte.dev/tutorial/keyed-each-blocks
 - [x] construct chat bubbles (this might help https://svelte.dev/tutorial/dimensions)
@@ -55,12 +68,22 @@ this repo includes a modified version of [@jsdevtools/rehype-toc](https://github
 - [x] check whether the intersection observer works when returning from the abouts page
 - [x] add rehype plugin for toc
 - [x] fix breathing intersection observers for heading with automatic toc
-- [ ] beautify layout for about pages
-- [ ] seperate the nav out (one for chat and one for the about pages)
+- [x] beautify layout for about pages
+- [x] seperate the nav out (one for chat and one for the about pages)
 - [ ] donate for pw smokey https://www.dafont.com/pwsmokey.font
 
-## generate - to do
+### generate
 
 - [x] add redis installation to the setup documentation
 - [x] secure redis
 - [x] fix saving to redis
+
+## license
+
+parts of this code (specifically `generate/dnnlib`, `generate/torch_utils` & `generate/generators/image_generator`) are taken or derived from [stylegan3](https://github.com/NVlabs/stylegan3) by nvidia in accordance with their the [nvidia source code license](https://github.com/NVlabs/stylegan3/blob/main/LICENSE.txt). nvidia's copyright applies there.
+
+stylegan3 was autored by tero karras, miika aittala, samuli laine, erik harkonen, janne hellsten, jaakko Lehtinen and timo aila in 2021.
+
+all other parts of this code are written by me and licensed under a [creative commons attribution-noncommercial-sharealike 4.0 international license](http://creativecommons.org/licenses/by-nc-sa/4.0/).
+
+[![cc icon](https://i.creativecommons.org/l/by-nc-sa/4.0/88x31.png)](http://creativecommons.org/licenses/by-nc-sa/4.0/)
