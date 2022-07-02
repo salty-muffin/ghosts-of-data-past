@@ -44,7 +44,7 @@ the fonts used in this project are [abc favorit](https://abcdinamo.com/typefaces
 the work on this project was sponsored by the [kulturstiftung des freistaates sachsen](https://kdfs.de). this measure is co-financed by tax funds on the basis of the of the budget passed by the saxon state parliament.
 
 <div style="padding: 1em; background-color: white; max-width: 400px; margin: 1em 0">
-    <img src="doc/KDFS_Logo%2BWappen%2BText_2020_RGB.png" alt="kdfs logo">
+    <img src="doc/KDFS_Logo%2BWappen%2BText_2020_RGB.jpg" alt="kdfs logo">
 </div>
 
 ## to dos
