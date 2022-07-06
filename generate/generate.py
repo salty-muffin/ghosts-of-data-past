@@ -4,6 +4,7 @@
 #
 # zeno gries 2022
 
+from http.client import responses
 from typing import Union, List, Optional
 
 import os
@@ -76,7 +77,7 @@ class Sounds:
 @click.option('--prompt',          type=str,                     help='starting prompt', required=True)
 @click.option('--role_format',     type=str,                     help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
 @click.option('--image_string',    type=str,                     help='how an image is declared in the text (e.g. [image])', required=True)
-@click.option('--roles',           type=parse_comma_list,        help='list of roles (e.g \'artist, scientist\')', required=True)
+@click.option('--roles',           type=parse_comma_list,        help='list of roles (e.g \'artist, scientist\'). must be all lower case', required=True)
 @click.option('--colors',          type=parse_comma_list,        help='colors for the roles in the terminal (should be the same count as roles)', required=True)
 @click.option('--base_time',       type=float,                   default=3.0, help='minimum time for writing all types of messages', required=True)
 @click.option('--letter_time',     type=float,                   default=0.2, help='time it takes to write one letter', required=True)
@@ -140,24 +141,39 @@ def generate(
     role_pattern = re.compile(
         fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}\w+{re.escape(role_holder[1])}'
         )
+    sender_pattern = re.compile(
+        fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}(?P<sender>\w+){re.escape(role_holder[1])}'
+        )
 
     # main loop
-    prompt = f'{prompt}\n'
+    prompt = f'{prompt}\n'  # append newline to the prompt (TODO: make it work with launch.json)
     try:
         while True:
-            # responses = text_G.generate(
-            #     prompt, max_length=128, temperature=temp
-            #     ).replace(prompt, '')
-            # responses = [
-            #     response for response in re.split(split_pattern, responses)
-            #     if response
-            #     ]
-            # cleaned_responses = [
-            #     response for response in responses
-            #     if re.search(role_pattern, response) is not None
-            #     ]
-            # print(cleaned_responses[0])
-            # prompt = cleaned_responses[0]
+            # generate a message
+            responses = text_G.generate(
+                prompt, max_length=128, temperature=temp
+                ).replace(prompt, '')
+            # split the message so it only contains single responses in a list
+            responses_list = [
+                response.strip(
+                    ' '
+                    )  # strip any leading or trailing spaces (but not newlines)
+                for response in re.split(split_pattern, responses)
+                if re.search(role_pattern, response) is
+                not None  # response must include a sender to be valid
+                ]
+
+            # only go on if there is a valid message
+            if responses_list:
+                prompt = responses_list[0]
+
+                message_text = responses_list[0]
+
+                # get sender
+                sender = re.search(sender_pattern,
+                                   message_text).group('sender').lower()
+                # remove sender from message
+                message_text = re.sub(role_pattern, '', message_text).strip()
 
     except KeyboardInterrupt:
         raise SystemExit
