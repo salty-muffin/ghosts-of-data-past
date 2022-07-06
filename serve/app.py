@@ -1,4 +1,7 @@
-"""runs a flask websocket server"""
+# script for running a flask websocket server
+# which pushes chat messages to clients
+#
+# zeno gries 2022
 
 import os
 from threading import Lock

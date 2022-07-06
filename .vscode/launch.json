@@ -18,7 +18,30 @@
             "request": "launch",
             "program": "generate/generate.py",
             "args": [
-                "--gptdir=generate/models/gpt2_model",
+                "--gpt_dir=generate/models/gpt2_model",
+                "--temp=0.7",
+                "--stylegan_dir=generate/models",
+                "--sound_dir=generate/notification-sounds",
+                "--prompt=[scientist] I can't believe you.",
+                "--role_format=[{role}]",
+                "--image_string=[image]",
+                "--roles=artist,scientist",
+                "--colors=cyan,green",
+                "--base_time=3.0",
+                "--letter_time=0.2",
+                "--image_time=6.0",
+                "--write_deviation=0.8,1.2",
+                "--read_deviation=0.6,1.4"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "generate old",
+            "type": "python",
+            "request": "launch",
+            "program": "generate/generate.old.py",
+            "args": [
+                "--gptdir=generate/models/gpt2_model.old",
                 "--stylegandir=generate/models",
                 "--sounddir=generate/notification-sounds",
                 "--prompt=[SCIENTIST:] I can't believe you.",

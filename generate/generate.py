@@ -1,3 +1,9 @@
+# script for generating a chat with 2 or more writers
+# text generation with one gpt2 model trained on dialogue
+# selfie generation with one stylegan3 model per writer
+#
+# zeno gries 2022
+
 from typing import Union, List, Optional
 
 import os
@@ -15,12 +21,6 @@ from termcolor import colored
 from generators.image_generator import ImageGenerator
 from generators.text_generator import TextGenerator
 
-# constants
-IMAGE_PLACEHOLDER = '[IMAGE]'  # should be cause for image generation & then removed
-ROLE_PATTERN = r'\[.*:\]'  # used to find where messages begin and end
-SENDER_PATTERN = r'\[|:\]'  # all characters to remove from sender
-SENDER_STRING = '[{}:]'  # how is the sender to be formatted
-
 
 # click parsers
 def parse_comma_list(s: Union[str, List]) -> List[str]:
@@ -30,40 +30,80 @@ def parse_comma_list(s: Union[str, List]) -> List[str]:
     return [item for item in map(str.strip, str(s).split(','))]
 
 
-def parse_random_factor(s: Union[str, List]) -> List[float]:
+def parse_min_max(s: Union[str, List]) -> List[float]:
     if isinstance(s, list):
         return s
 
     return [float(factor) for factor in map(str.strip, str(s).split(','))]
 
 
+# helper functions & classes
+def get_wait_time(
+        message: str,
+        image: bool,
+        base_time: float,
+        letter_time: float,
+        image_time: float,
+        deviation: List[float]
+    ) -> float:
+    wait_time = base_time + len(message) * letter_time
+    if image: wait_time += image_time
+    wait_time *= random.uniform(deviation[0], deviation[1])
+    return wait_time
+
+
+class Sounds:
+    def __init__(self, sound_paths: List[str]) -> None:
+        self._sound_paths = sound_paths
+        self._sound_paths_copy = []
+
+    def get(self) -> str:
+        # if the sound paths are empty
+        # create a new copy and shuffle it
+        if not self._sound_paths_copy:
+            self._sound_paths_copy = self._sound_paths.copy()
+            random.shuffle(self._sound_paths_copy)
+
+        return self._sound_paths_copy.pop()
+
+
 # yapf: disable
 @click.command()
-@click.option('--gptdir',       type=click.Path(exists=True),   help='directory of gpt2 model', required=True)
-@click.option('--stylegandir',  type=click.Path(exists=True),   help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
-@click.option('--sounddir',     type=click.Path(exists=True),   help='directory where the notification sounds are located', required=True)
-@click.option('--prompt',       type=str,                       help='starting prompt', required=True)
-@click.option('--roles',        type=parse_comma_list,          help='list of roles (e.g \'artist, scientist\')', required=True)
-@click.option('--colors',       type=parse_comma_list,          help='colors for the roles in the terminal (should be the same count as roles)', required=True)
-@click.option('--basetime',     type=float,                     default=3.0, help='minimum time for writing all types of messages', required=True)
-@click.option('--lettertime',   type=float,                     default=0.2, help='time it takes to write one letter', required=True)
-@click.option('--imagetime',    type=float,                     default=6.0, help='time it takes to take an image', required=True)
-@click.option('--readfactor',   type=float,                     default=0.8, help='how long should reading the message take in relation to writing it', required=True)
-@click.option('--randomfactor', type=parse_random_factor,       default=[1.0, 1.0], help='minimun & maximum random factor to be applied to the time', required=True)
+@click.option('--gpt_dir',         type=click.Path(exists=True), help='directory of gpt2 model', required=True)
+@click.option('--temp',            type=float,                   default=0.7, help='temperature for gpt2 generation', required=True)
+@click.option('--stylegan_dir',    type=click.Path(exists=True), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
+@click.option('--sound_dir',       type=click.Path(exists=True), help='directory where the notification sounds are located', required=True)
+@click.option('--prompt',          type=str,                     help='starting prompt', required=True)
+@click.option('--role_format',     type=str,                     help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
+@click.option('--image_string',    type=str,                     help='how an image is declared in the text (e.g. [image])', required=True)
+@click.option('--roles',           type=parse_comma_list,        help='list of roles (e.g \'artist, scientist\')', required=True)
+@click.option('--colors',          type=parse_comma_list,        help='colors for the roles in the terminal (should be the same count as roles)', required=True)
+@click.option('--base_time',       type=float,                   default=3.0, help='minimum time for writing all types of messages', required=True)
+@click.option('--letter_time',     type=float,                   default=0.2, help='time it takes to write one letter', required=True)
+@click.option('--image_time',      type=float,                   default=6.0, help='time it takes to take an image', required=True)
+@click.option('--write_deviation', type=parse_min_max,           default=[0.8, 1.2], help='minimun & maximum deviation of the time', required=True)
+@click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the time', required=True)
 # yapf: enable
 def generate(
-        gptdir: str,
-        stylegandir: str,
-        sounddir: str,
+        gpt_dir: str,
+        temp: float,
+        stylegan_dir: str,
+        sound_dir: str,
         prompt: str,
+        role_format: str,
+        image_string: str,
         roles: List[str],
         colors: List[str],
-        basetime: float,
-        lettertime: float,
-        imagetime: float,
-        readfactor: float,
-        randomfactor: List[float]
+        base_time: float,
+        letter_time: float,
+        image_time: float,
+        write_deviation: List[float],
+        read_deviation: List[float]
     ) -> None:
+    """
+    generates text messages with gpt2 & selfies with stylegan3.
+    pushes these messages to a redis database
+    """
     # setup redis database
     db = Database(host='localhost', db=0)
 
@@ -71,10 +111,10 @@ def generate(
     image_Gs = {}
     for role in roles:
         image_Gs[role] = ImageGenerator(
-            os.path.join(stylegandir, f'{role}_stylegan3_model.pkl'),
+            os.path.join(stylegan_dir, f'{role}_stylegan3_model.pkl'),
             verbose=False
             )
-    text_G = TextGenerator(model_folder=gptdir, verbose=False)
+    text_G = TextGenerator(model_folder=gpt_dir, verbose=False)
 
     # setup writing states
     writing_state = {}
@@ -82,126 +122,42 @@ def generate(
         writing_state[role] = db.Hash(f'writing:{role}')
         writing_state[role].update(writer=role, state=0)
 
-    # get all notification sound paths in a list
-    sound_paths = glob.glob(os.path.join(sounddir, '*'))
+    # get all notification sound paths
+    sounds = Sounds(glob.glob(os.path.join(sound_dir, '*')))
 
-    # set variables
+    # set image seed starting points
     image_seed = {}
-    seed = 0
     for role in roles:
-        image_seed[role] = seed
-        seed += 100
-    start = 0
-    write_duration = 0
-    sender = ''
+        image_seed[role] = random.randint(
+            0, 10000
+            )  # make sure it is a random seed so it always starts at a different point
+
+    # get regex patterns
+    role_holder = role_format.split(r'{role}')
+    split_pattern = re.compile(
+        fr'(?={re.escape(role_holder[0])}\w+{re.escape(role_holder[1])})(?!{re.escape(image_string)})'
+        )
+    role_pattern = re.compile(
+        fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}\w+{re.escape(role_holder[1])}'
+        )
+
+    # main loop
+    prompt = f'{prompt}\n'
     try:
         while True:
-            # get the sender and set them to writing
-            previous_sender = sender
-            role_index = random.randint(0, len(roles) - 1)
-            sender = roles[role_index]
-            sender_readfactor = 0.2 if previous_sender == sender else 1
-
-            # wait for the read duration
-            wait_time = write_duration * readfactor * random.uniform(
-                randomfactor[0], randomfactor[1]
-                ) * sender_readfactor
-            time.sleep(wait_time)
-
-            writing_state[sender].update(writer=sender, state=1)
-
-            # record start time
-            start = start if start else time.time(
-            )  # don't record starttime on repeat generation
-
-            # get the response without the prompt
-            prompt = f'{prompt}\n{SENDER_STRING.format(sender.upper())}'
-            response = text_G.generate(
-                prompt, max_length=128, temperature=0.7
-                ).replace(prompt, '')
-
-            # find the next messages
-            matches = [match for match in re.finditer(ROLE_PATTERN, response)]
-
-            # TODO optimize: use the whole response
-
-            # only go on, if there are matches, else repeat
-            image_string = ''
-            if matches:
-                # get message
-                text = response[:matches[0].start()].strip()
-
-                # get next prompt
-                prompt = f'[{sender.upper()}:] {text}'
-
-                # check for images
-                image_data = b''
-                alt = ''
-                if IMAGE_PLACEHOLDER in text:
-                    image = image_Gs[sender].generate(image_seed[sender])
-                    # save image as binary
-                    image_output = BytesIO()
-                    image.save(
-                        image_output,
-                        "JPEG",
-                        quality=70,
-                        optimize=True,
-                        progressive=True
-                        )
-                    image_data = image_output.getvalue()
-                    image_string = climage.convert(image_output, width=40)
-
-                    image_output.close()
-
-                    alt = f'selfie of {sender}'
-
-                    image_seed[sender] += 1
-
-                    text = re.sub(
-                        r'  +',
-                        ' ',
-                        text.replace(
-                            IMAGE_PLACEHOLDER, ''
-                            )  # TODO currently inserts a space between every character
-                        ).strip()  # get rid of duplicate spaces
-
-                # get a sound sound path and load it
-                sound_path = sound_paths.pop(
-                    random.randint(0, len(sound_paths) - 1)
-                    )
-                with open(sound_path, 'rb') as file:
-                    sound_data = file.read()
-
-                # relaod all sound effects if all of them have been used
-                if (not sound_paths):
-                    sound_paths = glob.glob(os.path.join(sounddir, '*'))
-
-                # wait if message generation was shorter than minimum write_duration
-                min_duration = basetime + len(text) * lettertime
-                if image_data: min_duration += imagetime
-                write_duration = time.time() - start
-                write_duration *= random.uniform(
-                    randomfactor[0], randomfactor[1]
-                    )  # multiply by random factor
-                start = 0
-
-                wait_time = max(0, min_duration - write_duration)
-                time.sleep(wait_time)
-
-                # send message to redis
-                message = db.Hash(shortuuid.uuid())
-                message.update(
-                    sender=sender,
-                    text=text,
-                    image_data=image_data,
-                    alt=alt,
-                    sound_data=sound_data
-                    )
-                message.expire(120)
-                writing_state[sender].update(writer=sender, state=0)
-
-                print(f'{sender}>', colored(text, colors[role_index]))
-                if (image_string): print(image_string, end='')
+            # responses = text_G.generate(
+            #     prompt, max_length=128, temperature=temp
+            #     ).replace(prompt, '')
+            # responses = [
+            #     response for response in re.split(split_pattern, responses)
+            #     if response
+            #     ]
+            # cleaned_responses = [
+            #     response for response in responses
+            #     if re.search(role_pattern, response) is not None
+            #     ]
+            # print(cleaned_responses[0])
+            # prompt = cleaned_responses[0]
 
     except KeyboardInterrupt:
         raise SystemExit
