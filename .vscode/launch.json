@@ -20,6 +20,7 @@
             "args": [
                 "--gptdir=generate/models/gpt2_model",
                 "--stylegandir=generate/models",
+                "--sounddir=generate/notification-sounds",
                 "--prompt=[SCIENTIST:] I can't believe you.",
                 "--roles=artist,scientist",
                 "--colors=cyan,green",
