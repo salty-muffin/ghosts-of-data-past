@@ -123,12 +123,6 @@
 			margin-top: 0;
 		}
 
-		img {
-			width: calc(100% + 2 * map-get($margin-primary, 'sm'));
-			height: auto;
-			margin: 0 0 - map-get($margin-primary, 'sm');
-		}
-
 		h1,
 		h2,
 		h3 {
@@ -145,6 +139,20 @@
 				content: '';
 				border-top: 1px solid map-get($colors, 'foreground');
 				width: 100%;
+			}
+		}
+
+		.image {
+			width: calc(100% + 2 * map-get($margin-primary, 'sm'));
+			margin: 0 0 - map-get($margin-primary, 'sm');
+
+			&.doc__logo {
+				width: 100%;
+				margin: 0 0 map-get($margin-primary, 'sm') 0;
+
+				filter: drop-shadow(0 0 map-get($margin-secondary, 'sm') map-get($colors, 'foreground'))
+					drop-shadow(0 0 map-get($margin-primary, 'sm') map-get($colors, 'foreground'))
+					drop-shadow(0 0 map-get($border-blur, 'sm') map-get($colors, 'foreground'));
 			}
 		}
 	}
@@ -220,14 +228,25 @@
 			margin: 0 map-get($margin-primary, 'lg');
 		}
 
-		.doc__content img {
+		.doc__content .image {
 			width: 100%;
 			margin: 0;
+
+			&.doc__logo {
+				width: min(100%, 20em);
+				float: right;
+				clear: right;
+				margin: 0 0 map-get($margin-primary, 'lg') map-get($margin-primary, 'lg');
+
+				/* filter: drop-shadow(0 0 map-get($margin-secondary, 'lg') map-get($colors, 'foreground'))
+					drop-shadow(0 0 map-get($margin-primary, 'lg') map-get($colors, 'foreground'))
+					drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground')); */
+			}
 		}
 
 		.doc__toc {
 			padding: map-get($margin-primary, 'lg');
-			margin: 0 2 * map-get($margin-primary, 'lg') map-get($margin-primary, 'lg') 0;
+			margin: 0 2 * map-get($margin-primary, 'sm') map-get($margin-primary, 'lg') 0;
 			float: left;
 
 			border: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
