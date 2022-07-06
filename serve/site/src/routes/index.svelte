@@ -178,7 +178,7 @@
 				{/if}
 			{/each}
 		</div>
-		<Nav class="nav" links={[{ href: '/story', text: 'documentation' }]} />
+		<Nav class="chat__nav" links={[{ href: '/story', text: 'documentation' }]} />
 	</div>
 </div>
 
@@ -229,7 +229,7 @@
 		flex-shrink: 0;
 	}
 
-	.nav {
+	.chat__nav {
 		position: fixed;
 		bottom: 0;
 		left: 0;
