@@ -128,7 +128,7 @@
 			<div class="chat__placeholder" />
 			<div class="chat__spacer" />
 
-			<Message
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -157,7 +157,7 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} />
+			<Writing writer="scientist" attributes={chatAttributes} /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add spacer, if this message's sender differs from the previous one -->

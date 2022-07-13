@@ -12,9 +12,6 @@
 	import '$lib/scss/fonts.scss';
 	import '$lib/scss/global.scss';
 
-	import { onMount } from 'svelte';
-	import { cubicInOut } from 'svelte/easing';
-
 	import { io } from 'socket.io-client';
 
 	import { messages } from '$lib/stores/messages';
