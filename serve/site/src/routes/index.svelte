@@ -126,9 +126,9 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<div class="chat__spacer" />
 
-			<!-- <Message
+			<!-- <div class="chat__spacer" />
+			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -161,7 +161,7 @@
 
 			{#each $messages as message, index (message.id)}
 				<!-- add spacer, if this message's sender differs from the previous one -->
-				{#if index > 0 && message.sender !== $messages[index - 1].sender}
+				{#if (index > 0 && message.sender !== $messages[index - 1].sender) || index === 0}
 					<div class="chat__spacer" />
 					<Message {...message} displaySender={true} attributes={chatAttributes} />
 				{:else}

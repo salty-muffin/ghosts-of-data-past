@@ -156,7 +156,8 @@ def generate(
         'text': re.sub(role_pattern, '', prompt).strip(),
         'image_data': b'',
         'alt': b'',
-        'sound_data': sounds.get()
+        'sound_data': sounds.get(),
+        'image_terminal': ''
         }
 
     # set variables

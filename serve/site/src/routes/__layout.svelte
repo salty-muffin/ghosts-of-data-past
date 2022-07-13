@@ -47,8 +47,6 @@
 
 		// play audio on new message (only if unmuted)
 		if (!$muted && $sound) {
-			console.log('notifying');
-
 			// create a blob from sound data
 			const arrayBufferView = new Uint8Array(message.soundData);
 			const blob = new Blob([arrayBufferView], { type: 'audio/mpeg' });
