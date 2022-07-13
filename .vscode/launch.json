@@ -21,7 +21,7 @@
                 "--gpt_dir=generate/models/gpt2_model",
                 "--temp=0.7",
                 "--stylegan_dir=generate/models",
-                "--sound_dir=generate/notification-sounds",
+                "--sound_dir=generate/sounds",
                 "--prompt=[scientist] I can't believe you.",
                 "--role_format=[{role}]",
                 "--image_string=[image]",
