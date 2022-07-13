@@ -58,14 +58,17 @@ class Sounds:
         self._sound_paths = sound_paths
         self._sound_paths_copy = []
 
-    def get(self) -> str:
+    def get(self) -> bytes:
         # if the sound paths are empty
         # create a new copy and shuffle it
         if not self._sound_paths_copy:
             self._sound_paths_copy = self._sound_paths.copy()
             random.shuffle(self._sound_paths_copy)
 
-        return self._sound_paths_copy.pop()
+        with open(self._sound_paths_copy.pop(), 'rb') as file:
+            sound_data = file.read()
+
+        return sound_data
 
 
 # yapf: disable
@@ -145,10 +148,42 @@ def generate(
         fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}(?P<sender>\w+){re.escape(role_holder[1])}'
         )
 
-    # main loop
+    # setup first message
     prompt = f'{prompt}\n'  # append newline to the prompt (TODO: make it work with launch.json)
+
+    last_message = {
+        'sender': re.search(sender_pattern, prompt).group('sender').lower(),
+        'text': re.sub(role_pattern, '', prompt).strip(),
+        'image_data': b'',
+        'alt': b'',
+        'sound_data': sounds.get()
+        }
+
+    # set variables
+    start = 0
+
+    # - main loop --------------------------------------------------------------------------------
     try:
         while True:
+            # wait according to last message (next message in the queue) (reading)
+            write_time = get_wait_time(
+                last_message['text'],
+                bool(last_message['image_data']),
+                base_time,
+                letter_time,
+                image_time,
+                read_deviation
+                )
+            time.sleep(write_time)
+
+            # set sender of last message (next message in the queue) to writing
+            writing_state[last_message['sender']
+                          ].update(writer=last_message['sender'], state=1)
+
+            # record generation start time
+            start = start if start else time.time(
+            )  # don't record starttime on repeat generation
+
             # generate a message
             responses = text_G.generate(
                 prompt, max_length=128, temperature=temp
@@ -165,15 +200,107 @@ def generate(
 
             # only go on if there is a valid message
             if responses_list:
-                prompt = responses_list[0]
-
-                message_text = responses_list[0]
-
                 # get sender
                 sender = re.search(sender_pattern,
-                                   message_text).group('sender').lower()
-                # remove sender from message
-                message_text = re.sub(role_pattern, '', message_text).strip()
+                                   responses_list[0]).group('sender').lower()
+
+                # only go on, if sender is valid
+                if sender in roles:
+                    # remove sender from message
+                    text = re.sub(role_pattern, '', responses_list[0]).strip()
+
+                    # get promt for the next generation
+                    prompt = responses_list[0]
+
+                    # is there an image
+                    image_data = b''
+                    alt = ''
+                    image_terminal = ''
+                    if image_string in text:
+                        image = image_Gs[sender].generate(image_seed[sender])
+
+                        # save image as binary
+                        image_output = BytesIO()
+                        image.save(
+                            image_output,
+                            "JPEG",
+                            quality=70,
+                            optimize=True,
+                            progressive=True
+                            )
+
+                        image_data = image_output.getvalue()
+                        image_terminal = climage.convert(
+                            image_output, width=40
+                            )
+
+                        image_output.close()
+
+                        image_seed[sender] += 1
+
+                        # get image alt
+                        alt = f'selfie of {sender}'
+
+                        # remove image placeholder string from message text
+                        text = re.sub(
+                            r'  +', ' ', text.replace(image_string, '')
+                            ).strip()  # get rid of duplicate spaces
+
+                    # wait according to last message (writing)
+                    write_duration = time.time() - start
+                    start = 0
+                    write_time = max(
+                        0,
+                        get_wait_time(
+                            last_message['text'],
+                            bool(last_message['image_data']),
+                            base_time,
+                            letter_time,
+                            image_time,
+                            write_deviation
+                            ) -
+                        write_duration  # subtract the the time the generation took from the time this writing should take
+                        )
+                    time.sleep(write_time)
+
+                    # push the last generated message to the database
+                    message = db.Hash(shortuuid.uuid())
+                    message.update(
+                        sender=last_message['sender'],
+                        text=last_message['text'],
+                        image_data=last_message['image_data'],
+                        alt=last_message['alt'],
+                        sound_data=last_message['sound_data']
+                        )
+                    message.expire(120)
+                    # unset the writing state
+                    writing_state[sender].update(
+                        writer=last_message['sender'], state=0
+                        )
+
+                    # print the message to terminal
+                    print(
+                        f'{last_message["sender"]}>',
+                        colored(
+                            last_message['text'],
+                            colors[roles.index(last_message["sender"])]
+                            )
+                        )
+                    if (last_message['image_terminal']):
+                        print(last_message['image_terminal'], end='')
+
+                    # save massage to be sent after next generation. it is necessary
+                    # to send this message only after the next was generated, because
+                    # the sender is not known before generation, thus the writing state
+                    # cannot be set before generation.
+                    last_message = {
+                        'sender': sender,
+                        'text': text,
+                        'image_data': image_data,
+                        'alt': alt,
+                        'sound_data': sounds.get(),
+                        'image_terminal': image_terminal
+                        }
 
     except KeyboardInterrupt:
         raise SystemExit
