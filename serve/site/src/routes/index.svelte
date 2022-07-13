@@ -171,7 +171,7 @@
 			{#each $writing as writing_state}
 				{#if writing_state.state}
 					<!-- add spacer, if current writer differs from the previous message's sender -->
-					{#if writing_state.writer !== $messages[$messages.length - 1].sender}
+					{#if $messages.length > 0 && writing_state.writer !== $messages[$messages.length - 1].sender}
 						<div class="chat__spacer" />
 					{/if}
 					<Writing writer={writing_state.writer} attributes={chatAttributes} />
