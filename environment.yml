@@ -12,6 +12,8 @@ dependencies:
   - pillow=9.0
   - ninja=1.10
   - pytorch=1.11
+  - torchvision
+  - torchaudio
   - cudatoolkit=11.3
   - tensorflow=2.4
   - transformers=4.14

@@ -10,7 +10,9 @@ dependencies:
   - click=8.0
   - pillow=9.0
   - pytorch=1.11
-  - cpuonly=2.0
+  - torchvision
+  - torchaudio
+  - cpuonly
   - tensorflow=2.4
   - transformers=4.14
   - pip:
