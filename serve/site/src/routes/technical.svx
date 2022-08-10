@@ -38,7 +38,7 @@ Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={2}>Lorem i
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer hendrerit, leo vitae tincidunt tempus, sapien mauris dictum diam, in porta tortor libero at arcu. Fusce nibh risus, porta et arcu ut, varius ullamcorper sem. Sed dignissim ante eu augue varius, nec tincidunt augue mollis. Vivamus sit amet lacinia nunc, sit amet viverra ante. Suspendisse sed leo viverra nisi euismod posuere sit amet ut ligula. Curabitur facilisis neque tellus, sit amet auctor eros euismod vitae. Suspendisse euismod libero quis quam aliquam pharetra. Ut pellentesque tincidunt nibh eget aliquet.
 
-<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" />
+<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test"  loading="lazy" />
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={4}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, on accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.<Sidenote id={5}>Lorem ipsum dolor sit amet consectetur adipisicing elit.</Sidenote>
 
