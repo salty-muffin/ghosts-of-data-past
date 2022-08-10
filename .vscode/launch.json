@@ -18,7 +18,7 @@
             "request": "launch",
             "program": "generate/generate.py",
             "args": [
-                "--gpt_dir=generate/models/gpt2_model",
+                "--gpt_dir=generate/models/trained_model_1000",
                 "--temp=0.7",
                 "--stylegan_dir=generate/models",
                 "--sound_dir=generate/sounds",
