@@ -1,4 +1,6 @@
 <script>
+	import { linear } from 'svelte/easing';
+
 	export let url = '';
 	export let duration = 500;
 
@@ -7,8 +9,8 @@
 
 {#key url}
 	<div
-		in:blur={{ duration: duration, delay: duration }}
-		out:blur={{ duration: duration }}
+		in:blur={{ duration: duration, delay: duration, easing: linear }}
+		out:blur={{ duration: duration, easing: linear }}
 		on:introstart={() => {
 			// remove scrollbar during tarnsition
 			document.body.classList.add('transition--noscroll');

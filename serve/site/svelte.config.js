@@ -2,7 +2,6 @@ import adapter from '@sveltejs/adapter-static';
 import preprocess from 'svelte-preprocess';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import { imagetools } from 'vite-imagetools';
 import { mdsvex } from 'mdsvex';
 
 // rehype plugins
@@ -35,14 +34,6 @@ const config = {
 		adapter: adapter(),
 		prerender: {
 			default: true
-		},
-		vite: {
-			resolve: {
-				alias: {
-					$assets: path.resolve('src/assets')
-				}
-			},
-			plugins: [imagetools()]
 		}
 	}
 };
