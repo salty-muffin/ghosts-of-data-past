@@ -159,6 +159,7 @@ def generate(
         'sound_data': sounds.get(),
         'image_terminal': ''
         }
+    last_sender = last_message['sender']
 
     # set variables
     start = 0
@@ -166,16 +167,23 @@ def generate(
     # - main loop --------------------------------------------------------------------------------
     try:
         while True:
-            # wait according to last message (next message in the queue) (reading)
-            write_time = get_wait_time(
-                last_message['text'],
-                bool(last_message['image_data']),
-                base_time,
-                letter_time,
-                image_time,
-                read_deviation
-                )
-            time.sleep(write_time)
+            # wait according to last message (next message in the queue) (reading), but only if the sender changed from the last one
+            if last_sender != last_message['sender']:
+                read_time = get_wait_time(
+                    last_message['text'],
+                    bool(last_message['image_data']),
+                    base_time,
+                    letter_time,
+                    image_time,
+                    read_deviation
+                    )
+            else:
+                # if it is the same sender as last time only wait for a short time
+                read_time = get_wait_time('', False, 1, 0, 0, [1.0, 2.5])
+            last_sender = last_message['sender']
+            time.sleep(read_time)
+
+            print(f'{last_message["sender"]}> ', end='')
 
             # set sender of last message (next message in the queue) to writing
             writing_state[last_message['sender']
@@ -281,7 +289,6 @@ def generate(
 
                     # print the message to terminal
                     print(
-                        f'{last_message["sender"]}>',
                         colored(
                             last_message['text'],
                             colors[roles.index(last_message["sender"])]
