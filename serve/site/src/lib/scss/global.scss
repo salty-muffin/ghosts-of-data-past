@@ -47,20 +47,20 @@ li {
 	text-align: justify;
 	hyphens: auto;
 
-	font-variation-settings: 'wght' 300;
-	font-weight: 300;
+	font-variation-settings: 'wght' 250;
+	font-weight: 250;
 }
 
 i,
 em {
-	font-variation-settings: 'ital' 12;
+	font-variation-settings: 'ital' 10;
 	font-style: italic;
 }
 
 b,
 strong {
-	font-variation-settings: 'wght' 500;
-	font-weight: 500;
+	font-variation-settings: 'wght' 400;
+	font-weight: 400;
 }
 
 a,
@@ -72,7 +72,7 @@ button {
 		color: map-get($colors, 'foreground');
 		// text-decoration: underline;
 		font-family: $font-family-underline;
-		font-weight: 350;
+		font-weight: 300;
 	}
 }
 

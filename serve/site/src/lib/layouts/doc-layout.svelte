@@ -16,7 +16,7 @@
 
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
-	const bodyAnimation = new FontAnimator({ weight: 300, italic: 0 }, { weight: 300, italic: 5 });
+	const bodyAnimation = new FontAnimator({ weight: 200, italic: 0 }, { weight: 200, italic: 7 });
 	let bodyC = bodyAnimation.getStart();
 	onMount(() => {
 		// breathing animation

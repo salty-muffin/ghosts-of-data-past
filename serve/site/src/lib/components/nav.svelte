@@ -58,6 +58,13 @@
 		button:hover h4 {
 			font-weight: 350;
 		}
+
+		a:hover {
+			color: map-get($colors, 'foreground');
+			// text-decoration: underline;
+			/* font-family: $font-family-underline; */
+			font-weight: 350;
+		}
 	}
 
 	@media (hover: none) {

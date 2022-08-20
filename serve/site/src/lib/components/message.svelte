@@ -104,7 +104,7 @@
 		margin: 0 0 0.2em 0;
 
 		// non-breathing setting
-		font-variation-settings: 'wght' 550, 'ital' 0;
+		font-variation-settings: 'wght' 500, 'ital' 0;
 
 		font-size: map-get($sender-size, 'sm');
 	}
@@ -136,9 +136,9 @@
 		margin: 0;
 
 		// non-breathing setting
-		font-variation-settings: 'wght' 400, 'ital' 0;
+		font-variation-settings: 'wght' 250, 'ital' 0;
 
-		line-height: $message-line-height;
+		line-height: map-get($message-line-height, 'sm');
 		font-size: map-get($message-text-size, 'sm');
 	}
 
@@ -147,7 +147,7 @@
 		margin: 0.5em 0 0 0.5em;
 
 		// non-breathing setting
-		font-variation-settings: 'wght' 325, 'ital' 0;
+		font-variation-settings: 'wght' 350, 'ital' 0;
 
 		font-size: map-get($timestamp-size, 'sm');
 	}
@@ -197,6 +197,7 @@
 
 		.message__text {
 			font-size: map-get($message-text-size, 'lg');
+			line-height: map-get($message-line-height, 'lg');
 		}
 
 		.message__timestamp {

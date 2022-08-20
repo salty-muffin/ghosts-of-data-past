@@ -38,11 +38,11 @@
 	const duration = 5000;
 	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
 	let headerC = headerAnimation.getStart();
-	const bodyAnimation = new FontAnimator({ weight: 325, italic: 0 }, { weight: 375, italic: 8 });
+	const bodyAnimation = new FontAnimator({ weight: 250, italic: 0 }, { weight: 300, italic: 8 });
 	let bodyC = bodyAnimation.getStart();
 	const timestampAnimation = new FontAnimator(
-		{ weight: 300, italic: 0 },
-		{ weight: 350, italic: 10 }
+		{ weight: 350, italic: 0 },
+		{ weight: 400, italic: 10 }
 	);
 	let timestampC = timestampAnimation.getStart();
 	onMount(() => {
@@ -127,7 +127,7 @@
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
 
-			<!-- <div class="chat__spacer" />
+			<div class="chat__spacer" />
 			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
@@ -157,7 +157,7 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} /> -->
+			<Writing writer="scientist" attributes={chatAttributes} />
 
 			{#each $messages as message, index (message.id)}
 				<!-- add spacer, if this message's sender differs from the previous one -->
