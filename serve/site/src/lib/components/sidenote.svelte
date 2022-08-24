@@ -43,7 +43,7 @@
 	.sidenote__marker {
 		font-feature-settings: 'sups' 1;
 
-		padding: 0 0.4em;
+		padding: 0 0.2em;
 		cursor: pointer;
 
 		&.sidenote--hover {
