@@ -17,8 +17,26 @@ links: [
 	import kdfsLogoFallback from '$assets/images/kdfs_logo.png?w=720&png&metadata';
 </script>
 
-# Heading
+- Hendrik Kempt (declines playment)
+- Lola Wittstamm
+- Sarah Lucey (how were they paid)
+- Thanks
+  - GBB Participants
+  - Lisa Dreykluf
+  - Holger Jenss
+  - Joel Baumann
+  - Jan Peters
+  - Rosa Menkmann
+  - Björn Melhus
+  - Lukas Fuchs
+  - Rebekka Wiese
+  - Gero Gries
+  - Ivana Jokl
+  - Res Sigusch
+- Funding
+  - HAB
+  - KDfS
+  - self funded
 
-test paragraph
 
 <p><a href="https://kdfs.de"><Image webpSrcSet={kdfsLogoWebp} jpgSrcset={kdfsLogoJpg} fallback={kdfsLogoFallback} alt="KdFS Logo" class="doc__logo"/></a>Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.</p>
