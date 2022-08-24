@@ -13,7 +13,7 @@ links: [
 	import Image from '$lib/components/image.svelte';
 
     import sampleImage from '$assets/images/seed0000.jpg?w=375;550;720&jpg&srcset';
-	import sampleImagePlaceholder from '$assets/images/seed0000.jpg?w=100&jpg&metadata';
+	import sampleImageFallback from '$assets/images/seed0000.jpg?w=100&jpg&metadata';
 </script>
 
 <!-- main content -->
@@ -34,7 +34,7 @@ _Lorem ipsum_ **dolor sit** **_amet consectetur_** adipisicing elit<Sidenote id=
 
 Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, on accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.<Sidenote id={3}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote>
 
-<Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" />
+<Image jpgSrcset={sampleImage} fallback={sampleImageFallback} alt="test" />
 
 # Second Chapter
 

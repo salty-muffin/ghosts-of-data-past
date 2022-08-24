@@ -10,8 +10,9 @@
 	export let style = '';
 	export let webpSrcset = '';
 	export let jpgSrcset: string;
-	export let placeholder: Image;
+	export let fallback: Image;
 	export let alt: string;
+	export let loading = 'eager';
 </script>
 
 <div class="image {className}" {style}>
@@ -20,7 +21,7 @@
 			<source srcset={webpSrcset} type="image/webp" />
 		{/if}
 		<source srcset={jpgSrcset} type="image/jpeg" />
-		<img src={placeholder.src} width={placeholder.width} height={placeholder.height} {alt} />
+		<img src={fallback.src} width={fallback.width} height={fallback.height} {alt} {loading}/>
 	</picture>
 </div>
 

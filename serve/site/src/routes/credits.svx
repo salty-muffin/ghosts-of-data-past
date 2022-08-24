@@ -12,36 +12,13 @@ links: [
     import Sidenote from '$lib/components/sidenote.svelte';
 	import Image from '$lib/components/image.svelte';
 
-    import sampleImage from '$assets/images/kdfs_logo.png?w=375;550;720&png&srcset';
-	import sampleImagePlaceholder from '$assets/images/kdfs_logo.png?w=100&png&metadata';
+	import kdfsLogoWebp from '$assets/images/kdfs_logo.png?w=375;550;720&png&srcset';
+	import kdfsLogoJpg from '$assets/images/kdfs_logo.png?w=375;550;720&png&srcset';
+	import kdfsLogoFallback from '$assets/images/kdfs_logo.png?w=720&png&metadata';
 </script>
 
-<!-- main content -->
-<!-- table of contents will always appear before the first paragraph -->
+# Heading
 
-this is a placeholder for the documentation. In the end there might be two or three pages
-descreibing in detail. One may be going over general background stuff, while another will be
-going over technical backgrounds.
+test paragraph
 
-This here is just filler text, because I assume the introcution would probably be longer, but
-we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
-
-## First Chapter
-
-_Lorem ipsum_ **dolor sit** **_amet consectetur_** adipisicing elit<Sidenote id={1}>Lorem ipsum dolor sit amet consectetur adipisicing elit.</Sidenote>. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.
-
-## Second Chapter
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={2}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, on accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.<Sidenote id={3}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote>
-
-### Unlisted Chapter
-
-Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer hendrerit, leo vitae tincidunt tempus, sapien mauris dictum diam, in porta tortor libero at arcu. Fusce nibh risus, porta et arcu ut, varius ullamcorper sem. Sed dignissim ante eu augue varius, nec tincidunt augue mollis. Vivamus sit amet lacinia nunc, sit amet viverra ante. Suspendisse sed leo viverra nisi euismod posuere sit amet ut ligula. Curabitur facilisis neque tellus, sit amet auctor eros euismod vitae. Suspendisse euismod libero quis quam aliquam pharetra. Ut pellentesque tincidunt nibh eget aliquet.
-
-Lorem ipsum dolor sit amet consectetur adipisicing elit.<Sidenote id={4}>Lorem ipsum dolor sit amet consectetur adipisicing elit. Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, on accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.</Sidenote> Similique qui laboriosam eum provident molestiae fuga error tenetur omnis placeat sit, non accusantium maxime praesentium, dicta architecto, unde doloremque ab earum.<Sidenote id={5}>Lorem ipsum dolor sit amet consectetur adipisicing elit.</Sidenote>
-
-## Third Chapter
-
-Morbi vehicula consequat orci venenatis tincidunt. Cras non pellentesque sem, a hendrerit tellus. Quisque dapibus tincidunt diam eu lacinia. Cras eu dui ligula. Vestibulum placerat laoreet velit. Fusce scelerisque mi ac arcu dictum, id mollis ipsum rhoncus. Nunc id auctor metus, sed malesuada nulla. Nam consequat lorem nec purus consequat luctus ac id turpis. Curabitur eget scelerisque elit, vitae congue orci. Vivamus placerat turpis iaculis sagittis finibus. Donec auctor gravida urna vitae maximus. Nam malesuada, tortor nec elementum vehicula, eros lacus vehicula erat, non finibus nulla libero a arcu. Quisque et eros dui. Sed non felis ut magna sodales imperdiet ac non orci. Fusce tincidunt turpis nibh, vitae sollicitudin est luctus nec. Ut sit amet nisl consequat, scelerisque lectus ut, condimentum est.
-
-<p><a href="https://kdfs.de"><Image jpgSrcset={sampleImage} placeholder={sampleImagePlaceholder} alt="test" class="doc__logo"/></a>Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.</p>
+<p><a href="https://kdfs.de"><Image webpSrcSet={kdfsLogoWebp} jpgSrcset={kdfsLogoJpg} fallback={kdfsLogoFallback} alt="KdFS Logo" class="doc__logo"/></a>Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.</p>
