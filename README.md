@@ -23,6 +23,7 @@ the same applies to the sounds used.
 2. activate the enviroment: `conda activate ghosts` or `conda activate ghosts-cpu`
 3. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
 4. install redis according to these [instructions](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
+5. possibly necessary to disable redis autostart `sudo systemctl disable redis-server`
 
 ## run
 
