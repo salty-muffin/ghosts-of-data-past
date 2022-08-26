@@ -20,6 +20,9 @@ links: [
 - Hendrik Kempt (declines playment)
 - Lola Wittstamm
 - Sarah Lucey (how were they paid)
+- Fonts:
+  - ABC Favorit (Lining)
+  - PW Smokey
 - Thanks
   - GBB Participants
   - Lisa Dreykluf
