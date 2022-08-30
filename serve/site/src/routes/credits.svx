@@ -24,7 +24,7 @@ A big part of the basis for this project were the mails **Hendrik Kempt**<Sideno
 
 The other half of the dataset was created by **Sarah Lucey** and **Lola Wittstamm**, who worked on the project as performers, improvising a messenger chat over the duration of three days.
 
-All participants privided their face for filming and image dataset creation.
+All participants provided their face for filming and image dataset creation.
 
 # Material and Software
 
@@ -50,7 +50,7 @@ Thank you Jonas Deuter and Julia Perkuhn for helping me with picking a font.
 
 I would like to give special thanks to my parents, Gero Gries and Ivana Jokl, for their support in general and with this project specifically.
 
-And last but not at all least I would like to thank Res Sigusch, without whose intelligent input, emotional support and love this certainly what have been a much less joyful affair.
+And last but not at all least I would like to thank Res Sigusch, without whose intelligent input, emotional support and love this certainly would have been a much less joyful affair.
 
 # Funding
 

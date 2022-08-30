@@ -197,8 +197,6 @@
 	}
 
 	.chat__container {
-		height: 100%;
-
 		width: min($chat-width, 100vw);
 		height: min($chat-height, 100vh);
 
@@ -213,7 +211,7 @@
 		flex-direction: column;
 		flex-grow: 1;
 
-		margin-bottom: map-get($nav-size, 'sm');
+		/* padding-bottom: map-get($nav-size, 'sm'); */
 
 		overflow-y: auto;
 
@@ -230,10 +228,10 @@
 	}
 
 	.chat__nav {
-		position: fixed;
+		/* position: fixed;
 		bottom: 0;
 		left: 0;
-		right: 0;
+		right: 0; */
 		flex-shrink: 0;
 	}
 
