@@ -1,5 +1,7 @@
 <script lang="ts">
 	export let id: number;
+	export let left = false;
+	export let right = false;
 
 	let hover = false;
 	let show = false;
@@ -18,7 +20,13 @@
 		show = !show;
 	}}>{id}</span
 ><div
-	class="sidenote sidenote--{id % 2 > 0 ? 'left' : 'right'}"
+	class="sidenote sidenote--{left || right
+		? left
+			? 'left'
+			: 'right'
+		: id % 2 > 0
+		? 'left'
+		: 'right'}"
 	class:sidenote--hover={hover}
 	class:sidenote--show={show}
 	on:mouseenter={() => {

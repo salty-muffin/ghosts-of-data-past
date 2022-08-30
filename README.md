@@ -6,9 +6,9 @@ a ghost from data generator - generates a chat with text messages and selfies fr
 
 requires dataset recording, preperation and model finetuning with the following repositories:
 
-- recording a chat between two performers: https://github.com/papayapeter/theater-chat
-- preparing chat and mail data and finetuning a gpt-2 model with it: https://github.com/papayapeter/gpt-2-training
-- finetuning a stylegan3 model with face images by performers: https://github.com/papayapeter/stylegan3
+- recording a chat between two performers: https://github.com/salty-muffin/theater-chat
+- preparing chat and mail data and finetuning a gpt-2 model with it: https://github.com/salty-muffin/gpt-2-training
+- finetuning a stylegan3 model with face images by performers: https://github.com/salty-muffin/stylegan3
 - generating notification sound abstractions: https://github.com/papayapeter/nsynth-notification-sound-generation
 
 using [aitextgen](https://github.com/minimaxir/aitextgen) for text generation, [stylegan3](https://github.com/NVlabs/stylegan3) and [nsynth](https://github.com/magenta/magenta/tree/main/magenta/models/nsynth) for sound abstractions. some code has been copied over from the original stylegan3 repo to make image generation and text generation work seamlessly together.
@@ -74,6 +74,7 @@ the work on this project was sponsored by the [kulturstiftung des freistaates sa
 - [x] beautify layout for about pages
 - [x] seperate the nav out (one for chat and one for the about pages)
 - [ ] donate for pw smokey https://www.dafont.com/pwsmokey.font
+- [ ] change the scrolling behaviour (possibly scroll on the may window and make the nav fixed)
 
 ### generate
 

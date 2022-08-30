@@ -2,8 +2,7 @@
 title: 'technical details'
 links: [
 	{ href: '/', text: 'back to work' },
-	{ href: '/story', text: 'a ghost story' },
-	{ href: '/technical', text: 'technical details' },
+	{ href: '/process', text: 'process' },
 	{ href: '/credits', text: 'credits' }
 ]
 ---
@@ -15,7 +14,16 @@ links: [
 
 <!-- table of contents will always appear before the first paragraph -->
 
-- the process
+this is a placeholder for the documentation. In the end there might be two or three pages
+describing in detail. One may be going over general background stuff, while another will be
+going over technical backgrounds.
+
+# Some Heading
+
+This here is just filler text, because I assume the introcution would probably be longer, but
+we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+
+<!-- - the process
   - writing with the scientist
   - performers writing
   - -> finetuning gpt2neo with the combined datasets
@@ -33,4 +41,4 @@ links: [
   - finetuning explained
   - https://pile.eleuther.ai/
   - https://github.com/NVlabs/ffhq-dataset
-  - https://magenta.tensorflow.org/datasets/nsynth
+  - https://magenta.tensorflow.org/datasets/nsynth -->
