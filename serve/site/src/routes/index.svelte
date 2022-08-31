@@ -211,7 +211,7 @@
 		flex-direction: column;
 		flex-grow: 1;
 
-		/* padding-bottom: map-get($nav-size, 'sm'); */
+		/* margin-bottom: map-get($nav-size, 'sm'); */
 
 		overflow-y: auto;
 
@@ -256,9 +256,9 @@
 			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 		}
 
-		.chat__messages {
+		/* .chat__messages {
 			margin-bottom: map-get($nav-size, 'lg');
-		}
+		} */
 
 		.chat__spacer {
 			height: map-get($margin-secondary, 'lg');
