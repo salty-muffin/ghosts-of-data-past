@@ -46,6 +46,7 @@ li {
 	line-height: $line-height;
 	text-align: justify;
 	hyphens: auto;
+	-webkit-hyphens: auto;
 
 	font-variation-settings: 'wght' 200;
 	font-weight: 200;
