@@ -34,6 +34,9 @@
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
 
+	// chat wrapper element
+	let chat: HTMLElement | undefined;
+
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
 	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
@@ -56,6 +59,16 @@
 			headerC = headerAnimation.update(interpolated);
 			bodyC = bodyAnimation.update(interpolated);
 			timestampC = timestampAnimation.update(interpolated);
+
+			// updating css variables
+			if (chat) {
+				chat.style.setProperty('--h-weight', String(headerC.weight));
+				chat.style.setProperty('--h-italic', String(headerC.italic));
+				chat.style.setProperty('--b-weight', String(bodyC.weight));
+				chat.style.setProperty('--b-italic', String(bodyC.italic));
+				chat.style.setProperty('--t-weight', String(timestampC.weight));
+				chat.style.setProperty('--t-italic', String(timestampC.italic));
+			}
 
 			// append next animation frame
 			animation = requestAnimationFrame(update);
@@ -119,14 +132,9 @@
 	<title>ghosts of data past</title>
 </svelte:head>
 
-<div
-	class="chat"
-	style="--h-weight: {headerC.weight}; --h-italic: {headerC.italic}; --b-weight: {bodyC.weight}; --b-italic: {bodyC.italic}; --t-weight: {timestampC.weight}; --t-italic: {timestampC.italic};"
->
+<div class="chat" bind:this={chat}>
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
-			<!-- <div class="chat__placeholder" /> -->
-
 			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
