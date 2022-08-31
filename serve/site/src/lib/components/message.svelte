@@ -10,6 +10,8 @@
 	export let timestamp: number;
 	export let attributes: any;
 	export let displaySender = true;
+	let className = '';
+	export { className as class };
 
 	import { fade } from 'svelte/transition';
 
@@ -22,7 +24,10 @@
 	const height = 1024;
 </script>
 
-<div class="message__wrapper message--{attributes[sender]['position']} message--breathing" {id}>
+<div
+	class="message__wrapper message--{attributes[sender]['position']} message--breathing {className}"
+	{id}
+>
 	<div class="message__body">
 		{#if displaySender}
 			<h6 class="message__sender">{sender}</h6>
@@ -78,7 +83,9 @@
 		background-color: map-get($colors, 'background');
 		border-radius: map-get($margin-primary, 'sm');
 
-		margin: 0 map-get($margin-secondary, 'sm') map-get($margin-secondary, 'sm');
+		margin-left: map-get($margin-secondary, 'sm');
+		margin-right: map-get($margin-secondary, 'sm');
+		margin-bottom: map-get($margin-secondary, 'sm');
 		padding: map-get($margin-secondary, 'sm') map-get($margin-primary, 'sm');
 	}
 	.message--left {
@@ -174,10 +181,11 @@
 
 	@media only screen and (min-width: $breakpoint) {
 		.message__wrapper {
-			/* border-width: map-get($border-width, 'lg'); */
 			border-radius: map-get($margin-primary, 'lg');
 
-			margin: 0 map-get($margin-secondary, 'lg') map-get($margin-secondary, 'lg');
+			margin-left: map-get($margin-secondary, 'lg');
+			margin-right: map-get($margin-secondary, 'lg');
+			margin-bottom: map-get($margin-secondary, 'lg');
 			padding: map-get($margin-secondary, 'lg') map-get($margin-primary, 'lg');
 		}
 		.message--left {

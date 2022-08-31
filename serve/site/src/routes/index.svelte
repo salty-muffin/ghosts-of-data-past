@@ -125,9 +125,8 @@
 >
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
-			<div class="chat__placeholder" />
+			<!-- <div class="chat__placeholder" /> -->
 
-			<div class="chat__spacer" />
 			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
@@ -136,8 +135,8 @@
 				alt=""
 				timestamp={1651313396942}
 				attributes={chatAttributes}
+				class="message--top"
 			/>
-			<div class="chat__spacer" />
 			<Message
 				id="aSwWASETCcg3QaukkAFesN"
 				sender="artist"
@@ -146,6 +145,7 @@
 				alt="seed0000"
 				timestamp={1651313416949}
 				attributes={chatAttributes}
+				class="message--spaced"
 			/>
 			<Message
 				id="qDwLOSAKCcg3Qaukkpaesd"
@@ -157,22 +157,30 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} />
+			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" />
 
 			{#each $messages as message, index (message.id)}
-				<!-- add spacer, if this message's sender differs from the previous one -->
-				{#if (index > 0 && message.sender !== $messages[index - 1].sender) || index === 0}
-					<div class="chat__spacer" />
-					<Message {...message} displaySender={true} attributes={chatAttributes} />
+				<!-- add top margin, if this message's sender differs from the previous one -->
+				{#if index > 0 && message.sender !== $messages[index - 1].sender}
+					<Message
+						{...message}
+						displaySender={true}
+						attributes={chatAttributes}
+						class="message--spaced"
+					/>
 				{:else}
 					<Message {...message} displaySender={false} attributes={chatAttributes} />
 				{/if}
 			{/each}
 			{#each $writing as writing_state}
 				{#if writing_state.state}
-					<!-- add spacer, if current writer differs from the previous message's sender -->
+					<!-- add top margin, if current writer differs from the previous message's sender -->
 					{#if $messages.length > 0 && writing_state.writer !== $messages[$messages.length - 1].sender}
-						<div class="chat__spacer" />
+						<Writing
+							writer={writing_state.writer}
+							attributes={chatAttributes}
+							class="message--spaced"
+						/>
 					{/if}
 					<Writing writer={writing_state.writer} attributes={chatAttributes} />
 				{/if}
@@ -212,19 +220,19 @@
 		flex-grow: 1;
 
 		/* margin-bottom: map-get($nav-size, 'sm'); */
+		padding-top: map-get($margin-secondary, 'sm');
 
 		overflow-y: auto;
 
 		width: 100%;
 	}
 
-	.chat__placeholder {
-		flex-grow: 1;
+	.message--spaced {
+		margin-top: map-get($margin-secondary, 'sm');
 	}
 
-	.chat__spacer {
-		height: map-get($margin-secondary, 'sm');
-		flex-shrink: 0;
+	.message--top {
+		margin-top: auto;
 	}
 
 	.chat__nav {
@@ -256,12 +264,12 @@
 			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 		}
 
-		/* .chat__messages {
-			margin-bottom: map-get($nav-size, 'lg');
-		} */
+		.chat__messages {
+			padding-top: map-get($margin-secondary, 'lg');
+		}
 
-		.chat__spacer {
-			height: map-get($margin-secondary, 'lg');
+		.message--spaced {
+			margin-top: map-get($margin-secondary, 'lg');
 		}
 	}
 </style>
