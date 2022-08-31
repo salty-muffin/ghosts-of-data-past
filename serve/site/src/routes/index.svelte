@@ -34,6 +34,9 @@
 	// intersection observer
 	let observer: IntersectionObserver | undefined;
 
+	// chat wrapper element
+	let chat: HTMLElement | undefined;
+
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
 	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
@@ -56,6 +59,16 @@
 			headerC = headerAnimation.update(interpolated);
 			bodyC = bodyAnimation.update(interpolated);
 			timestampC = timestampAnimation.update(interpolated);
+
+			// updating css variables
+			if (chat) {
+				chat.style.setProperty('--h-weight', String(headerC.weight));
+				chat.style.setProperty('--h-italic', String(headerC.italic));
+				chat.style.setProperty('--b-weight', String(bodyC.weight));
+				chat.style.setProperty('--b-italic', String(bodyC.italic));
+				chat.style.setProperty('--t-weight', String(timestampC.weight));
+				chat.style.setProperty('--t-italic', String(timestampC.italic));
+			}
 
 			// append next animation frame
 			animation = requestAnimationFrame(update);
@@ -119,16 +132,12 @@
 	<title>ghosts of data past</title>
 </svelte:head>
 
-<div
-	class="chat"
-	style="--h-weight: {headerC.weight}; --h-italic: {headerC.italic}; --b-weight: {bodyC.weight}; --b-italic: {bodyC.italic}; --t-weight: {timestampC.weight}; --t-italic: {timestampC.italic};"
->
+<div class="chat" bind:this={chat}>
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
 
-			<div class="chat__spacer" />
-			<Message
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -137,7 +146,6 @@
 				timestamp={1651313396942}
 				attributes={chatAttributes}
 			/>
-			<div class="chat__spacer" />
 			<Message
 				id="aSwWASETCcg3QaukkAFesN"
 				sender="artist"
@@ -146,6 +154,7 @@
 				alt="seed0000"
 				timestamp={1651313416949}
 				attributes={chatAttributes}
+				class="message--spaced"
 			/>
 			<Message
 				id="qDwLOSAKCcg3Qaukkpaesd"
@@ -157,24 +166,33 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} />
+			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
-				<!-- add spacer, if this message's sender differs from the previous one -->
-				{#if (index > 0 && message.sender !== $messages[index - 1].sender) || index === 0}
-					<div class="chat__spacer" />
-					<Message {...message} displaySender={true} attributes={chatAttributes} />
+				<!-- add top margin, if this message's sender differs from the previous one -->
+				{#if index > 0 && message.sender !== $messages[index - 1].sender}
+					<Message
+						{...message}
+						displaySender={true}
+						attributes={chatAttributes}
+						class="message--spaced"
+					/>
 				{:else}
 					<Message {...message} displaySender={false} attributes={chatAttributes} />
 				{/if}
 			{/each}
 			{#each $writing as writing_state}
 				{#if writing_state.state}
-					<!-- add spacer, if current writer differs from the previous message's sender -->
+					<!-- add top margin, if current writer differs from the previous message's sender -->
 					{#if $messages.length > 0 && writing_state.writer !== $messages[$messages.length - 1].sender}
-						<div class="chat__spacer" />
+						<Writing
+							writer={writing_state.writer}
+							attributes={chatAttributes}
+							class="message--spaced"
+						/>
+					{:else}
+						<Writing writer={writing_state.writer} attributes={chatAttributes} />
 					{/if}
-					<Writing writer={writing_state.writer} attributes={chatAttributes} />
 				{/if}
 			{/each}
 		</div>
@@ -197,8 +215,6 @@
 	}
 
 	.chat__container {
-		height: 100%;
-
 		width: min($chat-width, 100vw);
 		height: min($chat-height, 100vh);
 
@@ -213,7 +229,8 @@
 		flex-direction: column;
 		flex-grow: 1;
 
-		margin-bottom: map-get($nav-size, 'sm');
+		/* margin-bottom: map-get($nav-size, 'sm'); */
+		padding-top: map-get($margin-secondary, 'sm');
 
 		overflow-y: auto;
 
@@ -224,16 +241,15 @@
 		flex-grow: 1;
 	}
 
-	.chat__spacer {
-		height: map-get($margin-secondary, 'sm');
-		flex-shrink: 0;
+	.message--spaced {
+		margin-top: map-get($margin-secondary, 'sm');
 	}
 
 	.chat__nav {
-		position: fixed;
+		/* position: fixed;
 		bottom: 0;
 		left: 0;
-		right: 0;
+		right: 0; */
 		flex-shrink: 0;
 	}
 
@@ -259,11 +275,11 @@
 		}
 
 		.chat__messages {
-			margin-bottom: map-get($nav-size, 'lg');
+			padding-top: map-get($margin-secondary, 'lg');
 		}
 
-		.chat__spacer {
-			height: map-get($margin-secondary, 'lg');
+		.message--spaced {
+			margin-top: map-get($margin-secondary, 'lg');
 		}
 	}
 </style>

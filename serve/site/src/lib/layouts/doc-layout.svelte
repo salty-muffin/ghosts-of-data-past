@@ -14,6 +14,9 @@
 	// intersection observer for the 'breathing' headers
 	let observer: IntersectionObserver | undefined;
 
+	// doc wrapper element
+	let doc: HTMLElement | undefined;
+
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
 	const bodyAnimation = new FontAnimator({ weight: 200, italic: 0 }, { weight: 200, italic: 7 });
@@ -27,6 +30,12 @@
 
 			// updating all font animations
 			bodyC = bodyAnimation.update(interpolated);
+
+			// updating css variables
+			if (doc) {
+				doc.style.setProperty('--h-weight', String(bodyC.weight));
+				doc.style.setProperty('--h-italic', String(bodyC.italic));
+			}
 
 			// append next animation frame
 			animation = requestAnimationFrame(update);
@@ -63,7 +72,7 @@
 	<title>{title}</title>
 </svelte:head>
 
-<div class="doc" style="--b-weight: {bodyC.weight}; --b-italic: {bodyC.italic};">
+<div class="doc" bind:this={doc}>
 	<article class="doc__container">
 		<h1 class="doc__title">{title}</h1>
 

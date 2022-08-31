@@ -1,9 +1,11 @@
 <script lang="ts">
 	export let writer: string;
 	export let attributes: any;
+	let className = '';
+	export { className as class };
 </script>
 
-<div class="message__wrapper message--{attributes[writer]['position']}">
+<div class="message__wrapper message--{attributes[writer]['position']} {className}">
 	<div class="writing__animation">
 		<div />
 		<span>x</span>
