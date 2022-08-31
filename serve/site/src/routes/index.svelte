@@ -135,7 +135,9 @@
 <div class="chat" bind:this={chat}>
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
-			<Message
+			<div class="chat__placeholder" />
+
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -143,7 +145,6 @@
 				alt=""
 				timestamp={1651313396942}
 				attributes={chatAttributes}
-				class="message--top"
 			/>
 			<Message
 				id="aSwWASETCcg3QaukkAFesN"
@@ -165,7 +166,7 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" />
+			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -189,8 +190,9 @@
 							attributes={chatAttributes}
 							class="message--spaced"
 						/>
+					{:else}
+						<Writing writer={writing_state.writer} attributes={chatAttributes} />
 					{/if}
-					<Writing writer={writing_state.writer} attributes={chatAttributes} />
 				{/if}
 			{/each}
 		</div>
@@ -235,12 +237,12 @@
 		width: 100%;
 	}
 
-	.message--spaced {
-		margin-top: map-get($margin-secondary, 'sm');
+	.chat__placeholder {
+		flex-grow: 1;
 	}
 
-	.message--top {
-		margin-top: auto;
+	.message--spaced {
+		margin-top: map-get($margin-secondary, 'sm');
 	}
 
 	.chat__nav {
