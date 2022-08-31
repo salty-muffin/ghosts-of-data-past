@@ -33,8 +33,8 @@
 
 			// updating css variables
 			if (doc) {
-				doc.style.setProperty('--h-weight', String(bodyC.weight));
-				doc.style.setProperty('--h-italic', String(bodyC.italic));
+				doc.style.setProperty('--b-weight', String(bodyC.weight));
+				doc.style.setProperty('--b-italic', String(bodyC.italic));
 			}
 
 			// append next animation frame
@@ -109,7 +109,7 @@
 					display: block;
 					content: '';
 					margin-left: map-get($margin-primary, 'sm');
-					border-right: 1px dotted map-get($colors, 'foreground');
+					border-right: 1px solid map-get($colors, 'foreground');
 					width: 100%;
 				}
 			}
@@ -220,7 +220,7 @@
 						margin-left: unset;
 						margin-top: map-get($margin-primary, 'lg');
 						border-left: unset;
-						border-top: 1px dotted map-get($colors, 'foreground');
+						border-top: 1px solid map-get($colors, 'foreground');
 						width: 100%;
 					}
 				}

@@ -73,7 +73,7 @@ button {
 		color: map-get($colors, 'foreground');
 		// text-decoration: underline;
 		font-family: $font-family-underline;
-		font-weight: 300;
+		font-weight: 200;
 	}
 }
 
@@ -101,6 +101,6 @@ button {
 	button {
 		// text-decoration: underline;
 		font-family: $font-family-underline;
-		font-weight: 350;
+		font-weight: 200;
 	}
 }
