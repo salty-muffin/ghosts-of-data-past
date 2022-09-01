@@ -170,29 +170,26 @@
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
-				{#if index > 0 && message.sender !== $messages[index - 1].sender}
-					<Message
-						{...message}
-						displaySender={true}
-						attributes={chatAttributes}
-						class="message--spaced"
-					/>
-				{:else}
-					<Message {...message} displaySender={false} attributes={chatAttributes} />
-				{/if}
+				<Message
+					{...message}
+					displaySender={false}
+					attributes={chatAttributes}
+					class={index > 0 && message.sender !== $messages[index - 1].sender
+						? 'message--spaced'
+						: ''}
+				/>
 			{/each}
 			{#each $writing as writing_state}
 				{#if writing_state.state}
 					<!-- add top margin, if current writer differs from the previous message's sender -->
-					{#if $messages.length > 0 && writing_state.writer !== $messages[$messages.length - 1].sender}
-						<Writing
-							writer={writing_state.writer}
-							attributes={chatAttributes}
-							class="message--spaced"
-						/>
-					{:else}
-						<Writing writer={writing_state.writer} attributes={chatAttributes} />
-					{/if}
+					<Writing
+						writer={writing_state.writer}
+						attributes={chatAttributes}
+						class={$messages.length > 0 &&
+						writing_state.writer !== $messages[$messages.length - 1].sender
+							? 'message--spaced'
+							: ''}
+					/>
 				{/if}
 			{/each}
 		</div>
@@ -230,7 +227,6 @@
 		flex-grow: 1;
 
 		/* margin-bottom: map-get($nav-size, 'sm'); */
-		padding-top: map-get($margin-secondary, 'sm');
 
 		overflow-y: auto;
 
@@ -239,6 +235,7 @@
 
 	.chat__placeholder {
 		flex-grow: 1;
+		min-height: map-get($margin-secondary, 'sm');
 	}
 
 	.message--spaced {
@@ -274,8 +271,8 @@
 			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 		}
 
-		.chat__messages {
-			padding-top: map-get($margin-secondary, 'lg');
+		.chat__placeholder {
+			min-height: map-get($margin-secondary, 'lg');
 		}
 
 		.message--spaced {
