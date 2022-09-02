@@ -10,10 +10,6 @@ links: [
 <script>
     import Sidenote from '$lib/components/sidenote.svelte';
 	import Image from '$lib/components/image.svelte';
-
-	import kdfsLogoWebp from '$assets/images/kdfs_logo.png?w=375;550;720&png&srcset';
-	import kdfsLogoJpg from '$assets/images/kdfs_logo.png?w=375;550;720&png&srcset';
-	import kdfsLogoFallback from '$assets/images/kdfs_logo.png?w=720&png&metadata';
 </script>
 
 Like most (art) projects, _ghosts of data past_ was not the work of a single person, but relied on the collaboration with and the support of a large number of people. Some of the people receiving credit and thanks here activly participated in this project, others knowingly or unknowingly provided knowledge and inspiration.
@@ -58,4 +54,16 @@ The Project was funded by the [KdFS](https://www.kdfs.de), which allowed me to p
 
 Additionaly was supported through a scholarship by the HAB from the [HfMA](https://www.hfmakademie.de/).
 
-<p><a href="https://kdfs.de"><Image webpSrcSet={kdfsLogoWebp} jpgSrcset={kdfsLogoJpg} fallback={kdfsLogoFallback} alt="KdFS Logo" class="doc__logo"/></a>Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.</p>
+<p>
+	<a href="https://kdfs.de">
+		<Image
+		image="images/kdfs_logo.png"
+		width={1552}
+		height={639} 
+		alt="KdFS Logo"
+		sizes={[{ width: 400, maxWidth: 400 }, { width: 720 }]}
+		formats={['avif', 'webp', 'png']}
+		class="doc__logo"/>
+	</a>
+	Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
+</p>

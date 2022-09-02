@@ -121,8 +121,8 @@
 	.doc__container {
 		flex-grow: 1;
 
-		max-width: $container-width;
-		margin: 0 map-get($margin-primary, 'sm');
+		width: min(calc(100vw - 2 * map-get($margin-primary, 'sm')), $container-width);
+		// margin: 0 map-get($margin-primary, 'sm');
 	}
 
 	.doc__content {
@@ -155,7 +155,7 @@
 			}
 		}
 
-		.image {
+		.image-component {
 			width: calc(100% + 2 * map-get($margin-primary, 'sm'));
 			margin: 0 0 - map-get($margin-primary, 'sm');
 
@@ -235,15 +235,16 @@
 		}
 
 		.doc__container {
-			margin: 0 map-get($margin-primary, 'lg');
+			width: min(calc(100vw - 2 * map-get($margin-primary, 'lg')), $container-width);
+			// margin: 0 map-get($margin-primary, 'lg');
 		}
 
-		.doc__content .image {
+		.doc__content .image-component {
 			width: 100%;
 			margin: 0;
 
 			&.doc__logo {
-				width: min(100%, 20em);
+				width: min(100%, 16em);
 				float: right;
 				clear: right;
 				margin: 0 0 map-get($margin-primary, 'lg') map-get($margin-primary, 'lg');

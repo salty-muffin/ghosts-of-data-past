@@ -11,7 +11,7 @@
 		display: flex;
 		align-self: stretch;
 
-		margin: map-get($margin-primary, 'sm') map-get($margin-primary, 'sm')
+		margin: map-get($margin-layout, 'sm') map-get($margin-primary, 'sm')
 			map-get($margin-secondary, 'sm');
 
 		justify-content: space-between;
@@ -39,7 +39,7 @@
 
 	@media only screen and (min-width: $breakpoint) {
 		.footer {
-			margin: map-get($margin-primary, 'lg') map-get($margin-primary, 'lg')
+			margin: map-get($margin-layout, 'lg') map-get($margin-primary, 'lg')
 				map-get($margin-secondary, 'lg');
 
 			p {

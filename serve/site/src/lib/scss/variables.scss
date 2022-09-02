@@ -87,6 +87,10 @@ $container-width: 45em;
 $sidenote-width: 30em;
 
 // margins
+$margin-layout: (
+	'sm': 3em,
+	'lg': 5em
+);
 $margin-primary: (
 	'sm': 1em,
 	'lg': 1.2em

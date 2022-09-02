@@ -9,7 +9,7 @@ links: [
 
 <script>
     import Sidenote from '$lib/components/sidenote.svelte';
-	// import Image from '$lib/components/image.svelte';
+	import Image from '$lib/components/image.svelte';
 </script>
 
 <!-- table of contents will always appear before the first paragraph -->
@@ -23,22 +23,10 @@ going over technical backgrounds.
 This here is just filler text, because I assume the introcution would probably be longer, but
 we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
 
-<!-- - the process
-  - writing with the scientist
-  - performers writing
-  - -> finetuning gpt2neo with the combined datasets
-  - filming
-  - -> finetuning stylegan3 with the combined datasets
-  - recording phone notification sounds
-  - -> combining all those sounds into one single 'fusion'
-  - -> generating endless variations on that sound
-- technologies used
-  - gpt2 (neo) - openai/huggingface/eleutherai https://github.com/EleutherAI/gpt-neo/
-  - stylegan3 - nvidia https://github.com/salty-muffin/stylegan3
-  - nsynth - magenta (google) https://github.com/magenta/magenta/tree/main/magenta/models/nsynth
-  - (the issues with cutting edge ai models: having to rely on large companies at the moment)
-- datasets used
-  - finetuning explained
-  - https://pile.eleuther.ai/
-  - https://github.com/NVlabs/ffhq-dataset
-  - https://magenta.tensorflow.org/datasets/nsynth -->
+<Image
+image="/images/seed0000.jpg"
+width={1024}
+height={1024}
+alt="test"
+sizes={[{ width: 400, maxWidth: 400 }, { width: 720 }]}
+/>
