@@ -59,9 +59,6 @@
 				observer?.observe(element);
 			});
 
-		// remove noscroll
-		document.body.classList.remove('chat--noscroll');
-
 		return () => {
 			cancelAnimationFrame(animation);
 		};

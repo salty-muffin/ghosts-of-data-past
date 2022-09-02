@@ -65,6 +65,7 @@
 		writing.add({ writer: event.writer, state: event.state });
 	});
 
+	const transitionDuration = 1500;
 	afterNavigate((navigation) => {
 		// disable scrolling on chat
 		if (navigation.to.pathname === '/') {
@@ -75,6 +76,6 @@
 	});
 </script>
 
-<PageTransition {url} duration={1500}>
+<PageTransition {url} duration={transitionDuration}>
 	<slot />
 </PageTransition>

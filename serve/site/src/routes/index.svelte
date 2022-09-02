@@ -84,7 +84,7 @@
 		});
 
 		// autoscroll to the bottom after returning to the page
-		messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight); // TODO: does this work?
+		messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight);
 
 		return () => {
 			cancelAnimationFrame(animation);
@@ -163,6 +163,36 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
+			<Message
+				id="Zp7nVKxeiaY3UE5B9Ptjnm"
+				sender="scientist"
+				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
+				imageURL=""
+				alt=""
+				timestamp={1651313396942}
+				attributes={chatAttributes}
+				class="message--spaced"
+			/>
+			<Message
+				id="aSwWASETCcg3QaukkAFesN"
+				sender="artist"
+				text=""
+				imageURL="seed0000.jpg"
+				alt="seed0000"
+				timestamp={1651313416949}
+				attributes={chatAttributes}
+				class="message--spaced"
+			/>
+			<Message
+				id="qDwLOSAKCcg3Qaukkpaesd"
+				sender="artist"
+				text="Here I am."
+				imageURL=""
+				alt=""
+				timestamp={1651313416949}
+				displaySender={false}
+				attributes={chatAttributes}
+			/>
 			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" />
 
 			{#each $messages as message, index (message.id)}
@@ -201,12 +231,17 @@
 		overflow: hidden;
 	}
 
+	html {
+		height: -webkit-fill-available;
+	}
+
 	.chat {
 		position: relative;
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		height: 100vh;
+		max-height: -webkit-fill-available;
 	}
 
 	.chat__container {
