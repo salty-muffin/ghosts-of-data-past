@@ -1,5 +1,5 @@
 ---
-title: 'technical details'
+title: 'process'
 links: [
 	{ href: '/', text: 'back to work' },
 	{ href: '/process', text: 'process' },
@@ -14,19 +14,51 @@ links: [
 
 <!-- table of contents will always appear before the first paragraph -->
 
-this is a placeholder for the documentation. In the end there might be two or three pages
-describing in detail. One may be going over general background stuff, while another will be
-going over technical backgrounds.
+On the technological side this project consists of multiple components, most of which are based on so called "artifial intelligence" (short AI). This text will give a brief overview of this technology and then go on to describe the process of this project. All source code used for research and production of this work is publicly avaliable and may be used, adapted and redestributed for non-commercial projects.
 
-# Some Heading
+# Machine Learning
 
-This here is just filler text, because I assume the introcution would probably be longer, but
-we'll see I guess. Lorem ipsum dolor sit amet consectetur adipisicing elit.
+This would be a couple of paragraphs about machine learning, including phil agres, the nooscope and maybe mark fisher?
 
-<Image
+- data
+- training
+- finetuning
+- critical AI
+- (machine ethics? Hendrik?)
+- eerieness reversal:
+  - mark fisher eeriness (something that isn't there, but should be or something that is there, but shouldn't be)
+  - ai eerie, because:
+    - "normal people": eerie, because intelligence shouldn't be there, but is.
+    - critical ai: eerie, because intelligence is percieved to be there, but isn't.
+
+# The Process
+
+- writing with the scientist
+- performers writing
+- -> finetuning gpt2neo with the combined datasets
+- filming
+- -> finetuning stylegan3 with the combined datasets
+- recording phone notification sounds
+- -> combining all those sounds into one single 'fusion'
+- -> generating endless variations on that sound
+
+# Technologies
+
+- gpt2 (neo) - openai/huggingface/eleutherai https://github.com/EleutherAI/gpt-neo/
+- stylegan3 - nvidia https://github.com/salty-muffin/stylegan3
+- nsynth - magenta (google) https://github.com/magenta/magenta/tree/main/magenta/models/nsynth
+- (the issues with cutting edge ai models: having to rely on large companies at the moment)
+
+## Datasets
+
+- https://pile.eleuther.ai/
+- https://github.com/NVlabs/ffhq-dataset
+- https://magenta.tensorflow.org/datasets/nsynth
+
+<!-- <Image
 image="/images/seed0000.jpg"
 width={1024}
 height={1024}
 alt="test"
 sizes={[{ width: 400, maxWidth: 400 }, { width: 720 }]}
-/>
+/> -->

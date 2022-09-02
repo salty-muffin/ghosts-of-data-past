@@ -134,7 +134,7 @@
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
 
-			<Message
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -163,43 +163,14 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Message
-				id="Zp7nVKxeiaY3UE5B9Ptjnm"
-				sender="scientist"
-				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
-				imageURL=""
-				alt=""
-				timestamp={1651313396942}
-				attributes={chatAttributes}
-				class="message--spaced"
-			/>
-			<Message
-				id="aSwWASETCcg3QaukkAFesN"
-				sender="artist"
-				text=""
-				imageURL="seed0000.jpg"
-				alt="seed0000"
-				timestamp={1651313416949}
-				attributes={chatAttributes}
-				class="message--spaced"
-			/>
-			<Message
-				id="qDwLOSAKCcg3Qaukkpaesd"
-				sender="artist"
-				text="Here I am."
-				imageURL=""
-				alt=""
-				timestamp={1651313416949}
-				displaySender={false}
-				attributes={chatAttributes}
-			/>
-			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" />
+			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
 				<Message
 					{...message}
-					displaySender={false}
+					displaySender={index === 0 ||
+						(index > 0 && message.sender !== $messages[index - 1].sender)}
 					attributes={chatAttributes}
 					class={index > 0 && message.sender !== $messages[index - 1].sender
 						? 'message--spaced'
