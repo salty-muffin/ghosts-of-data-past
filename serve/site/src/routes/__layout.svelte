@@ -12,6 +12,8 @@
 	import '$lib/scss/fonts.scss';
 	import '$lib/scss/global.scss';
 
+	import { afterNavigate } from '$app/navigation';
+
 	import { io } from 'socket.io-client';
 
 	import { messages } from '$lib/stores/messages';
@@ -61,6 +63,15 @@
 	// on incoming writing event
 	socket.on('writing_state', (event) => {
 		writing.add({ writer: event.writer, state: event.state });
+	});
+
+	afterNavigate((navigation) => {
+		// disable scrolling on chat
+		if (navigation.to.pathname === '/') {
+			document.body.classList.add('chat--noscroll');
+		} else {
+			document.body.classList.remove('chat--noscroll');
+		}
 	});
 </script>
 

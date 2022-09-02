@@ -84,10 +84,7 @@
 		});
 
 		// autoscroll to the bottom after returning to the page
-		messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight);
-
-		// disable scrolling on this page
-		document.body.classList.add('chat--noscroll');
+		messagesWrapper.scrollTo(0, messagesWrapper.scrollHeight); // TODO: does this work?
 
 		return () => {
 			cancelAnimationFrame(animation);
