@@ -111,6 +111,7 @@
 					margin-left: map-get($margin-primary, 'sm');
 					border-right: 1px solid map-get($colors, 'foreground');
 					width: 100%;
+					height: 100%;
 				}
 			}
 		}
@@ -215,13 +216,10 @@
 					display: unset;
 
 					&::after {
-						display: block;
-						content: '';
 						margin-left: unset;
 						margin-top: map-get($margin-primary, 'lg');
 						border-left: unset;
 						border-top: 1px solid map-get($colors, 'foreground');
-						width: 100%;
 					}
 				}
 

@@ -137,7 +137,7 @@
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
 
-			<!-- <Message
+			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -166,7 +166,7 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" /> -->
+			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" />
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -205,6 +205,7 @@
 	}
 
 	.chat {
+		position: relative;
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -212,8 +213,8 @@
 	}
 
 	.chat__container {
-		width: min($chat-width, 100vw);
-		height: min($chat-height, 100vh);
+		width: min($chat-width, 100%);
+		height: min($chat-height, 100%);
 
 		display: flex;
 		flex-direction: column;
