@@ -48,7 +48,7 @@ This would be a couple of paragraphs about machine learning, including phil agre
 - -> generating endless variations on that sound
 
 - Choices
-  - the questions of thinking machines are not of interest to me. I am interested in what humans project into machines (analogous to what they project into ghosts)
+  - the questions of thinking machines are not of interest to me. I am interested in what humans project into machines (analogous to what they project into ghosts) -> this is key, because it is based on my interpretation / demystification of AI at the beginning of this text & because it lays the groundwork for the rest of the choices
   - I picked ghostliness, because I'm interested in human machine relations (avatars, eterne.me)
   - I used errors in AI to drive home this ghostliness with the weird and the eerie (respectivly)
     - mostly weird, because there seems to be an incursion of strangeness in an momentarily (for the first seconds/minutes of seeing) "normal" world (in the case of images and sounds)
