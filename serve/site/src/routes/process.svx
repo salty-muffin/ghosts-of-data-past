@@ -34,6 +34,7 @@ This would be a couple of paragraphs about machine learning, including phil agre
 # AI and its artistic use
 
 - my view on how AI can be used artistically: self reflective
+- ai should not be mystified without reflecting what narrative that drives (nooscope manifested)
 
 # The Process
 
