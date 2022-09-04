@@ -31,6 +31,10 @@ This would be a couple of paragraphs about machine learning, including phil agre
     - "normal people": eerie, because intelligence shouldn't be there, but is.
     - critical ai: eerie, because intelligence is percieved to be there, but isn't.
 
+# AI and its artistic use
+
+- my view on how AI can be used artistically: self reflective
+
 # The Process
 
 - writing with the scientist
