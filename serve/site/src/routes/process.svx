@@ -47,6 +47,13 @@ This would be a couple of paragraphs about machine learning, including phil agre
 - -> combining all those sounds into one single 'fusion'
 - -> generating endless variations on that sound
 
+- Choices
+  - I picked ghostliness, because I'm interested in human machine relations (avatars, eterne.me)
+  - I used errors in AI to drive home this ghostliness with the weird and the eerie (respectivly)
+    - mostly weird, because there seems to be an incursion of strangeness in an momentarily (for the first seconds/minutes of seeing) "normal" world (in the case of images and sounds)
+    - eeriness in the texts, because of the absense of reason, which is momentarly perceived and the presence of emotion, which should not be there.
+  - I always combined (compressed (nooscope)) multiple persons / texts / sounds into one, um zu inszenieren und anonymisieren. AI allows this as it is the great compressor.
+
 # Technologies
 
 - gpt2 (neo) - openai/huggingface/eleutherai https://github.com/EleutherAI/gpt-neo/
