@@ -16,7 +16,7 @@ Like most (art) projects, _ghosts of data past_ was not the work of a single per
 
 # Ghosts
 
-A big part of the basis for this project were the mails Hendrik Kempt<Sidenote id={1}>Henrik Kempt has a practive as a philosopher, working in applied ethics, also in the field of AI. He writes books, too: You can find out more about him on his [Twitter](https://twitter.com/hkem). </Sidenote> and I wrote over the winter 21/22. These mails make up half of the dataset for the text generating AI.
+A big part of the basis for this project were the mails Hendrik Kempt<Sidenote id="{1}">Henrik Kempt has a practive as a philosopher, working in applied ethics, also in the field of AI. He writes books, too: You can find out more about him on his [Twitter](https://twitter.com/hkem). </Sidenote> and I wrote over the winter 21/22. These mails make up half of the dataset for the text generating AI.
 
 The other half of the dataset was created by Sarah Lucey and Lola Wittstamm, who worked on the project as performers, improvising a messenger chat over the duration of three days.
 
@@ -26,7 +26,7 @@ All participants provided their face for filming and image dataset creation.
 
 The fonts used in this project are [ABC Favorit](https://abcdinamo.com/typefaces/favorit) by ABC Dynamo and [PW Smokey](https://www.dafont.com/pwsmokey.font).
 
-The AI used in this project are [GPT Neo](https://github.com/EleutherAI/gpt-neo/) by Eleuther AI for text generation and [StyleGAN3](https://github.com/NVlabs/stylegan3)<Sidenote id={2} left>The source code of StyleGAN3 slightly was modified slightly by me, adding features that make dataset prepration from videos easier. You can find my fork [here](https://github.com/salty-muffin/stylegan3).</Sidenote> by NVIDIA<Sidenote id={3} right>I would have preferred not to have used AIs by large cooperations. Unfortionately it is hard avoid at this time, especially when quality in image generation is required.</Sidenote> for selfie generation. Additionaly [NSynth](https://github.com/magenta/magenta/tree/main/magenta/models/nsynth) was used for generating and abstracting the notification sounds. For all AIs pretrained models were used that were provided by the creators of the respective AIs. For GPT Neo & StyleGAN3 these were finetuned with my own datasets.
+The AI used in this project are [GPT Neo](https://github.com/EleutherAI/gpt-neo/) by Eleuther AI for text generation and [StyleGAN3](https://github.com/NVlabs/stylegan3)<Sidenote id="{2}" left>The source code of StyleGAN3 slightly was modified slightly by me, adding features that make dataset prepration from videos easier. You can find my fork [here](https://github.com/salty-muffin/stylegan3).</Sidenote> by NVIDIA<Sidenote id="{3}" right>I would have preferred not to have used AIs by large cooperations. Unfortionately it is hard avoid at this time, especially when quality in image generation is required.</Sidenote> for selfie generation. Additionaly [NSynth](https://github.com/magenta/magenta/tree/main/magenta/models/nsynth) was used for generating and abstracting the notification sounds. For all AIs pretrained models were used that were provided by the creators of the respective AIs. For GPT Neo & StyleGAN3 these were finetuned with my own datasets.
 
 # Inspiration
 
@@ -50,7 +50,7 @@ And last but not at all least I would like to thank Res Sigusch, without whose i
 
 # Funding
 
-The Project was funded by the [KdFS](https://www.kdfs.de), which allowed me to pay the performers and license the fonts used. Hendrik Kempt refused to be paid for his collaboration.
+The project was funded by the [KdFS](https://www.kdfs.de), which allowed me to pay the performers and license the fonts used. Hendrik Kempt refused to be paid for his collaboration.
 
 Additionaly was supported through a scholarship by the HAB from the [HfMA](https://www.hfmakademie.de/).
 
@@ -58,11 +58,11 @@ Additionaly was supported through a scholarship by the HAB from the [HfMA](https
 	<a href="https://kdfs.de">
 		<Image
 		image="images/kdfs_logo.png"
-		width={1552}
-		height={639} 
+		width="{1552}"
+		height="{639}"
 		alt="KdFS Logo"
-		sizes={[{ width: 400, maxWidth: 400 }, { width: 720 }]}
-		formats={['avif', 'webp', 'png']}
+		sizes="{[{ width: 400, maxWidth: 400 }, { width: 720 }]}"
+		formats="{['avif', 'webp', 'png']}"
 		class="doc__logo"/>
 	</a>
 	Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.

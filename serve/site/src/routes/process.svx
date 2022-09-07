@@ -14,7 +14,7 @@ links: [
 
 <!-- table of contents will always appear before the first paragraph -->
 
-On the technological side this project consists of multiple components, most of which are based on so called "artifial intelligence" (short AI). This text will give a brief overview of this technology and then go on to describe the process of this project. All source code used for research and production of this work is publicly avaliable and may be used, adapted and redestributed for non-commercial projects.
+On the technological side this project consists of multiple components, most of which are based on so-called "artifial intelligence" (short AI). This text will give a brief overview of this technology and then go on to describe the process of this project, while attempting to give insight into the artistic and technological choices taken. All source code used for research and production of this work is publicly avaliable and may be used, adapted and redestributed for non-commercial projects.
 
 # Machine Learning
 
@@ -49,7 +49,7 @@ This would be a couple of paragraphs about machine learning, including phil agre
 
 - Choices
   - the questions of thinking machines are not of interest to me. I am interested in what humans project into machines (analogous to what they project into ghosts) -> this is key, because it is based on my interpretation / demystification of AI at the beginning of this text & because it lays the groundwork for the rest of the choices
-  - I picked ghostliness, because I'm interested in human machine relations (avatars, eterne.me)
+  - I picked ghostliness, because I'm interested in human machine relations (avatars, eterne.me) (quote of phil agres: modeling to the minds of scientists)
   - I used errors in AI to drive home this ghostliness with the weird and the eerie (respectivly)
     - mostly weird, because there seems to be an incursion of strangeness in an momentarily (for the first seconds/minutes of seeing) "normal" world (in the case of images and sounds)
     - eeriness in the texts, because of the absense of reason, which is momentarly perceived and the presence of emotion, which should not be there.
