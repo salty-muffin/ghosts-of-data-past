@@ -202,10 +202,6 @@
 		overflow: hidden;
 	}
 
-	html {
-		height: -webkit-fill-available;
-	}
-
 	.chat {
 		position: relative;
 		display: flex;

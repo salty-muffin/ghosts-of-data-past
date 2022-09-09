@@ -5,6 +5,10 @@ body {
 	margin: 0;
 }
 
+html {
+	height: -webkit-fill-available;
+}
+
 body {
 	background-color: map-get($colors, 'background');
 
