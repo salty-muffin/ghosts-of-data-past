@@ -1,5 +1,5 @@
 ---
-title: 'documentation'
+title: 'abstract'
 links: [
 	{ href: '/', text: 'back to work' },
 	{ href: '/abstract', text: 'abstract' },
