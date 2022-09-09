@@ -1,10 +1,10 @@
 ---
-title: 'process'
+title: 'documentation'
 links: [
 	{ href: '/', text: 'back to work' },
-	{ href: '/process', text: 'process' },
+	{ href: '/abstract', text: 'abstract' },
 	{ href: '/credits', text: 'credits' },
-  { href: '/credits', text: 'source' }
+  { href: '/source', text: 'source' }
 ]
 ---
 
