@@ -1,0 +1,25 @@
+---
+title: 'source code'
+links: [
+	{ href: '/', text: 'back to work' },
+	{ href: '/process', text: 'process' },
+	{ href: '/credits', text: 'credits' },
+  { href: '/credits', text: 'source' }
+]
+---
+
+<script>
+    import Sidenote from '$lib/components/sidenote.svelte';
+	import Image from '$lib/components/image.svelte';
+</script>
+
+<!-- table of contents will always appear before the first paragraph -->
+
+In case you want to know how all this was implemented exactly or even recreate it with your own datasets, you can the source code for this project and further documentation through the following links. All source code used for research and production of this work is publicly available and may be used, adapted and redistributed for non-commercial projects.
+
+# Links
+
+- [ghosts-of-data-past](https://github.com/salty-muffin/ghosts-of-data-past) – this is the code running inside the server object, generating the messages and hosting this work online.
+- [gpt-2-training](https://github.com/salty-muffin/gpt-2-training) – for training the text generating algorithm.
+- [stylegan3](https://github.com/salty-muffin/stylegan3) – for training the image generating algorithm.
+- [nsynth-notification-sound-generation](https://github.com/salty-muffin/nsynth-notification-sound-generation) – for generating the notification sounds.
