@@ -76,6 +76,7 @@ the work on this project was sponsored by the [kulturstiftung des freistaates sa
 - [ ] donate for pw smokey https://www.dafont.com/pwsmokey.font
 - [x] change the scrolling behaviour (possibly scroll on the main window and make the nav fixed)
 - [ ] keep scroll position on navigation
+- [ ] add ability to unmute video
 
 ### generate
 
