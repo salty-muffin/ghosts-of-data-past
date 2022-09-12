@@ -73,11 +73,24 @@
 		}
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
+		.nav__wrapper {
+			height: map-get($nav-size, 'md');
+		}
+
+		.nav__links {
+			margin: 0 map-get($margin-primary, 'md');
+
+			h4 button,
+			h4 {
+				font-size: map-get($nav-links-size, 'md');
+			}
+		}
+	}
+
+	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
 		.nav__wrapper {
 			height: map-get($nav-size, 'lg');
-
-			/* border-width: map-get($border-width, 'lg'); */
 		}
 
 		.nav__links {

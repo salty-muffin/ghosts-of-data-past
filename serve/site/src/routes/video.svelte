@@ -45,7 +45,13 @@
 		margin: map-get($margin-primary, 'sm');
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
+		.video__text {
+			margin: map-get($margin-primary, 'md');
+		}
+	}
+
+	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
 		.video__text {
 			margin: map-get($margin-primary, 'lg');
 		}

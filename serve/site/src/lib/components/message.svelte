@@ -179,7 +179,7 @@
 		}
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
 		.message__wrapper {
 			border-radius: map-get($margin-primary, 'lg');
 

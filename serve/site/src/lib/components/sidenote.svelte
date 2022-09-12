@@ -19,7 +19,8 @@
 	on:click={() => {
 		show = !show;
 	}}>{id}</span
-><div
+>
+<div
 	class="sidenote sidenote--{left || right
 		? left
 			? 'left'
@@ -109,13 +110,13 @@
 		}
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
 		.sidenote {
-			margin: map-get($margin-primary, 'lg') 0;
-			padding: 0 map-get($margin-primary, 'lg');
-			border-left: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
+			margin: map-get($margin-primary, 'md') 0;
+			padding: 0 map-get($margin-primary, 'md');
+			border-left: solid map-get($border-width, 'md') map-get($colors, 'foreground');
 
-			font-size: map-get($sidenote-size, 'lg');
+			font-size: map-get($sidenote-size, 'md');
 		}
 	}
 
@@ -123,15 +124,15 @@
 		.sidenote {
 			width: min(
 				$sidenote-width,
-				calc((100vw - $container-width) / 2 - 5 * map-get($margin-primary, 'lg'))
+				calc((100vw - map-get($container-width, 'md')) / 2 - 5 * map-get($margin-primary, 'md'))
 			);
 
 			margin: unset;
-			margin-bottom: 2 * map-get($margin-primary, 'lg');
+			margin-bottom: 2 * map-get($margin-primary, 'md');
 
 			padding: unset;
-			padding-top: map-get($margin-primary, 'lg');
-			border-top: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
+			padding-top: map-get($margin-primary, 'md');
+			border-top: solid map-get($border-width, 'md') map-get($colors, 'foreground');
 			border-left: unset;
 
 			display: unset;
@@ -141,8 +142,58 @@
 				clear: left;
 
 				margin-left: max(
+					calc(($sidenote-width + 3 * map-get($margin-primary, 'md')) * -1),
+					calc((100vw - map-get($container-width, 'md')) / -2 + 2 * map-get($margin-primary, 'md'))
+				);
+
+				padding-right: map-get($margin-primary, 'md');
+				border-right: solid map-get($border-width, 'md') map-get($colors, 'background');
+
+				&.sidenote--hover {
+					border-right: solid map-get($border-width, 'md') map-get($colors, 'foreground');
+				}
+			}
+			&.sidenote--right {
+				float: right;
+				clear: right;
+
+				margin-right: max(
+					calc(($sidenote-width + 3 * map-get($margin-primary, 'md')) * -1),
+					calc(
+						(100vw - map-get($container-width, 'md')) / 2 * -1 + 2 * map-get($margin-primary, 'md')
+					)
+				);
+
+				padding-left: map-get($margin-primary, 'md');
+				border-left: solid map-get($border-width, 'md') map-get($colors, 'background');
+
+				&.sidenote--hover {
+					border-left: solid map-get($border-width, 'md') map-get($colors, 'foreground');
+				}
+			}
+		}
+
+		.sidenote__close {
+			display: none;
+		}
+	}
+
+	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
+		.sidenote {
+			width: min(
+				$sidenote-width,
+				calc((100vw - map-get($container-width, 'lg')) / 2 - 5 * map-get($margin-primary, 'lg'))
+			);
+
+			margin-bottom: 2 * map-get($margin-primary, 'lg');
+
+			padding-top: map-get($margin-primary, 'lg');
+			border-top: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
+
+			&.sidenote--left {
+				margin-left: max(
 					calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1),
-					calc((100vw - $container-width) / -2 + 2 * map-get($margin-primary, 'lg'))
+					calc((100vw - map-get($container-width, 'lg')) / -2 + 2 * map-get($margin-primary, 'lg'))
 				);
 
 				padding-right: map-get($margin-primary, 'lg');
@@ -153,12 +204,11 @@
 				}
 			}
 			&.sidenote--right {
-				float: right;
-				clear: right;
-
 				margin-right: max(
 					calc(($sidenote-width + 3 * map-get($margin-primary, 'lg')) * -1),
-					calc((100vw - $container-width) / 2 * -1 + 2 * map-get($margin-primary, 'lg'))
+					calc(
+						(100vw - map-get($container-width, 'lg')) / 2 * -1 + 2 * map-get($margin-primary, 'lg')
+					)
 				);
 
 				padding-left: map-get($margin-primary, 'lg');
@@ -168,10 +218,6 @@
 					border-left: solid map-get($border-width, 'lg') map-get($colors, 'foreground');
 				}
 			}
-		}
-
-		.sidenote__close {
-			display: none;
 		}
 	}
 </style>

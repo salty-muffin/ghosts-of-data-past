@@ -37,7 +37,18 @@
 		}
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
+		.footer {
+			margin: map-get($margin-layout, 'md') map-get($margin-primary, 'md')
+				map-get($margin-secondary, 'md');
+
+			p {
+				font-size: map-get($footer-size, 'md');
+			}
+		}
+	}
+
+	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
 		.footer {
 			margin: map-get($margin-layout, 'lg') map-get($margin-primary, 'lg')
 				map-get($margin-secondary, 'lg');
