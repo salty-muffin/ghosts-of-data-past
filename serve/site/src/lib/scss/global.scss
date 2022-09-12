@@ -81,7 +81,26 @@ button {
 	}
 }
 
-@media only screen and (min-width: $breakpoint) {
+@media only screen and (min-width: map-get($breakpoint, 'md')) {
+	h1 {
+		font-size: map-get($heading1-size, 'md');
+	}
+
+	h2 {
+		font-size: map-get($heading2-size, 'md');
+	}
+
+	h3 {
+		font-size: map-get($heading3-size, 'md');
+	}
+
+	p,
+	li {
+		font-size: map-get($text-size, 'md');
+	}
+}
+
+@media only screen and (min-width: map-get($breakpoint, 'lg')) {
 	h1 {
 		font-size: map-get($heading1-size, 'lg');
 	}

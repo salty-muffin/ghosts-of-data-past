@@ -121,7 +121,7 @@
 	.doc__container {
 		flex-grow: 1;
 
-		width: min(calc(100vw - 2 * map-get($margin-primary, 'sm')), $container-width);
+		width: min(calc(100vw - 2 * map-get($margin-primary, 'sm')), map-get($container-width, 'sm'));
 		// margin: 0 map-get($margin-primary, 'sm');
 	}
 
@@ -227,7 +227,44 @@
 		}
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
+		.doc__title {
+			margin: 1.5em 0;
+
+			font-size: map-get($title-size, 'md');
+		}
+
+		.doc__container {
+			width: min(calc(100vw - 2 * map-get($margin-primary, 'md')), map-get($container-width, 'md'));
+			// margin: 0 map-get($margin-primary, 'lg');
+		}
+
+		.doc__content .image-component {
+			width: 100%;
+			margin: 0;
+
+			&.doc__logo {
+				width: min(100%, 16em);
+				float: right;
+				clear: right;
+				margin: 0 0 map-get($margin-primary, 'md') map-get($margin-primary, 'md');
+
+				/* filter: drop-shadow(0 0 map-get($margin-secondary, 'lg') map-get($colors, 'foreground'))
+					drop-shadow(0 0 map-get($margin-primary, 'lg') map-get($colors, 'foreground'))
+					drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground')); */
+			}
+		}
+
+		.doc__toc {
+			padding: map-get($margin-primary, 'md');
+			margin: 0 2 * map-get($margin-primary, 'sm') map-get($margin-primary, 'md') 0;
+			float: left;
+
+			border: solid map-get($border-width, 'md') map-get($colors, 'foreground');
+		}
+	}
+
+	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
 		.doc__title {
 			margin: 1.5em 0;
 
@@ -235,7 +272,7 @@
 		}
 
 		.doc__container {
-			width: min(calc(100vw - 2 * map-get($margin-primary, 'lg')), $container-width);
+			width: min(calc(100vw - 2 * map-get($margin-primary, 'lg')), map-get($container-width, 'lg'));
 			// margin: 0 map-get($margin-primary, 'lg');
 		}
 

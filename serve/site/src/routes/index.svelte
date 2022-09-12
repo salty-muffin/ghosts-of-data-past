@@ -134,7 +134,7 @@
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
 
-			<!-- <Message
+			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -163,7 +163,7 @@
 				displaySender={false}
 				attributes={chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" /> -->
+			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" />
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -266,7 +266,21 @@
 		}
 	}
 
-	@media only screen and (min-width: $breakpoint) {
+	@media only screen and (min-width: map-get($breakpoint, 'md')) {
+		.chat__container {
+			filter: drop-shadow(0 0 map-get($border-blur, 'md') map-get($colors, 'foreground'));
+		}
+
+		.chat__placeholder {
+			min-height: map-get($margin-secondary, 'md');
+		}
+
+		.message--spaced {
+			margin-top: map-get($margin-secondary, 'md');
+		}
+	}
+
+	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
 		.chat__container {
 			filter: drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground'));
 		}
