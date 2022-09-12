@@ -21,6 +21,8 @@
 	const duration = 5000;
 	const bodyAnimation = new FontAnimator({ weight: 200, italic: 0 }, { weight: 200, italic: 7 });
 	let bodyC = bodyAnimation.getStart();
+	const quoteAnimation = new FontAnimator({ weight: 200, italic: 5 }, { weight: 200, italic: 12 });
+	let quoteC = bodyAnimation.getStart();
 	onMount(() => {
 		// breathing animation
 		let animation = requestAnimationFrame(function update(timestamp: number) {
@@ -30,11 +32,14 @@
 
 			// updating all font animations
 			bodyC = bodyAnimation.update(interpolated);
+			quoteC = quoteAnimation.update(interpolated);
 
 			// updating css variables
 			if (doc) {
 				doc.style.setProperty('--b-weight', String(bodyC.weight));
 				doc.style.setProperty('--b-italic', String(bodyC.italic));
+				doc.style.setProperty('--q-weight', String(quoteC.weight));
+				doc.style.setProperty('--q-italic', String(quoteC.italic));
 			}
 
 			// append next animation frame
@@ -195,6 +200,10 @@
 
 	.doc--breathing {
 		font-variation-settings: 'wght' var(--b-weight), 'ital' var(--b-italic);
+	}
+
+	.blockquote.doc--breathing {
+		font-variation-settings: 'wght' var(--q-weight), 'ital' var(--q-italic);
 	}
 
 	@media only screen and (min-width: $sidenote-breakpoint) {

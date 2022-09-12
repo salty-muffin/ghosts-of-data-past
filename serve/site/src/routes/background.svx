@@ -1,8 +1,8 @@
 ---
-title: 'abstract'
+title: 'background'
 links: [
 	{ href: '/', text: 'back to work' },
-	{ href: '/abstract', text: 'abstract' },
+	{ href: '/background', text: 'background' },
 	{ href: '/credits', text: 'credits' },
   { href: '/source', text: 'source' }
 ]

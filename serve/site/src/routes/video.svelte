@@ -5,7 +5,7 @@
 
 <div class="video">
 	<IframePanel class="video__panel" url="https://player.vimeo.com/video/636103889" />
-	<Nav class="video__nav" links={[{ href: '/abstract', text: 'abstract' }]} />
+	<Nav class="video__nav" links={[{ href: '/background', text: 'background' }]} />
 </div>
 <div class="video__text">
 	<p>
