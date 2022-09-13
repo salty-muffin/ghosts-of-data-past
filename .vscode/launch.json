@@ -18,11 +18,13 @@
             "request": "launch",
             "program": "generate/generate.py",
             "args": [
-                "--gpt_dir=generate/models/trained_model_1000",
+                "--gpt_dir=generate/models/trained_model_03_0900",
                 "--temp=0.7",
                 "--stylegan_dir=generate/models",
                 "--sound_dir=generate/sounds",
-                "--prompt=[scientist] Are you still there?",
+                "--prompts_file=generate/prompts.json",
+                "--run_length=0",
+                "--run_deviation=0.75,1.25",
                 "--role_format=[{role}]",
                 "--image_string=[image]",
                 "--roles=artist,scientist",
@@ -30,8 +32,11 @@
                 "--base_time=3.0",
                 "--letter_time=0.2",
                 "--image_time=5.0",
+                "--run_time=6",
                 "--write_deviation=0.9,1.1",
-                "--read_deviation=0.4,0.6"
+                "--read_deviation=0.4,0.6",
+                "--rapid",
+                // "--verbose"
             ],
             "console": "integratedTerminal"
         },
