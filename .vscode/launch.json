@@ -22,7 +22,7 @@
                 "--temp=0.7",
                 "--stylegan_dir=generate/models",
                 "--sound_dir=generate/sounds",
-                "--prompt=[scientist] I can't believe you.",
+                "--prompt=[scientist] Are you still there?",
                 "--role_format=[{role}]",
                 "--image_string=[image]",
                 "--roles=artist,scientist",
