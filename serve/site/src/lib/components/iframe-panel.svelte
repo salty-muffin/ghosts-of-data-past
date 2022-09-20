@@ -6,6 +6,7 @@
 	let className = '';
 	export { className as class };
 	export let url: string;
+	export let player: Player;
 
 	let iframe: HTMLIFrameElement;
 	let wrapper: HTMLElement;
@@ -31,7 +32,7 @@
 	onMount(() => {
 		iframe.src = `${url}?background=1&dnt=1`;
 
-		const player = new Player(iframe);
+		player = new Player(iframe);
 
 		// get aspect ration
 		player.on('loaded', async () => {

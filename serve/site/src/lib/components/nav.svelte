@@ -10,17 +10,12 @@
 	let className = '';
 	export { className as class };
 	export let links: Link[];
-
-	// imports
-	import MuteButton from '$lib/components/mute-button.svelte';
 </script>
 
 <div class="nav__wrapper {className}">
 	<nav class="nav__links">
-		<MuteButton>
-			<h4 slot="muted">unmute</h4>
-			<h4 slot="unmuted">mute</h4>
-		</MuteButton>
+		<slot />
+
 		{#each links as { href, text }, index (index)}
 			<h4><a {href}>{text}</a></h4>
 		{/each}

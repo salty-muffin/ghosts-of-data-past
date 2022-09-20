@@ -1,10 +1,14 @@
 <script lang="ts">
 	import IframePanel from '$lib/components/iframe-panel.svelte';
 	import Nav from '$lib/components/nav.svelte';
+
+	import type Player from '@vimeo/player';
+
+	let player: Player;
 </script>
 
 <div class="video">
-	<IframePanel class="video__panel" url="https://player.vimeo.com/video/636103889" />
+	<IframePanel bind:player class="video__panel" url="https://player.vimeo.com/video/636103889" />
 	<Nav class="video__nav" links={[{ href: '/background', text: 'background' }]} />
 </div>
 <a href="#text">
