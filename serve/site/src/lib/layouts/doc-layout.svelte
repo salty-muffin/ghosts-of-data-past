@@ -218,11 +218,12 @@
 		.doc__nav {
 			float: left;
 
-			width: 10em;
-			margin-left: calc(-10em - 2 * map-get($margin-primary, 'lg'));
+			width: 18em;
+			margin-left: calc(-18em - 2 * map-get($margin-primary, 'lg'));
 
 			.nav__links {
 				flex-direction: column;
+				align-items: flex-end;
 				gap: map-get($margin-primary, 'lg');
 				margin: 0;
 

@@ -14,12 +14,12 @@
 	<title>{title}</title>
 </svelte:head>
 
-<div class="other">
-	<article class="other__container">
+<div class="doc">
+	<article class="doc__container">
 		<h1 class="other__title">{title}</h1>
 
 		<main class="other__content">
-			<Nav class="other__nav" {links}>
+			<Nav class="doc__nav" {links}>
 				<MuteButton>
 					<h4 slot="muted">unmute</h4>
 					<h4 slot="unmuted">mute</h4>
@@ -34,48 +34,11 @@
 <style global lang="scss">
 	@use '../../lib/scss/variables' as *;
 
-	.other {
-		position: relative;
-		display: flex;
-		flex-direction: column;
-		align-items: center;
-		min-height: 100vh;
-	}
-
-	.other__nav {
-		height: unset;
-		margin-bottom: map-get($margin-primary, 'sm');
-		.nav__links {
-			margin: 0;
-			gap: map-get($margin-primary, 'sm');
-
-			button {
-				display: flex;
-
-				&::after {
-					display: block;
-					content: '';
-					margin-left: map-get($margin-primary, 'sm');
-					border-right: 1px solid map-get($colors, 'foreground');
-					width: 100%;
-					height: 100%;
-				}
-			}
-		}
-	}
-
 	.other__title {
 		font-size: map-get($title-size, 'sm');
 		font-family: $font-family-text;
 		hyphens: auto;
 		letter-spacing: unset;
-	}
-
-	.other__container {
-		flex-grow: 1;
-
-		width: min(calc(100vw - 2 * map-get($margin-primary, 'sm')), map-get($container-width, 'sm'));
-		// margin: 0 map-get($margin-primary, 'sm');
 	}
 
 	.other__content {
@@ -109,46 +72,11 @@
 		}
 	}
 
-	@media only screen and (min-width: $sidenote-breakpoint) {
-		.other__nav {
-			float: left;
-
-			width: 10em;
-			margin-left: calc(-10em - 2 * map-get($margin-primary, 'lg'));
-
-			.nav__links {
-				flex-direction: column;
-				gap: map-get($margin-primary, 'lg');
-				margin: 0;
-
-				button {
-					display: unset;
-
-					&::after {
-						margin-left: unset;
-						margin-top: map-get($margin-primary, 'lg');
-						border-left: unset;
-						border-top: 1px solid map-get($colors, 'foreground');
-					}
-				}
-
-				h4 {
-					text-align: right;
-				}
-			}
-		}
-	}
-
 	@media only screen and (min-width: map-get($breakpoint, 'md')) {
 		.other__title {
 			margin: 1.5em 0;
 
 			font-size: map-get($title-size, 'md');
-		}
-
-		.other__container {
-			width: min(calc(100vw - 2 * map-get($margin-primary, 'md')), map-get($container-width, 'md'));
-			// margin: 0 map-get($margin-primary, 'lg');
 		}
 	}
 
@@ -157,11 +85,6 @@
 			margin: 1.5em 0;
 
 			font-size: map-get($title-size, 'lg');
-		}
-
-		.other__container {
-			width: min(calc(100vw - 2 * map-get($margin-primary, 'lg')), map-get($container-width, 'lg'));
-			// margin: 0 map-get($margin-primary, 'lg');
 		}
 	}
 </style>
