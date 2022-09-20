@@ -77,7 +77,20 @@
 			document.body.classList.remove('chat--noscroll');
 		}
 	});
+
+	// get random favicon
+	const getFavicon = (count: number) => {
+		let number = String(Math.floor(Math.random() * count));
+		if (number.length < 2) number = `0${number}`;
+
+		return `favicon${number}.png`;
+	};
 </script>
+
+<!-- show different favicon every time -->
+<svelte:head>
+	<link rel="icon" type="image/png" href="/favicons/{getFavicon(18)}" />
+</svelte:head>
 
 <PageTransition {url} duration={transitionDuration}>
 	<slot />
