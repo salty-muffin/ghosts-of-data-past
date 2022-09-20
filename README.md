@@ -75,9 +75,9 @@ the work on this project was sponsored by the [kulturstiftung des freistaates sa
 - [x] seperate the nav out (one for chat and one for the about pages)
 - [ ] donate for pw smokey https://www.dafont.com/pwsmokey.font
 - [x] change the scrolling behaviour (possibly scroll on the main window and make the nav fixed)
-- [ ] keep scroll position on navigation
+- [x] keep scroll position on navigation
 - [x] add ability to unmute video
-- [ ] add favicon
+- [x] add favicon
 
 ### generate
 
