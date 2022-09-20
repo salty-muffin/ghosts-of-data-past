@@ -35,6 +35,8 @@ The AI used in this project are [GPT Neo](https://github.com/EleutherAI/gpt-neo/
 
 The look of these documentation pages, especially the sidenotes, is inspired by [gwern.net](https://www.gwern.net/Faces) by Gwern Branwen. Additionally, this site taught me a lot about working with styleGAN.
 
+[Ben Clarke](https://www.instagram.com/jimo955/) inspired me to use styleGAN in the first place, when I saw his experiments.
+
 # Support
 
 I would like to thank all participants of the [Graduate School for Moving Images](https://gbb.kunsthochschulekassel.de/) at the Kunsthochschule Kassel, to whom I presented the current state of this project multiple times and who gave feedback and encouragement. These lovely people are: Alicia Carotta, Laura Därr, Katrin Esser, Juliane Henrich, Geeske Janßen, Steph Joyce, Young Kyun Kim, Silke Körber, Benedict Reinhold, Tobias Sauer, Christoph Schnerr, Andara Shastika and N.B. Spiders. I am also grateful for the work of Lisa Dreykluft and Holger Jenss, which creates this wonderful environment, and lets projects like this happen.
