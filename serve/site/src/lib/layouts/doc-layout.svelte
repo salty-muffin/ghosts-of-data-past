@@ -58,12 +58,12 @@
 			});
 		});
 
-		// get all headers by tag
-		const headings = Array.from(document.querySelectorAll('p'));
+		// get all paragraphs by tag
+		const paragraphs = Array.from(document.querySelectorAll('p'));
 
-		// observe all headers
-		if (headings)
-			headings.forEach((element) => {
+		// observe all paragraphs
+		if (paragraphs)
+			paragraphs.forEach((element) => {
 				observer?.observe(element);
 			});
 

@@ -16,10 +16,16 @@ const config = {
 	preprocess: [
 		preprocess(),
 		mdsvex({
-			layout: path.join(
-				path.dirname(fileURLToPath(import.meta.url)),
-				'src/lib/layouts/doc-layout-wrapper.svelte'
-			),
+			layout: {
+				_: path.join(
+					path.dirname(fileURLToPath(import.meta.url)),
+					'src/lib/layouts/doc-layout-wrapper.svelte'
+				),
+				other: path.join(
+					path.dirname(fileURLToPath(import.meta.url)),
+					'src/lib/layouts/other-layout-wrapper.svelte'
+				)
+			},
 			rehypePlugins: [
 				rehypeSlug,
 				[
