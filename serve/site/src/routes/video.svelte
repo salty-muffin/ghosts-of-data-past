@@ -43,8 +43,12 @@
 		This is the video documentation of <em>ghosts of data past</em>.
 	</p>
 	<p>
-		All other parts of this website are exactly like they are in artwork itself. Only this page
-		would usually hold the live generated chat of which a short excerpt is here documented.
+		All other parts of this website are exactly like they are in artwork itself. On this page
+		however, you can find the documentation instead of the actual live-generated chat.
+	</p>
+	<p>
+		<em>ghosts of data past</em> is a project by <a href="https://zenogries.com">zeno gries</a>. For
+		more information, please see the <a sveltekit:noscroll href="/background">background</a>.
 	</p>
 </div>
 
