@@ -11,6 +11,7 @@
 	import Message from '$lib/components/message.svelte';
 	import Writing from '$lib/components/writing.svelte';
 	import Nav from '$lib/components/nav.svelte';
+	import MuteButton from '$lib/components/mute-button.svelte';
 
 	// types
 	interface Attributes {
@@ -191,7 +192,12 @@
 				{/if}
 			{/each}
 		</div>
-		<Nav class="chat__nav" links={[{ href: '/background', text: 'background' }]} />
+		<Nav class="chat__nav" links={[{ href: '/background', text: 'background' }]}>
+			<MuteButton>
+				<h4 slot="muted">unmute</h4>
+				<h4 slot="unmuted">mute</h4>
+			</MuteButton>
+		</Nav>
 	</div>
 </div>
 

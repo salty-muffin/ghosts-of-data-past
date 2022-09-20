@@ -1,5 +1,8 @@
 <script lang="ts">
+	import MuteButton from '$lib/components/mute-button.svelte';
+
 	import type { Link } from '$lib/components/nav.svelte';
+
 	export let title = '';
 	export let links: Link[] = [];
 
@@ -79,7 +82,12 @@
 		<h1 class="doc__title">{title}</h1>
 
 		<main class="doc__content">
-			<Nav class="doc__nav" {links} />
+			<Nav class="doc__nav" {links}>
+				<MuteButton>
+					<h4 slot="muted">unmute</h4>
+					<h4 slot="unmuted">mute</h4>
+				</MuteButton>
+			</Nav>
 			<slot />
 		</main>
 	</article>
