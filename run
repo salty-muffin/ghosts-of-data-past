@@ -5,8 +5,11 @@ cd serve/site
 npm run build
 cd ../..
 
-# generator
-conda run -n ghosts-cpu python3 generate/generator.py &
+# database
+redis-server redis.conf
 
 # server
-conda run -n ghosts-cpu python3 serve/app.py
+conda run -n ghosts-cpu python3 serve/app.py &
+
+# generator
+conda run -n ghosts-cpu python3 generate/generator.py
