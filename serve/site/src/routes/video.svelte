@@ -1,6 +1,9 @@
 <script lang="ts">
 	import IframePanel from '$lib/components/iframe-panel.svelte';
 	import Nav from '$lib/components/nav.svelte';
+	import MuteVideoButton from '$lib/components/mute-video-button.svelte';
+
+	import { muted } from '$lib/stores/muted';
 
 	import type Player from '@vimeo/player';
 
@@ -8,8 +11,21 @@
 </script>
 
 <div class="video">
-	<IframePanel bind:player class="video__panel" url="https://player.vimeo.com/video/636103889" />
-	<Nav class="video__nav" links={[{ href: '/background', text: 'background' }]} />
+	<IframePanel bind:player class="video__panel" url="https://player.vimeo.com/video/641578944" />
+	<Nav class="video__nav" links={[{ href: '/background', text: 'background' }]}>
+		<MuteVideoButton
+			on:click={() => {
+				$muted = !$muted;
+
+				if (player) {
+					player.setMuted($muted);
+				}
+			}}
+		>
+			<h4 slot="muted">unmute</h4>
+			<h4 slot="unmuted">mute</h4>
+		</MuteVideoButton>
+	</Nav>
 </div>
 <a href="#text">
 	<div class="video__arrow">
@@ -24,11 +40,11 @@
 </a>
 <div class="video__text" id="text">
 	<p>
-		This is a video documentation of <em>ghosts of data past</em>.
+		This is the video documentation of <em>ghosts of data past</em>.
 	</p>
 	<p>
-		The background texts and all other pages are visible exactly like this in the artwork. Only this
-		page would usually hold the live generated chat of which a short excerpt is here documented.
+		All other parts of this website are exactly like they are in artwork itself. Only this page
+		would usually hold the live generated chat of which a short excerpt is here documented.
 	</p>
 </div>
 
@@ -124,7 +140,7 @@
 			margin: 2em;
 			padding: 2em;
 
-			width: 19em;
+			width: 21em;
 
 			border-top: none;
 
@@ -136,7 +152,7 @@
 		.video__text {
 			bottom: map-get($nav-size, 'lg');
 
-			width: 22em;
+			width: 24em;
 		}
 	}
 </style>

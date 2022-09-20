@@ -4,7 +4,7 @@ links: [
 	{ href: '/', text: 'back to work' },
 	{ href: '/background', text: 'background' },
 	{ href: '/credits', text: 'credits' },
-  { href: '/source', text: 'source' }
+  	{ href: '/source', text: 'source' }
 ]
 ---
 
@@ -12,6 +12,8 @@ links: [
     import Sidenote from '$lib/components/sidenote.svelte';
 	import Image from '$lib/components/image.svelte';
 </script>
+
+<!-- table of contents will always appear before the first paragraph -->
 
 Like most (art) projects, _ghosts of data past_ was not the work of a single person but relied on the collaboration with and the support of a large number of people. Some of the people receiving credit and thanks here actively participated in this project. Others provided knowledge and inspiration, knowingly or unknowingly.
 
