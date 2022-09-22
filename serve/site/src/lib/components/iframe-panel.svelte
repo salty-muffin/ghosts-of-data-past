@@ -83,6 +83,7 @@
 		src="about:blank"
 		bind:this={iframe}
 		frameborder="0"
+		allow="autoplay"
 	/>
 </div>
 
