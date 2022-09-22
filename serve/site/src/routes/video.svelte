@@ -10,6 +10,10 @@
 	let player: Player;
 </script>
 
+<svelte:head>
+	<title>ghosts of data past</title>
+</svelte:head>
+
 <div class="video">
 	<IframePanel bind:player class="video__panel" url="https://player.vimeo.com/video/641578944" />
 	<Nav class="video__nav" links={[{ href: '/background', text: 'background' }]}>
