@@ -266,14 +266,12 @@ def generate(
                 # split the message so it only contains single responses in a list
                 responses_list = [
                     response.strip(
-                        ' []'
+                        ' '
                         )  # strip any leading or trailing spaces (but not newlines)
                     for response in re.split(split_pattern, responses)
                     if re.search(role_pattern, response) is
                     not None  # response must include a sender to be valid
                     ]
-                if '[' == responses_list[-1]:
-                    pass
             else:
                 # if conversation run is at an end, get a new prompt from command line parameters
                 responses_list = [prompts.get()]
