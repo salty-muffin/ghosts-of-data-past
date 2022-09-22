@@ -97,6 +97,9 @@ class Prompts:
 @click.command()
 @click.option('--gpt_dir',         type=click.Path(exists=True), help='directory of gpt2 model', required=True)
 @click.option('--temp',            type=float,                   default=0.7, help='temperature for gpt2 generation', required=True)
+@click.option('--top_k',           type=int,                     default=0, help='if nonzero, limits the sampled tokens to the top k values', required=True)
+@click.option('--top_p',           type=float,                   default=0.7, help='if nonzero, limits the sampled tokens to the cumulative probability', required=True)
+@click.option('--best_of',         type=int,                     default=1, help='how many generations should be done at a time (if n > 1, the result will be selected randomly', required=True)
 @click.option('--stylegan_dir',    type=click.Path(exists=True), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
 @click.option('--sound_dir',       type=click.Path(exists=True), help='directory where the notification sounds are located', required=True)
 @click.option('--prompts_file',    type=click.Path(exists=True), help='path to json file with starting prompts', required=True)
@@ -118,6 +121,9 @@ class Prompts:
 def generate(
         gpt_dir: str,
         temp: float,
+        top_k: int,
+        top_p: float,
+        best_of: int,
         stylegan_dir: str,
         sound_dir: str,
         prompts_file: str,
@@ -250,17 +256,24 @@ def generate(
             # generate a message
             if not current_run_length <= 0 or run_length == 0:
                 responses = text_G.generate(
-                    prompt, max_length=128, temperature=temp
+                    prompt,
+                    max_length=128,
+                    temperature=temp,
+                    top_k=top_k,
+                    top_p=top_p,
+                    n=best_of
                     ).replace(prompt, '')
                 # split the message so it only contains single responses in a list
                 responses_list = [
                     response.strip(
-                        ' '
+                        ' []'
                         )  # strip any leading or trailing spaces (but not newlines)
                     for response in re.split(split_pattern, responses)
                     if re.search(role_pattern, response) is
                     not None  # response must include a sender to be valid
                     ]
+                if '[' == responses_list[-1]:
+                    pass
             else:
                 # if conversation run is at an end, get a new prompt from command line parameters
                 responses_list = [prompts.get()]

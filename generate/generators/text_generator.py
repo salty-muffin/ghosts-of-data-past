@@ -1,5 +1,6 @@
 import time
 import torch
+import random
 from aitextgen import aitextgen
 
 
@@ -35,7 +36,8 @@ class TextGenerator:
         top_k:
         float = 0,  # if nonzero, limits the sampled tokens to the top k values
         top_p:
-        float = 0.7  # if nonzero, limits the sampled tokens to the cumulative probability
+        float = 0.7,  # if nonzero, limits the sampled tokens to the cumulative probability
+        n: int = 1
         ):
 
         if self._verbose:
@@ -45,16 +47,20 @@ class TextGenerator:
 
         start = time.time()
 
+        which_n = 0
+        if n > 1:
+            which_n = random.randrange(n)
+
         response = self._gpt2.generate(
             prompt=prompt,
-            n=1,
+            n=n,
             return_as_list=True,
             max_length=max_length,
             seed=seed,
             temperature=temperature,
             top_k=top_k,
-            top_p=top_p
-            )[0]
+            top_p=top_p,
+            )[which_n]
 
         if self._verbose: print(f'done in {time.time() - start}s')
 
