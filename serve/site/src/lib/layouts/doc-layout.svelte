@@ -74,7 +74,7 @@
 </script>
 
 <svelte:head>
-	<title>{title}</title>
+	<title>{title} / ghosts of data past</title>
 </svelte:head>
 
 <div class="doc" bind:this={doc}>
