@@ -105,8 +105,11 @@
 		min-height: 100vh;
 	}
 
-	.doc__nav {
+	div.doc__nav {
 		height: unset;
+	}
+
+	.doc__nav {
 		margin-bottom: map-get($margin-primary, 'sm');
 		.nav__links {
 			margin: 0;
