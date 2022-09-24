@@ -8,6 +8,9 @@
 	import type Player from '@vimeo/player';
 
 	let player: Player;
+
+	const videoIds = ['753293224', '753293778'];
+	let videoSelector = Math.floor(Math.random() * videoIds.length);
 </script>
 
 <svelte:head>
@@ -15,7 +18,11 @@
 </svelte:head>
 
 <div class="video">
-	<IframePanel bind:player class="video__panel" url="https://player.vimeo.com/video/641578944" />
+	<IframePanel
+		bind:player
+		class="video__panel"
+		url="https://player.vimeo.com/video/{videoIds[videoSelector]}"
+	/>
 	<Nav class="video__nav" links={[{ href: '/background', text: 'background' }]}>
 		<MuteVideoButton
 			on:click={() => {
