@@ -18,15 +18,16 @@
             "request": "launch",
             "program": "generate/generate.py",
             "args": [
+                "--delay=20",
                 "--gpt_dir=generate/models/trained_model_04",
-                "--temp=2.0",
+                "--temp=1.0",
                 "--top_k=6",
                 "--top_p=0.7",
-                "--best_of=1",
+                "--best_of=2",
                 "--stylegan_dir=generate/models",
                 "--sound_dir=generate/sounds",
                 "--prompts_file=generate/prompts.json",
-                "--run_length=50",
+                "--run_length=15",
                 "--run_deviation=0.75,1.25",
                 "--role_format=[{role}]",
                 "--image_string=[image]",
@@ -38,7 +39,7 @@
                 "--run_time=6",
                 "--write_deviation=0.9,1.1",
                 "--read_deviation=0.4,0.6",
-                "--rapid",
+                // "--rapid",
                 // "--verbose"
             ],
             "console": "integratedTerminal"

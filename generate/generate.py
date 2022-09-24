@@ -95,6 +95,7 @@ class Prompts:
 
 # yapf: disable
 @click.command()
+@click.option('--delay',           type=float,                   default=0, help='how long to wait before starting (for documentation purposes', required=True)
 @click.option('--gpt_dir',         type=click.Path(exists=True), help='directory of gpt2 model', required=True)
 @click.option('--temp',            type=float,                   default=0.7, help='temperature for gpt2 generation', required=True)
 @click.option('--top_k',           type=int,                     default=0, help='if nonzero, limits the sampled tokens to the top k values', required=True)
@@ -119,6 +120,7 @@ class Prompts:
 @click.option('--verbose',         is_flag=True,                 help='print additional information')
 # yapf: enable
 def generate(
+        delay: int,
         gpt_dir: str,
         temp: float,
         top_k: int,
@@ -221,6 +223,8 @@ def generate(
     # set variables
     start = 0
     new_run = False
+
+    time.sleep(delay)
 
     # - main loop --------------------------------------------------------------------------------
     try:
