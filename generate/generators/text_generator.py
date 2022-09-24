@@ -51,7 +51,7 @@ class TextGenerator:
         if n > 1:
             which_n = random.randrange(n)
 
-        response = self._gpt2.generate(
+        responses = self._gpt2.generate(
             prompt=prompt,
             n=n,
             return_as_list=True,
@@ -60,8 +60,12 @@ class TextGenerator:
             temperature=temperature,
             top_k=top_k,
             top_p=top_p,
-            )[which_n]
+            )
+
+        # for index, response in enumerate(responses):
+        #     if '[image]' in response:
+        #         which_n = index
 
         if self._verbose: print(f'done in {time.time() - start}s')
 
-        return response
+        return responses[which_n]
