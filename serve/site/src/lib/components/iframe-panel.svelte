@@ -123,7 +123,7 @@
 		position: absolute;
 		left: 50%;
 		right: 50%;
-		transform: translate(-50%, -50%);
+		transform: translate(-50%, 0);
 		width: 80px;
 		height: 80px;
 

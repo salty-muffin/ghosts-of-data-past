@@ -92,9 +92,13 @@
 
 	.video__panel {
 		width: 100%;
-		height: 100%;
+		height: calc(100% - map-get($nav-size, 'sm'));
 
 		z-index: -1;
+
+		.iframe-panel__iframe {
+			transform: scale(1.3);
+		}
 	}
 
 	.video__nav {
@@ -127,6 +131,14 @@
 
 			padding: 0.7em 0.7em 0.3em;
 			margin: 1.5em;
+		}
+
+		.video__panel {
+			height: calc(100% - map-get($nav-size, 'md'));
+
+			.iframe-panel__iframe {
+				transform: none;
+			}
 		}
 
 		.video__text {
@@ -164,6 +176,10 @@
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
+		.video__panel {
+			height: calc(100% - map-get($nav-size, 'lg'));
+		}
+
 		.video__text {
 			bottom: map-get($nav-size, 'lg');
 
