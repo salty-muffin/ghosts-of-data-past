@@ -83,6 +83,8 @@
 
 		background-color: map-get($colors, 'background');
 
+		z-index: 1;
+
 		svg {
 			path {
 				stroke: map-get($colors, 'foreground');
