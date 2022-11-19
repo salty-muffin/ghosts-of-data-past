@@ -42,7 +42,7 @@
 	}
 
 	.other__content {
-		font-feature-settings: 'ss01' 1;
+		// font-feature-settings: 'ss01' 1;
 
 		p:first-of-type {
 			margin-top: 0;
