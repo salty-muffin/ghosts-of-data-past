@@ -165,7 +165,7 @@ def generate(
     writing_state = {}
     for role in roles:
         writing_state[role] = db.Hash(f'writing:{role}')
-        writing_state[role].update(writer=role, state=0)  #
+        writing_state[role].update(writer=role, state=0)
     print_v(verbose, 'setup writing states.')
 
     # get all notification sound paths
