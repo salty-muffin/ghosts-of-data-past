@@ -1,13 +1,4 @@
-<script context="module" lang="ts">
-	import type { Load } from '@sveltejs/kit';
-
-	export const load: Load = async ({ url }) => ({ props: { url } });
-</script>
-
 <script lang="ts">
-	// props
-	export let url: string;
-
 	// imports
 	import '$lib/scss/fonts.scss';
 	import '$lib/scss/global.scss';
@@ -68,10 +59,9 @@
 		writing.add({ writer: event.writer, state: event.state });
 	});
 
-	const transitionDuration = 1500;
 	afterNavigate((navigation) => {
 		// disable scrolling on chat
-		if (navigation.to.pathname === '/') {
+		if (navigation.to?.url.pathname === '/') {
 			document.body.classList.add('chat--noscroll');
 		} else {
 			document.body.classList.remove('chat--noscroll');
@@ -92,6 +82,6 @@
 	<link rel="icon" type="image/png" href="/favicons/{getFavicon(18)}" />
 </svelte:head>
 
-<PageTransition {url} duration={transitionDuration}>
+<PageTransition duration={1500}>
 	<slot />
 </PageTransition>

@@ -17,7 +17,7 @@
 		<slot />
 
 		{#each links as { href, text }, index (index)}
-			<h4><a sveltekit:noscroll {href}>{text}</a></h4>
+			<h4><a {href}>{text}</a></h4>
 		{/each}
 	</nav>
 </div>

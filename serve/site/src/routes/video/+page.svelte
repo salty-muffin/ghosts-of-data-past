@@ -59,12 +59,12 @@
 	</p>
 	<p>
 		<em>ghosts of data past</em> is a project by <a href="https://zenogries.com">zeno gries</a>. For
-		more information, please see the <a sveltekit:noscroll href="/background">background</a>.
+		more information, please see the <a href="/background">background</a>.
 	</p>
 </div>
 
 <style global lang="scss">
-	@use '../lib/scss/variables' as *;
+	@use '../../lib/scss/variables' as *;
 
 	.video {
 		position: relative;
