@@ -84,19 +84,16 @@ def index():
     return flask.send_file('site/build/index.html')
 
 
-# 'a ghost story' page
 @app.route('/background')
 def story():
     return flask.send_file('site/build/background.html')
 
 
-# 'technical details' page
 @app.route('/credits')
 def technical():
     return flask.send_file('site/build/credits.html')
 
 
-# 'credits' page
 @app.route('/source')
 def credits():
     return flask.send_file('site/build/source.html')
