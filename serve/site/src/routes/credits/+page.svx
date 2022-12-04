@@ -59,7 +59,7 @@ The project was funded by the [KdFS](https://www.kdfs.de), which allowed me to p
 
 During my time working on this project, I was supported by the HAB scholarship from the [HfMA](https://www.hfmakademie.de/).
 
-<!-- <p>
+<p>
 	<a href="https://kdfs.de">
 		<Image
 		image="images/kdfs_logo.png"
@@ -71,4 +71,4 @@ During my time working on this project, I was supported by the HAB scholarship f
 		class="doc__logo"/>
 	</a>
 	Gefördert durch die <a href="https://kdfs.de">Kulturstiftung des Freistaates Sachsen</a>. Diese Maßnahme wird mitfinanziert durch Steuermittel auf der Grundlage des vom Sächsischen Landtag beschlossenen Haushaltes.
-</p> -->
+</p>
