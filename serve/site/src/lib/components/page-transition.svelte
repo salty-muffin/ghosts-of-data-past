@@ -1,35 +1,44 @@
 <script lang="ts">
 	import { linear } from 'svelte/easing';
+	import { blur } from 'svelte/transition';
 
-	export let url = '';
+	import { beforeNavigate, goto } from '$app/navigation';
+
 	export let duration = 500;
 
-	import { blur } from 'svelte/transition';
+	let onOutroEnd: () => void;
+
+	// set to false since we have just initialized the layout
+	let transitioningOut = false;
+
+	// called when page navigation is triggered
+	beforeNavigate(async (navigation) => {
+		// this should be false on an initial page load
+		// or if we succeed navigating after the transition has finished
+		if (!transitioningOut) {
+			transitioningOut = true;
+
+			// stop the page from routing, so we can wait for the transition
+			navigation.cancel();
+
+			// assign this fresh function to the wrapping div's on:outroend listener
+			onOutroEnd = async () => {
+				// wait until page navigation has completed
+				if (navigation.to) await goto(navigation.to.url);
+
+				// set to false and the div should be rendered with the transition intro
+				transitioningOut = false;
+			};
+		}
+	});
 </script>
 
-{#key url}
+{#if !transitioningOut}
 	<div
-		in:blur={{ duration: duration, delay: duration, easing: linear }}
+		in:blur={{ duration: duration, easing: linear }}
 		out:blur={{ duration: duration, easing: linear }}
-		on:introstart={() => {
-			// remove scrollbar during transition
-			document.body.classList.add('transition--noscroll');
-			// const messages = document.getElementById('chat__messages');
-			// messages && messages.classList.add('transition--noscroll');
-		}}
-		on:outroend={() => {
-			// add scrollbar after tarnsition
-			document.body.classList.remove('transition--noscroll');
-			// const messages = document.getElementById('chat__messages');
-			// messages && messages.classList.remove('transition--noscroll');
-		}}
+		on:outroend={onOutroEnd}
 	>
 		<slot />
 	</div>
-{/key}
-
-<style global lang="scss">
-	.transition--noscroll {
-		overflow-y: hidden;
-	}
-</style>
+{/if}

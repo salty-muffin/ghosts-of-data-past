@@ -13,8 +13,8 @@
 	},
 	"devDependencies": {
 		"@jsdevtools/rehype-toc": "file:jsdevtools-rehype-toc-3.0.2-modified.tgz",
-		"@sveltejs/adapter-static": "1.0.0-next.39",
-		"@sveltejs/kit": "1.0.0-next.405",
+		"@sveltejs/adapter-static": "1.0.0-next.48",
+		"@sveltejs/kit": "1.0.0-next.571",
 		"@types/sharp": "^0.30.5",
 		"@types/vimeo__player": "^2.16.3",
 		"@typescript-eslint/eslint-plugin": "^5.27.0",

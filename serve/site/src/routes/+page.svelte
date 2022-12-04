@@ -13,20 +13,9 @@
 	import Nav from '$lib/components/nav.svelte';
 	import MuteButton from '$lib/components/mute-button.svelte';
 
-	// types
-	interface Attributes {
-		[key: string]: Attribute;
-	}
-	interface Attribute {
-		position: string;
-	}
-	interface Settings {
-		maxMessages: number;
-	}
-
 	// get chat attributes from endpoint
-	export let chatAttributes: Attributes;
-	export let settings: Settings;
+	import type { PageData } from './$types';
+	export let data: PageData;
 
 	// handle automatic scrolling
 	let messagesWrapper: any;
@@ -96,7 +85,7 @@
 	let observedIndex = 0;
 
 	// remove messages, if there are more than the limit
-	$: if ($messages.length > settings.maxMessages) {
+	$: if ($messages.length > data.settings.maxMessages) {
 		// unobserve message
 		const element = document.getElementById($messages[0].id);
 		if (element) observer?.unobserve(element);
@@ -142,7 +131,7 @@
 				imageURL=""
 				alt=""
 				timestamp={1651313396942}
-				attributes={chatAttributes}
+				attributes={data.chatAttributes}
 			/>
 			<Message
 				id="aSwWASETCcg3QaukkAFesN"
@@ -151,7 +140,7 @@
 				imageURL="seed0000.jpg"
 				alt="seed0000"
 				timestamp={1651313416949}
-				attributes={chatAttributes}
+				attributes={data.chatAttributes}
 				class="message--spaced"
 			/>
 			<Message
@@ -162,9 +151,9 @@
 				alt=""
 				timestamp={1651313416949}
 				displaySender={false}
-				attributes={chatAttributes}
+				attributes={data.chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={chatAttributes} class="message--spaced" /> -->
+			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -172,7 +161,7 @@
 					{...message}
 					displaySender={index === 0 ||
 						(index > 0 && message.sender !== $messages[index - 1].sender)}
-					attributes={chatAttributes}
+					attributes={data.chatAttributes}
 					class={index > 0 && message.sender !== $messages[index - 1].sender
 						? 'message--spaced'
 						: ''}
@@ -183,7 +172,7 @@
 					<!-- add top margin, if current writer differs from the previous message's sender -->
 					<Writing
 						writer={writing_state.writer}
-						attributes={chatAttributes}
+						attributes={data.chatAttributes}
 						class={$messages.length > 0 &&
 						writing_state.writer !== $messages[$messages.length - 1].sender
 							? 'message--spaced'
