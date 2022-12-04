@@ -19,7 +19,13 @@
 			transitioningOut = true;
 
 			// stop the page from routing, so we can wait for the transition
-			navigation.cancel();
+			// but only if navigating on the same page
+			if (
+				navigation.from &&
+				navigation.to &&
+				navigation.from.url.origin === navigation.to.url.origin
+			)
+				navigation.cancel();
 
 			// assign this fresh function to the wrapping div's on:outroend listener
 			onOutroEnd = async () => {
