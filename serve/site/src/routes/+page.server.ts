@@ -9,7 +9,7 @@ export const load: LayoutServerLoad = async () => {
 
 	if (chat && settings) {
 		return {
-			chat,
+			chatAttributes: chat,
 			settings
 		};
 	}
