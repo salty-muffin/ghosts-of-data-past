@@ -78,6 +78,7 @@ the work on this project was sponsored by the [kulturstiftung des freistaates sa
 - [x] keep scroll position on navigation
 - [x] add ability to unmute video
 - [x] add favicon
+- [ ] update to sveltekit 1.0 (including app.html) for this and the documentation
 
 ### generate
 
