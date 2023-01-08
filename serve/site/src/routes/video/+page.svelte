@@ -9,7 +9,7 @@
 
 	let player: Player;
 
-	const videoIds = ['753293224', '753293778'];
+	const videoIds = ['753293224?h=780f35ea9e', '753293778'];
 	let videoSelector = Math.floor(Math.random() * videoIds.length);
 </script>
 
