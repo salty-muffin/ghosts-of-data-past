@@ -11,7 +11,7 @@ from flask import Flask
 app = Flask(
     __name__, static_url_path='', static_folder=os.path.join('site', 'build')
     )
-app.config.from_object('config.DevConfig')
+app.config.from_object('config.ProdConfig')
 
 # generate random
 
