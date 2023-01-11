@@ -94,7 +94,7 @@ def main(id) -> None:
 
         @app.route('/')
         def error():
-            return flask.send_file('site/build/error.html')
+            return flask.send_file('site/build/lost.html')
 
     else:
 
