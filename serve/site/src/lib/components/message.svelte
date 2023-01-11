@@ -33,6 +33,7 @@
 			<h6 class="message__sender">{sender}</h6>
 		{/if}
 		{#if imageURL}
+			<!-- svelte-ignore a11y-click-events-have-key-events -->
 			<img
 				class="message__image"
 				src={imageURL}
@@ -62,6 +63,7 @@
 	</svg>
 </div>
 {#if imageURL && showLargeImage}
+	<!-- svelte-ignore a11y-click-events-have-key-events -->
 	<div
 		class="message__image-large"
 		transition:fade={{ duration: 1000 }}
