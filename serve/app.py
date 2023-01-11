@@ -9,14 +9,13 @@ import flask
 from flask import Flask
 from flask_socketio import SocketIO
 import redis
-import shortuuid
 import time
 
 # flask & socketio setup
 app = Flask(
     __name__, static_url_path='', static_folder=os.path.join('site', 'build')
     )
-app.config.from_object('config.DevConfig')
+app.config.from_object('config.ProdConfig')
 socketio = SocketIO(app)
 
 # threading
