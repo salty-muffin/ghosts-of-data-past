@@ -19,7 +19,7 @@ thread_lock = Lock()
 
 # yapf: disable
 @click.command()
-@click.option('--id', type=str, help='the id under which the site can be accessed', required=False)
+@click.option('--id', type=str, help='the access code under which the site can be accessed (domain.net/id)', required=False)
 # yapf: enable
 def main(id) -> None:
     # flask & socketio setup
