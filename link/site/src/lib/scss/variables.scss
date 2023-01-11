@@ -1,0 +1,126 @@
+// colors
+$colors: (
+	// 'foreground': #b8b8b8,
+	'foreground': #acabab,
+	'link': #666666,
+	// 'background': #0f0f0f
+	'background': #000
+);
+
+// fonts
+$font-family-text: 'ABC Favorit', sans-serif;
+$font-family-heading: 'PW Smokey', sans-serif;
+$font-family-underline: 'ABC Favorit Lining', sans-serif;
+$font-family-mono: 'ABC Favorit Mono', monospace;
+
+// sizes
+$title-size: (
+	'sm': 1.5rem,
+	'md': 1.9rem,
+	'lg': 2.1rem
+);
+$heading1-size: (
+	'sm': 1.5rem,
+	'md': 1.75rem,
+	'lg': 1.9rem
+);
+$heading2-size: (
+	'sm': 1.3rem,
+	'md': 1.6rem,
+	'lg': 1.75rem
+);
+$heading3-size: (
+	'sm': 1.1rem,
+	'md': 1.4rem,
+	'lg': 1.6rem
+);
+$nav-links-size: (
+	'sm': 1.2rem,
+	'md': 1.4rem,
+	'lg': 1.6rem
+);
+$text-size: (
+	'sm': 1.1rem,
+	'md': 1.4rem,
+	'lg': 1.6rem
+);
+$sidenote-size: (
+	'sm': 1rem,
+	'md': 1.1rem,
+	'lg': 1.2rem
+);
+$footer-size: (
+	'sm': 0.8rem,
+	'md': 0.9rem,
+	'lg': 1rem
+);
+$sender-size: (
+	'sm': 0.9rem,
+	'lg': 1rem
+);
+$message-text-size: (
+	'sm': 0.95rem,
+	'lg': 1.1rem
+);
+$timestamp-size: (
+	'sm': 0.6rem,
+	'lg': 0.75rem
+);
+$nav-size: (
+	'sm': 3rem,
+	'md': 3.5rem,
+	'lg': 3.5rem
+);
+$border-width: (
+	'sm': 1px,
+	'md': 1px,
+	'lg': 1px
+);
+$border-blur: (
+	'sm': 4em,
+	'md': 5em,
+	'lg': 5em
+);
+$writing-circle-size: (
+	'sm': 0.5rem,
+	'lg': 0.6rem
+);
+
+$line-height: 1.6;
+$message-line-height: (
+	'sm': 1,
+	'lg': 1.5
+);
+
+$chat-width: 30em;
+$chat-height: 60em;
+$container-width: (
+	'sm': 35em,
+	'md': 35em,
+	'lg': 45em
+);
+$sidenote-width: 30em;
+
+// margins
+$margin-layout: (
+	'sm': 3em,
+	'md': 4em,
+	'lg': 5em
+);
+$margin-primary: (
+	'sm': 1em,
+	'md': 1.1em,
+	'lg': 1.2em
+);
+$margin-secondary: (
+	'sm': 0.5em,
+	'md': 0.6em,
+	'lg': 0.6em
+);
+
+// breakpoints
+$breakpoint: (
+	'md': 28em,
+	'lg': 92em
+);
+$sidenote-breakpoint: 70em;
