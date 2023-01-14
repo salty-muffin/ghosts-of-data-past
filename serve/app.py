@@ -19,7 +19,7 @@ thread_lock = Lock()
 
 # yapf: disable
 @click.command()
-@click.option('--id', type=str, help='the access code under which the site can be accessed (domain.net/id)', required=False)
+@click.option('--id', type=str, default='', help='the access code under which the site can be accessed (domain.net/id)', required=False)
 # yapf: enable
 def main(id) -> None:
     # flask & socketio setup
@@ -86,33 +86,26 @@ def main(id) -> None:
                 thread = socketio.start_background_task(chat)
 
     # index page
-    if id:
-
-        @app.route(f'/{id}')
-        def index():
+    @app.route('/', defaults={'access_code': ''})
+    @app.route('/<access_code>')
+    def index(access_code):
+        print(access_code, id)
+        if access_code == id:
             return flask.send_file('site/build/index.html')
-
-        @app.route('/')
-        def error():
+        else:
             return flask.send_file('site/build/lost.html')
 
-    else:
+    # @app.route('/background')
+    # def background():
+    #     return flask.send_file('site/build/background.html')
 
-        @app.route('/')
-        def index():
-            return flask.send_file('site/build/index.html')
+    # @app.route('/credits')
+    # def credit():
+    #     return flask.send_file('site/build/credits.html')
 
-    @app.route('/background')
-    def background():
-        return flask.send_file('site/build/background.html')
-
-    @app.route('/credits')
-    def credit():
-        return flask.send_file('site/build/credits.html')
-
-    @app.route('/source')
-    def source():
-        return flask.send_file('site/build/source.html')
+    # @app.route('/source')
+    # def source():
+    #     return flask.send_file('site/build/source.html')
 
     # run command
     socketio.run(app, host='0.0.0.0', port=5000)

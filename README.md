@@ -79,7 +79,7 @@ the work on this project was sponsored by the [kulturstiftung des freistaates sa
 - [x] add ability to unmute video
 - [x] add favicon
 - [x] update to sveltekit 1.0 (including app.html) for this and the documentation
-- [ ] implement wildcard response from serve app (especially so that connects with wrong ids get captured)
+- [x] implement wildcard response from serve app (especially so that connects with wrong ids get captured)
 - [ ] try to implement a routing system in the svelte app that rerenders with the id but only for the main page
 
 ### generate
