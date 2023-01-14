@@ -17,6 +17,9 @@ export const load: PageServerLoad = async () => {
 			if (data) {
 				qrData = data;
 			}
+			if (err) {
+				throw error(500, `could not create qr code: ${err}`);
+			}
 		});
 
 		if (id) {
