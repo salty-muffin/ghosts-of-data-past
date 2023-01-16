@@ -1,17 +1,9 @@
 <script lang="ts">
-	import MuteButton from '$lib/components/mute-button.svelte';
-
-	import type { Link } from '$lib/components/nav.svelte';
-
-	export let title = '';
-	export let links: Link[] = [];
-
 	import { onMount } from 'svelte';
 
 	import { FontAnimator } from '$lib/components/font-animation';
 	import { cubicInOut } from 'svelte/easing';
 
-	import Nav from '$lib/components/nav.svelte';
 	import Footer from '$lib/components/footer.svelte';
 
 	// intersection observer for the 'breathing' headers
@@ -73,21 +65,9 @@
 	});
 </script>
 
-<svelte:head>
-	<title>{title} / ghosts of data past</title>
-</svelte:head>
-
 <div class="doc" bind:this={doc}>
 	<article class="doc__container">
-		<h1 class="doc__title">{title}</h1>
-
 		<main class="doc__content">
-			<Nav class="doc__nav" {links}>
-				<MuteButton>
-					<h4 slot="muted">unmute</h4>
-					<h4 slot="unmuted">mute</h4>
-				</MuteButton>
-			</Nav>
 			<slot />
 		</main>
 	</article>
@@ -141,6 +121,15 @@
 		// margin: 0 map-get($margin-primary, 'sm');
 	}
 
+	@function encodecolor($string) {
+		@if type-of($string) == 'color' {
+			$hex: str-slice(ie-hex-str($string), 4);
+			$string: unquote('#{$hex}');
+		}
+		$string: '%23' + $string;
+		@return $string;
+	}
+
 	.doc__content {
 		// font-feature-settings: 'ss01' 1;
 
@@ -150,6 +139,29 @@
 
 		li > p {
 			margin: 0;
+		}
+
+		ul {
+			list-style: none;
+			margin-left: 0;
+			padding-left: 0;
+
+			li {
+				padding-left: 1em;
+				text-indent: -1em;
+			}
+
+			li:before {
+				background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8.34559%200.5C0.500011%205.85477%200.499977%2012.9945%203.1152%2018.3492C6.5%2023.5%2010.8832%2025.8335%2019.6781%2020C27.2565%2014.9734%2021.3432%2011%2019.6781%206.74723C18.013%202.49447%2010.5%207.52176%207.47386%206.74723C3.14174%205.63845%201.66231%203.47487%200.5%201.39246%22%20stroke%3D%22#{encodecolor(map-get($colors, 'foreground'))}%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E%0A");
+				background-repeat: no-repeat;
+				background-position: left center;
+				background-size: 0.5em;
+				content: '';
+				padding-left: 24px;
+				padding-right: 5px;
+
+				stroke: map-get($colors, 'foreground');
+			}
 		}
 
 		h1,
