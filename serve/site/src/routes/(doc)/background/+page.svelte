@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Nav from '$lib/components/nav.svelte';
-	import MuteButton from '$lib/components/mute-button.svelte';
 	import Sidenote from '$lib/components/sidenote.svelte';
 </script>
 
@@ -8,21 +6,18 @@
 	<title>background / ghosts of data past</title>
 </svelte:head>
 
-<h1 class="doc__title">background</h1>
-<Nav
-	class="doc__nav"
-	links={[
-		{ href: '/', text: 'back to work' },
-		{ href: '/background', text: 'background' },
-		{ href: '/credits', text: 'credits' },
-		{ href: '/source', text: 'source' }
-	]}
->
-	<MuteButton>
-		<h4 slot="muted">unmute</h4>
-		<h4 slot="unmuted">mute</h4>
-	</MuteButton>
-</Nav>
+<div class="doc__title">
+	<h1>background</h1>
+</div>
+<p class="blockquote">
+	“Behind all of the manifestations of the eerie, the central enigma at its core is the problem of
+	agency. In the case of the failure of absence, the question concerns the existence of agency as
+	such. Is there a deliberate agent here at all? Are we being watched by an entity that has not yet
+	revealed itself? In the case of the failure of presence, the question concerns the particular
+	nature of the agent at work.”<Sidenote id={1} right
+		>Mark Fisher. <em>The Weird and the Eerie</em>. Repeater 2017. P. 63.</Sidenote
+	>
+</p>
 <nav class="doc__toc">
 	<ol>
 		<li>
@@ -41,15 +36,6 @@
 		</li>
 	</ol>
 </nav>
-<p class="blockquote">
-	“Behind all of the manifestations of the eerie, the central enigma at its core is the problem of
-	agency. In the case of the failure of absence, the question concerns the existence of agency as
-	such. Is there a deliberate agent here at all? Are we being watched by an entity that has not yet
-	revealed itself? In the case of the failure of presence, the question concerns the particular
-	nature of the agent at work.”<Sidenote id={1} right
-		>Mark Fisher. <em>The Weird and the Eerie</em>. Repeater 2017. P. 63.</Sidenote
-	>
-</p>
 <p>
 	This text intends to give insight into everything that was and is happening behind the scenes of
 	this project. On the technological side, this project consists of multiple components, most of

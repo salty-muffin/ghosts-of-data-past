@@ -13,7 +13,7 @@
 
 	export let image: string;
 	export let alt: string;
-	export let loading = 'eager';
+	export let loading: 'eager' | 'lazy' | null | undefined = 'eager';
 	export let sizes: Size[]; // smallest size should come first, last size will be without maxWidth
 	export let width: number;
 	export let height: number;

@@ -1,27 +1,10 @@
-<script lang="ts">
-	import Nav from '$lib/components/nav.svelte';
-	import MuteButton from '$lib/components/mute-button.svelte';
-</script>
-
 <svelte:head>
 	<title>datenschutzerklärung</title>
 </svelte:head>
 
-<h1 class="other__title">Datenschutzerklärung</h1>
-<Nav
-	class="doc__nav"
-	links={[
-		{ href: '/', text: 'back to work' },
-		{ href: '/background', text: 'background' },
-		{ href: '/credits', text: 'credits' },
-		{ href: '/source', text: 'source' }
-	]}
->
-	<MuteButton>
-		<h4 slot="muted">unmute</h4>
-		<h4 slot="unmuted">mute</h4>
-	</MuteButton>
-</Nav>
+<div class="other__title">
+	<h1>Datenschutzerklärung</h1>
+</div>
 <p>Allgemeiner Hinweis und Pflichtinformationen</p>
 <p>Benennung der verantwortlichen Stelle</p>
 <h3>Die verantwortliche Stelle fuer die Datenverarbeitung auf dieser Website ist:</h3>

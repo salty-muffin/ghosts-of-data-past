@@ -1,4 +1,7 @@
 <script lang="ts">
+	import Nav from '$lib/components/nav.svelte';
+	import MuteButton from '$lib/components/mute-button.svelte';
+
 	import { onMount } from 'svelte';
 
 	import { FontAnimator } from '$lib/components/font-animation';
@@ -67,6 +70,20 @@
 
 <div class="doc" bind:this={doc}>
 	<article class="doc__container">
+		<Nav
+			class="doc__nav"
+			links={[
+				{ href: '/', text: 'back to work' },
+				{ href: '/background', text: 'background' },
+				{ href: '/credits', text: 'credits' },
+				{ href: '/source', text: 'source' }
+			]}
+		>
+			<MuteButton>
+				<h4 slot="muted">unmute</h4>
+				<h4 slot="unmuted">mute</h4>
+			</MuteButton>
+		</Nav>
 		<main class="doc__content">
 			<slot />
 		</main>
@@ -90,7 +107,8 @@
 	}
 
 	.doc__nav {
-		margin-bottom: map-get($margin-primary, 'sm');
+		margin-top: map-get($margin-primary, 'sm');
+
 		.nav__links {
 			margin: 0;
 			gap: map-get($margin-primary, 'sm');
@@ -108,10 +126,6 @@
 				}
 			}
 		}
-	}
-
-	.doc__title {
-		font-size: map-get($title-size, 'sm');
 	}
 
 	.doc__container {
@@ -132,6 +146,21 @@
 
 	.doc__content {
 		// font-feature-settings: 'ss01' 1;
+		.doc__title {
+			height: map-get($title-height, 'sm');
+			display: flex;
+			align-items: center;
+
+			h1 {
+				font-size: map-get($title-size, 'sm');
+				text-align: left;
+				margin: 0;
+
+				&::after {
+					display: none;
+				}
+			}
+		}
 
 		p:first-of-type {
 			margin-top: 0;
@@ -152,7 +181,7 @@
 			}
 
 			li:before {
-				background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2224%22%20height%3D%2224%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8.34559%200.5C0.500011%205.85477%200.499977%2012.9945%203.1152%2018.3492C6.5%2023.5%2010.8832%2025.8335%2019.6781%2020C27.2565%2014.9734%2021.3432%2011%2019.6781%206.74723C18.013%202.49447%2010.5%207.52176%207.47386%206.74723C3.14174%205.63845%201.66231%203.47487%200.5%201.39246%22%20stroke%3D%22#{encodecolor(map-get($colors, 'foreground'))}%22%20stroke-width%3D%222%22%2F%3E%3C%2Fsvg%3E%0A");
+				background-image: url("data:image/svg+xml,%3Csvg%20width%3D%2225%22%20height%3D%2224%22%20viewBox%3D%220%200%2025%2024%22%20fill%3D%22none%22%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%3E%3Cpath%20d%3D%22M8.34559%200.5C0.500011%205.85477%200.499977%2012.9945%203.1152%2018.3492C6.5%2023.5%2010.2882%2024.8175%2019.6781%2020C26.5%2016.5%2024%2010%2019.6781%208C15.3562%206%2010.5%207.52176%207.47386%206.74723C3.14174%205.63845%201.66231%203.47487%200.5%201.39246%22%20stroke%3D%22#{encodecolor(map-get($colors, 'foreground'))}%22%20stroke-width%3D%222.6%22%20%2F%3E%3C%2Fsvg%3E%0A");
 				background-repeat: no-repeat;
 				background-position: left center;
 				background-size: 0.5em;
@@ -235,6 +264,7 @@
 
 			width: 18em;
 			margin-left: calc(-18em - 2 * map-get($margin-primary, 'lg'));
+			margin-top: map-get($title-height, 'md');
 
 			.nav__links {
 				flex-direction: column;
@@ -261,30 +291,34 @@
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'md')) {
-		.doc__title {
-			margin: 1.5em 0;
-
-			font-size: map-get($title-size, 'md');
-		}
-
 		.doc__container {
 			width: min(calc(100vw - 2 * map-get($margin-primary, 'md')), map-get($container-width, 'md'));
 			// margin: 0 map-get($margin-primary, 'lg');
 		}
 
-		.doc__content .image-component {
-			width: 100%;
-			margin: 0;
+		.doc__content {
+			.doc__title {
+				height: map-get($title-height, 'md');
 
-			&.doc__logo {
-				width: min(100%, 16em);
-				float: right;
-				clear: right;
-				margin: 0 0 map-get($margin-primary, 'md') map-get($margin-primary, 'md');
+				h1 {
+					font-size: map-get($title-size, 'md');
+				}
+			}
 
-				/* filter: drop-shadow(0 0 map-get($margin-secondary, 'lg') map-get($colors, 'foreground'))
+			.image-component {
+				width: 100%;
+				margin: 0;
+
+				&.doc__logo {
+					width: min(100%, 16em);
+					float: right;
+					clear: right;
+					margin: 0 0 map-get($margin-primary, 'md') map-get($margin-primary, 'md');
+
+					/* filter: drop-shadow(0 0 map-get($margin-secondary, 'lg') map-get($colors, 'foreground'))
 					drop-shadow(0 0 map-get($margin-primary, 'lg') map-get($colors, 'foreground'))
 					drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground')); */
+				}
 			}
 		}
 
@@ -298,30 +332,38 @@
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
-		.doc__title {
-			margin: 1.5em 0;
-
-			font-size: map-get($title-size, 'lg');
-		}
-
 		.doc__container {
 			width: min(calc(100vw - 2 * map-get($margin-primary, 'lg')), map-get($container-width, 'lg'));
 			// margin: 0 map-get($margin-primary, 'lg');
 		}
 
-		.doc__content .image-component {
-			width: 100%;
-			margin: 0;
+		.doc__nav {
+			margin-top: map-get($title-height, 'lg');
+		}
 
-			&.doc__logo {
-				width: min(100%, 16em);
-				float: right;
-				clear: right;
-				margin: 0 0 map-get($margin-primary, 'lg') map-get($margin-primary, 'lg');
+		.doc__content {
+			.doc__title {
+				height: map-get($title-height, 'lg');
 
-				/* filter: drop-shadow(0 0 map-get($margin-secondary, 'lg') map-get($colors, 'foreground'))
+				h1 {
+					font-size: map-get($title-size, 'lg');
+				}
+			}
+
+			.image-component {
+				width: 100%;
+				margin: 0;
+
+				&.doc__logo {
+					width: min(100%, 16em);
+					float: right;
+					clear: right;
+					margin: 0 0 map-get($margin-primary, 'lg') map-get($margin-primary, 'lg');
+
+					/* filter: drop-shadow(0 0 map-get($margin-secondary, 'lg') map-get($colors, 'foreground'))
 					drop-shadow(0 0 map-get($margin-primary, 'lg') map-get($colors, 'foreground'))
 					drop-shadow(0 0 map-get($border-blur, 'lg') map-get($colors, 'foreground')); */
+				}
 			}
 		}
 

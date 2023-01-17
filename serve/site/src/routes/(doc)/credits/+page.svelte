@@ -1,6 +1,4 @@
 <script lang="ts">
-	import Nav from '$lib/components/nav.svelte';
-	import MuteButton from '$lib/components/mute-button.svelte';
 	import Sidenote from '$lib/components/sidenote.svelte';
 	import Image from '$lib/components/image.svelte';
 </script>
@@ -9,21 +7,9 @@
 	<title>credits / ghosts of data past</title>
 </svelte:head>
 
-<h1 class="doc__title">credits</h1>
-<Nav
-	class="doc__nav"
-	links={[
-		{ href: '/', text: 'back to work' },
-		{ href: '/background', text: 'background' },
-		{ href: '/credits', text: 'credits' },
-		{ href: '/source', text: 'source' }
-	]}
->
-	<MuteButton>
-		<h4 slot="muted">unmute</h4>
-		<h4 slot="unmuted">mute</h4>
-	</MuteButton>
-</Nav>
+<div class="doc__title">
+	<h1>credits</h1>
+</div>
 <nav class="doc__toc">
 	<ol>
 		<li>
@@ -88,8 +74,8 @@
 <h1 id="inspiration">Inspiration</h1>
 <p>
 	The look of these documentation pages, especially the sidenotes, is inspired by
-	[gwern.net](https://www.gwern.net/Faces) by Gwern Branwen. Additionally, this site taught me a lot
-	about working with styleGAN.
+	<a href="https://www.gwern.net/Faces">gwern.net</a> by Gwern Branwen. Additionally, this site taught
+	me a lot about working with styleGAN.
 </p>
 <p>
 	<a href="https://www.instagram.com/jimo955/">Ben Clarke</a> inspired me to use styleGAN in the first

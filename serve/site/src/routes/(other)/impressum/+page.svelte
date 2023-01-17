@@ -1,27 +1,10 @@
-<script lang="ts">
-	import Nav from '$lib/components/nav.svelte';
-	import MuteButton from '$lib/components/mute-button.svelte';
-</script>
-
 <svelte:head>
 	<title>impressum</title>
 </svelte:head>
 
-<h1 class="other__title">Impressum</h1>
-<Nav
-	class="doc__nav"
-	links={[
-		{ href: '/', text: 'back to work' },
-		{ href: '/background', text: 'background' },
-		{ href: '/credits', text: 'credits' },
-		{ href: '/source', text: 'source' }
-	]}
->
-	<MuteButton>
-		<h4 slot="muted">unmute</h4>
-		<h4 slot="unmuted">mute</h4>
-	</MuteButton>
-</Nav>
+<div class="other__title">
+	<h1>Impressum</h1>
+</div>
 <p>Zeno Gries</p>
 <p>Kontakt:</p>
 <p>E-Mail: <a href="mailto:zeno@zenogries.com">zeno@zenogries.com</a></p>

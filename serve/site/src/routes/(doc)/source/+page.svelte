@@ -1,27 +1,10 @@
-<script lang="ts">
-	import Nav from '$lib/components/nav.svelte';
-	import MuteButton from '$lib/components/mute-button.svelte';
-</script>
-
 <svelte:head>
 	<title>source / ghosts of data past</title>
 </svelte:head>
 
-<h1 class="doc__title">source</h1>
-<Nav
-	class="doc__nav"
-	links={[
-		{ href: '/', text: 'back to work' },
-		{ href: '/background', text: 'background' },
-		{ href: '/credits', text: 'credits' },
-		{ href: '/source', text: 'source' }
-	]}
->
-	<MuteButton>
-		<h4 slot="muted">unmute</h4>
-		<h4 slot="unmuted">mute</h4>
-	</MuteButton>
-</Nav>
+<div class="doc__title">
+	<h1>source</h1>
+</div>
 <p>
 	In case you want to know how all this was implemented exactly or even recreate it with your own
 	datasets, you can the source code for this project and further documentation through the following
