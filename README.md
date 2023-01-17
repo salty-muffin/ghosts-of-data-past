@@ -80,7 +80,7 @@ the work on this project was sponsored by the [kulturstiftung des freistaates sa
 - [x] add favicon
 - [x] update to sveltekit 1.0 (including app.html) for this and the documentation
 - [x] implement wildcard response from serve app (especially so that connects with wrong ids get captured)
-- [ ] send id/access code with each message. load the id/access code at each build and stop receiving messages/redirect to lost page/show a message if the id mismatches
+- [x] send id/access code with each message. load the id/access code at each build and stop receiving messages/redirect to lost page/show a message if the id mismatches
 
 ### generate
 

@@ -1,19 +1,17 @@
 import type { PageServerLoad } from './$types';
 import { error } from '@sveltejs/kit';
-import path from 'path';
-import fs from 'fs';
-import { fileURLToPath } from 'url';
+import { env } from '$env/dynamic/private';
 import qr from 'qrcode';
 
 export const load: PageServerLoad = async () => {
 	try {
-		const id = fs.readFileSync(
-			path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../../id.txt'),
-			'utf8'
-		);
+		let gate: string | undefined = undefined;
+		if ('GATE' in env) {
+			gate = env.GATE;
+		}
 
 		let qrData = '';
-		qr.toString(`http://192.168.178.22:5000/${id}`, { type: 'svg' }, (err, data) => {
+		qr.toString(`http://192.168.178.22:5000/?gate=${gate}`, { type: 'svg' }, (err, data) => {
 			if (data) {
 				qrData = data;
 			}
@@ -22,14 +20,10 @@ export const load: PageServerLoad = async () => {
 			}
 		});
 
-		if (id) {
-			return {
-				id: id,
-				qr: qrData
-			};
-		}
-
-		throw error(500, 'something wrong with the text file');
+		return {
+			gate: gate,
+			qr: qrData
+		};
 	} catch (err) {
 		throw error(500, `could not open text file: ${err}`);
 	}

@@ -1,7 +1,7 @@
 # script for running a flask websocket server
-# which pushes chat messages to clients
+# which shows the link & qrcode
 #
-# zeno gries 2022
+# zeno gries 2023
 
 import os
 import flask

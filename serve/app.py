@@ -1,116 +1,113 @@
 # script for running a flask websocket server
 # which pushes chat messages to clients
 #
-# zeno gries 2022
+# zeno gries 2023
 
 import os
 from threading import Lock
 import flask
-from flask import Flask
+from flask import Flask, request
 from flask_socketio import SocketIO
 import redis
 import time
-import click
+
+gate = os.environ.get('GATE')
 
 # threading
 thread = None
 thread_lock = Lock()
 
+# flask & socketio setup
+app = Flask(
+    __name__, static_url_path='', static_folder=os.path.join('site', 'build')
+    )
+app.config.from_object('config.ProdConfig')
+socketio = SocketIO(app)
 
-# yapf: disable
-@click.command()
-@click.option('--id', type=str, default='', help='the access code under which the site can be accessed (domain.net/id)', required=False)
-# yapf: enable
-def main(id) -> None:
-    # flask & socketio setup
-    app = Flask(
-        __name__,
-        static_url_path='',
-        static_folder=os.path.join('site', 'build')
-        )
-    app.config.from_object('config.ProdConfig')
-    socketio = SocketIO(app)
 
-    # background task function
-    def chat():
-        print('connecting to redis database')
-        database = redis.Redis(host='localhost', port=6379, db=0)
-        subscriber = database.pubsub()
-        subscriber.psubscribe('__keyspace@0__:*')
+# background task function
+def chat():
+    print('connecting to redis database')
+    database = redis.Redis(host='localhost', port=6379, db=0)
+    subscriber = database.pubsub()
+    subscriber.psubscribe('__keyspace@0__:*')
 
-        while True:
-            message = subscriber.get_message()
-            if message:
-                # get the key of the changed item
-                key = str(message['channel']).split(':', 1)[1].strip('\'')
+    while True:
+        message = subscriber.get_message()
+        if message:
+            # get the key of the changed item
+            key = str(message['channel']).split(':', 1)[1].strip('\'')
 
-                if '*' not in key:
-                    # get writing event updates
-                    if 'writing' in key:
-                        writing_state = database.hgetall(key)
-                        socketio.emit(
-                            'writing_state',
-                            {
-                                'writer':
-                                writing_state[b'writer'].decode('utf-8'),
-                                'state':
-                                int(writing_state[b'state'].decode('utf-8'))
-                                }
-                            )
-                    # get incoming messages
-                    else:
-                        chat_message = database.hgetall(key)
-                        socketio.emit(
-                            'chat_message',
-                            {
-                                'id': key,
-                                'sender':
-                                chat_message[b'sender'].decode('utf-8'),
-                                'text': chat_message[b'text'].decode('utf-8'),
-                                'imageData': chat_message[b'image_data'],
-                                'alt': chat_message[b'alt'].decode('utf-8'),
-                                'soundData': chat_message[b'sound_data'],
-                                'timestamp': int(time.time() * 1000)
-                                }
-                            )
-            socketio.sleep(0.1)
+            if '*' not in key:
+                # get writing event updates
+                if 'writing' in key:
+                    writing_state = database.hgetall(key)
+                    socketio.emit(
+                        'writing_state',
+                        {
+                            'writer': writing_state[b'writer'].decode('utf-8'),
+                            'state':
+                            int(writing_state[b'state'].decode('utf-8')),
+                            'gate': gate if gate else ''
+                            },
+                        )
+                # get incoming messages
+                else:
+                    chat_message = database.hgetall(key)
+                    socketio.emit(
+                        'chat_message',
+                        {
+                            'id': key,
+                            'sender': chat_message[b'sender'].decode('utf-8'),
+                            'text': chat_message[b'text'].decode('utf-8'),
+                            'imageData': chat_message[b'image_data'],
+                            'alt': chat_message[b'alt'].decode('utf-8'),
+                            'soundData': chat_message[b'sound_data'],
+                            'timestamp': int(time.time() * 1000),
+                            'gate': gate if gate else ''
+                            }
+                        )
+        socketio.sleep(0.1)
 
-    # on connect start the background thread (if it's the first connect)
-    @socketio.on('connect')
-    def connect():
-        print('client connected')
-        global thread
-        with thread_lock:
-            if thread is None:
-                print('starting background thread')
-                thread = socketio.start_background_task(chat)
 
-    # index page
-    @app.route('/', defaults={'access_code': ''})
-    @app.route('/<access_code>')
-    def index(access_code):
-        print(access_code, id)
-        if access_code == id:
-            return flask.send_file('site/build/index.html')
-        else:
-            return flask.send_file('site/build/lost.html')
+# on connect start the background thread (if it's the first connect)
+@socketio.on('connect')
+def connect():
+    print('client connected')
+    global thread
+    with thread_lock:
+        if thread is None:
+            print('starting background thread')
+            thread = socketio.start_background_task(chat)
 
-    # @app.route('/background')
-    # def background():
-    #     return flask.send_file('site/build/background.html')
 
-    # @app.route('/credits')
-    # def credit():
-    #     return flask.send_file('site/build/credits.html')
+# index page
+@app.route('/')
+def index():
+    if request.args.get('gate') == gate or not gate:
+        return flask.send_file('site/build/index.html')
+    else:
+        return flask.send_file('site/build/lost.html')
 
-    # @app.route('/source')
-    # def source():
-    #     return flask.send_file('site/build/source.html')
 
-    # run command
-    socketio.run(app, host='0.0.0.0', port=5000)
+@app.errorhandler(404)
+def page_not_found(e):
+    # note that we set the 404 status explicitly
+    return flask.send_file('site/build/404.html')
 
+
+# @app.route('/background')
+# def background():
+#     return flask.send_file('site/build/background.html')
+
+# @app.route('/credits')
+# def credit():
+#     return flask.send_file('site/build/credits.html')
+
+# @app.route('/source')
+# def source():
+#     return flask.send_file('site/build/source.html')
 
 # run server
 if __name__ == '__main__':
-    main()
+    socketio.run(app, host='0.0.0.0', port=5000)

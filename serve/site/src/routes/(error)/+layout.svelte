@@ -40,24 +40,12 @@
 </script>
 
 <svelte:head>
-	<title>ghosts of data past</title>
+	<title>connection lost</title>
 </svelte:head>
 
 <div class="lost" bind:this={lost}>
 	<div class="lost__container">
-		<h1 class="lost__title">connection lost</h1>
-
-		<main class="lost__content">
-			<p>
-				It appears that your link to the afterworld of data has expired. Links from the exhibition
-				are only valid for on the day they were made.
-			</p>
-			<p>
-				You may still see a documentation of the work and read all texts associated with it at <a
-					href="https://ghostsonthe.net">ghostsonthe.net</a
-				>
-			</p>
-		</main>
+		<slot />
 	</div>
 	<Footer />
 </div>
@@ -73,52 +61,50 @@
 		min-height: 100vh;
 	}
 
-	.lost__title {
-		font-size: map-get($title-size, 'sm');
-	}
-
 	.lost__container {
 		flex-grow: 1;
 
 		width: min(calc(100vw - 2 * map-get($margin-primary, 'sm')), map-get($container-width, 'sm'));
 		// margin: 0 map-get($margin-primary, 'sm');
-	}
 
-	.lost__content {
-		// font-feature-settings: 'ss01' 1;
-
-		p:first-of-type {
-			margin-top: 0;
+		h1 {
+			font-size: map-get($title-size, 'sm');
 		}
 
-		p {
-			font-variation-settings: 'wght' var(--b-weight), 'ital' var(--b-italic);
+		main {
+			// font-feature-settings: 'ss01' 1;
+
+			p:first-of-type {
+				margin-top: 0;
+			}
+
+			p {
+				font-variation-settings: 'wght' var(--b-weight), 'ital' var(--b-italic);
+			}
 		}
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'md')) {
-		.lost__title {
-			margin: 1.5em 0;
-
-			font-size: map-get($title-size, 'md');
-		}
-
 		.lost__container {
 			width: min(calc(100vw - 2 * map-get($margin-primary, 'md')), map-get($container-width, 'md'));
 			// margin: 0 map-get($margin-primary, 'lg');
+
+			h1 {
+				margin: 1.5em 0;
+
+				font-size: map-get($title-size, 'md');
+			}
 		}
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
-		.lost__title {
-			margin: 1.5em 0;
-
-			font-size: map-get($title-size, 'lg');
-		}
-
 		.lost__container {
 			width: min(calc(100vw - 2 * map-get($margin-primary, 'lg')), map-get($container-width, 'lg'));
 			// margin: 0 map-get($margin-primary, 'lg');
+
+			h1 {
+				font-size: map-get($title-size, 'lg');
+			}
 		}
 	}
 </style>

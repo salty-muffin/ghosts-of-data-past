@@ -2,7 +2,7 @@
 # text generation with one gpt2 model trained on dialogue
 # selfie generation with one stylegan3 model per writer
 #
-# zeno gries 2022
+# zeno gries 2023
 
 from http.client import responses
 from typing import Union, List, Optional
