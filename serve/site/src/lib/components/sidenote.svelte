@@ -7,6 +7,7 @@
 	let show = false;
 </script>
 
+<!-- svelte-ignore a11y-click-events-have-key-events -->
 <span
 	class="sidenote__marker"
 	class:sidenote--hover={hover}
@@ -38,7 +39,7 @@
 	}}
 >
 	<span class="sidenote__number">{id}</span><span class="sidenote__text"
-		><slot /><span
+		><slot /><!-- svelte-ignore a11y-click-events-have-key-events --><span
 			class="sidenote__close"
 			on:click={() => {
 				show = false;

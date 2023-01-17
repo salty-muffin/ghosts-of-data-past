@@ -1,11 +1,9 @@
-<script context="module" lang="ts">
-	export interface Link {
+<script lang="ts">
+	interface Link {
 		href: string;
 		text: string;
 	}
-</script>
 
-<script lang="ts">
 	// props
 	let className = '';
 	export { className as class };

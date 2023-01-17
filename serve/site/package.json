@@ -12,7 +12,6 @@
 		"format": "prettier --write --plugin-search-dir=. ."
 	},
 	"devDependencies": {
-		"@jsdevtools/rehype-toc": "file:jsdevtools-rehype-toc-3.0.2-modified.tgz",
 		"@sveltejs/adapter-static": "^1.0.0",
 		"@sveltejs/kit": "^1.0.0",
 		"@types/sharp": "^0.30.5",
@@ -22,10 +21,8 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte3": "^4.0.0",
-		"mdsvex": "^0.10.6",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.8.1",
-		"rehype-slug": "^5.0.1",
 		"sass": "^1.57.1",
 		"sharp": "^0.30.7",
 		"svelte": "^3.54.0",
