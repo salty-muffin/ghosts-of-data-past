@@ -13,8 +13,6 @@ app = Flask(
     )
 app.config.from_object('config.ProdConfig')
 
-# generate random
-
 
 # index page
 @app.route('/')
