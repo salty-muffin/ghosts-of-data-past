@@ -8,7 +8,7 @@ import qr from 'qrcode';
 export const load: PageServerLoad = async () => {
 	try {
 		const id = fs.readFileSync(
-			path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../id.txt'),
+			path.join(path.dirname(fileURLToPath(import.meta.url)), '../../../../id.txt'),
 			'utf8'
 		);
 
