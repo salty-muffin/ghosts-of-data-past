@@ -114,8 +114,8 @@ class Prompts:
 @click.option('--letter_time',     type=float,                   default=0.2, help='time it takes to write one letter', required=True)
 @click.option('--image_time',      type=float,                   default=6.0, help='time it takes to take an image', required=True)
 @click.option('--run_time',        type=float,                   default=10.0, help='time to wait between runs', required=True)
-@click.option('--write_deviation', type=parse_min_max,           default=[0.8, 1.2], help='minimun & maximum deviation of the time', required=True)
-@click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the time', required=True)
+@click.option('--write_deviation', type=parse_min_max,           default=[0.8, 1.2], help='minimun & maximum deviation of the write time', required=True)
+@click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the read time', required=True)
 @click.option('--rapid',           is_flag=True,                 help='skip all wait times')
 @click.option('--verbose',         is_flag=True,                 help='print additional information')
 # yapf: enable
