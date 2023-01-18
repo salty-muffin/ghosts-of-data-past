@@ -9,19 +9,28 @@ export const load: PageServerLoad = async () => {
 		if ('GATE' in env) {
 			gate = env.GATE;
 		}
+		let domain = 'http://localhost:5000';
+		if ('DOMAIN' in env && env.DOMAIN) {
+			domain = env.DOMAIN;
+		}
 
 		let qrData = '';
-		qr.toString(`http://192.168.178.22:5000/?gate=${gate}`, { type: 'svg' }, (err, data) => {
-			if (data) {
-				qrData = data;
+		qr.toString(
+			`${domain}/?gate=${gate}`,
+			{ type: 'svg', errorCorrectionLevel: 'Q' },
+			(err, data) => {
+				if (data) {
+					qrData = data;
+				}
+				if (err) {
+					throw error(500, `could not create qr code: ${err}`);
+				}
 			}
-			if (err) {
-				throw error(500, `could not create qr code: ${err}`);
-			}
-		});
+		);
 
 		return {
 			gate: gate,
+			domain: domain,
 			qr: qrData
 		};
 	} catch (err) {
