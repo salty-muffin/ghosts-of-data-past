@@ -8,7 +8,11 @@
 	{@html data.qr}
 </div>
 <div class="text">
-	<p>This links to <a href="localhost:5000/{data.id}">localhost:5000/{data.id}</a></p>
+	<p>
+		This links to <a href="localhost:5000{data.gate ? `/?gate=${data.gate}` : ''}"
+			>localhost:5000{data.gate ? `/?gate=${data.gate}` : ''}</a
+		>
+	</p>
 </div>
 
 <svg>

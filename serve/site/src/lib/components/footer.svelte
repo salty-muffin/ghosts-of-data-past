@@ -1,5 +1,5 @@
 <footer class="footer">
-	<p>&copy; zeno gries</p>
+	<p>zeno gries 2023</p>
 	<p><a href="/datenschutz">data privacy statement</a></p>
 	<p><a href="/impressum">imprint</a></p>
 </footer>

@@ -11,6 +11,7 @@
 	import { writing } from '$lib/stores/writing';
 	import { muted } from '$lib/stores/muted';
 	import { sound } from '$lib/stores/audio';
+	import { lost, gate } from '$lib/stores/lost';
 
 	import PageTransition from '$lib/components/page-transition.svelte';
 
@@ -19,6 +20,13 @@
 
 	// on incoming chat message from server
 	socket.on('chat_message', (message) => {
+		if (!$gate) {
+			gate.set(message.gate);
+		}
+		if ($gate && message.gate !== $gate) {
+			lost.set(true);
+		}
+
 		// take care that message is only processed, if sender has been writing before
 		if ($writing.filter((element) => element.writer === message.sender).length > 0) {
 			// process image data and if there, create a blob from it
@@ -30,14 +38,16 @@
 				imageURL = URL.createObjectURL(blob);
 			}
 			// add new message to messages store
-			messages.add({
-				id: message.id,
-				sender: message.sender,
-				text: message.text,
-				imageURL: imageURL,
-				alt: message.alt,
-				timestamp: message.timestamp
-			});
+			if (!$lost) {
+				messages.add({
+					id: message.id,
+					sender: message.sender,
+					text: message.text,
+					imageURL: imageURL,
+					alt: message.alt,
+					timestamp: message.timestamp
+				});
+			}
 			writing.add({ writer: message.sender, state: false });
 
 			// play audio on new message (only if unmuted)
@@ -56,7 +66,16 @@
 
 	// on incoming writing event
 	socket.on('writing_state', (event) => {
-		writing.add({ writer: event.writer, state: event.state });
+		if (!$gate) {
+			gate.set(event.gate);
+		}
+		if ($gate && event.gate !== $gate) {
+			lost.set(true);
+		}
+
+		if (!$lost) {
+			writing.add({ writer: event.writer, state: event.state });
+		}
 	});
 
 	afterNavigate((navigation) => {

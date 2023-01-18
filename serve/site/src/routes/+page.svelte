@@ -7,6 +7,7 @@
 
 	import { messages } from '$lib/stores/messages';
 	import { writing } from '$lib/stores/writing';
+	import { lost } from '$lib/stores/lost';
 
 	import Message from '$lib/components/message.svelte';
 	import Writing from '$lib/components/writing.svelte';
@@ -123,7 +124,6 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-
 			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
@@ -167,6 +167,31 @@
 						: ''}
 				/>
 			{/each}
+			<!-- message that is shown when the connection is lost -->
+			{#if $lost}
+				<div class="message__wrapper message--left message--breathing message--spaced">
+					<div class="message__body">
+						<h6 class="message__sender">connection lost</h6>
+						<span class="message__text"
+							>It appears that your link to the afterworld of data has expired. Links from the
+							exhibition are only valid on the day they were made. You may still see a documentation
+							of the work and read all texts associated with it at <a href="https://ghostsonthe.net"
+								>ghostsonthe.net</a
+							>.
+						</span>
+						<span class="message__timestamp">??:??</span>
+					</div>
+					<svg
+						class="message__tip"
+						width="25"
+						height="21"
+						viewBox="0 0 25 21"
+						xmlns="http://www.w3.org/2000/svg"
+					>
+						<path d="M9 0C9 16 1 20 1 20C1 20 9 16 25 16" />
+					</svg>
+				</div>
+			{/if}
 			{#each $writing as writing_state}
 				{#if writing_state.state}
 					<!-- add top margin, if current writer differs from the previous message's sender -->
