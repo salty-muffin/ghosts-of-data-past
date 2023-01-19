@@ -115,13 +115,13 @@ def generate_images(stylegan_dir, verbose, **queues: Queue) -> None:
 
     # generate images
     while True:
-        for role, queue in queues.items():
-            if queue.qsize() < 3:
+        for role, _queue in queues.items():
+            if _queue.qsize() < 3:
                 print_v(
                     verbose,
                     f"generating image for '{role}' with seed: {image_seed[role]}"
                     )
-                queue.put(image_Gs[role].generate(image_seed[role]))
+                _queue.put(image_Gs[role].generate(image_seed[role]))
                 image_seed[role] += 1
         time.sleep(1)
 
@@ -462,9 +462,9 @@ def generate(
             )
         if process: process.terminate()
         if process: process.join()
-        for queue in queues.values():
-            if queue: queue.close()
-            if queue: queue.join_thread()
+        for _queue in queues.values():
+            if _queue: queue.close()
+            if _queue: queue.join_thread()
 
 
 if __name__ == '__main__':
