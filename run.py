@@ -4,6 +4,7 @@ import time
 import subprocess
 import random
 import string
+import argparse
 
 
 def random_string(length: int) -> str:
@@ -12,6 +13,11 @@ def random_string(length: int) -> str:
 
 
 def main() -> None:
+    # parse arguments
+    parser = argparse.ArgumentParser()
+    parser.add_argument('domain')
+    args = parser.parse_args()
+
     # declare popen objects, so they can be terminated in case of exception
     redis: subprocess.Popen = None
     link: subprocess.Popen = None
@@ -21,8 +27,9 @@ def main() -> None:
 
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
-    domain = 'http://192.168.178.22:5000'
+    domain = args.domain
     print(f'the gate is: {gate}')
+    print(f'the domain is: {domain}')
 
     # open json configuration file
     try:
@@ -102,9 +109,7 @@ def main() -> None:
         # open firefox with link page
         time.sleep(5)
         serve = subprocess.Popen([
-            'firefox',  #'--kiosk',
-  # '--new-window',
-            'localhost:8000'
+            'firefox', '--kiosk', '--new-window', 'localhost:8000'
             ])
 
         generate.wait()
