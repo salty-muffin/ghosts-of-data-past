@@ -4,13 +4,10 @@
 #
 # zeno gries 2023
 
-from typing import Union, List, Dict
-from queue import Queue
-from PIL import Image
+from http.client import responses
+from typing import Union, List, Optional
 
 import os
-import multiprocessing
-import queue
 import re
 import time
 import random
@@ -96,36 +93,6 @@ class Prompts:
         return self._prompts_copy.pop()
 
 
-def generate_images(stylegan_dir, verbose, **queues: Queue) -> None:
-    # setup image generators
-    image_Gs: Dict[str, ImageGenerator] = {}
-    for role in queues:
-        image_Gs[role] = ImageGenerator(
-            os.path.join(stylegan_dir, f'{role}_stylegan3_model.pkl'),
-            verbose=verbose
-            )
-
-    # set image seed starting points
-    image_seed = {}
-    for role in queues:
-        image_seed[role] = random.randint(
-            0, 10000
-            )  # make sure it is a random seed so it always starts at a different point
-    print_v(verbose, f'setup image seeds: {image_seed}')
-
-    # generate images
-    while True:
-        for role, queue in queues.items():
-            if queue.qsize() < 3:
-                print_v(
-                    verbose,
-                    f"generating image for '{role}' with seed: {image_seed[role]}"
-                    )
-                queue.put(image_Gs[role].generate(image_seed[role]))
-                image_seed[role] += 1
-        time.sleep(1)
-
-
 # yapf: disable
 @click.command()
 @click.option('--delay',           type=float,                   default=0, help='how long to wait before starting (for documentation purposes)', required=True)
@@ -184,84 +151,83 @@ def generate(
     # setup redis database
     db = Database(host='localhost', db=0)
 
+    # setup generators
+    image_Gs = {}
+    for role in roles:
+        image_Gs[role] = ImageGenerator(
+            os.path.join(stylegan_dir, f'{role}_stylegan3_model.pkl'),
+            verbose=verbose
+            )
+    text_G = TextGenerator(model_folder=gpt_dir, verbose=verbose)
+    print_v(verbose, 'setup generators.')
+
+    # setup writing states
+    writing_state = {}
+    for role in roles:
+        writing_state[role] = db.Hash(f'writing:{role}')
+        writing_state[role].update(writer=role, state=0)
+    print_v(verbose, 'setup writing states.')
+
+    # get all notification sound paths
+    sounds = Sounds(glob.glob(os.path.join(sound_dir, '*')))
+    print_v(verbose, 'setup sounds')
+
+    # set image seed starting points
+    image_seed = {}
+    for role in roles:
+        image_seed[role] = random.randint(
+            0, 10000
+            )  # make sure it is a random seed so it always starts at a different point
+    print_v(verbose, f'setup image seeds: {image_seed}')
+
+    # get regex patterns
+    role_holder = role_format.split(r'{role}')
+    split_pattern = re.compile(
+        fr'(?={re.escape(role_holder[0])}\w+{re.escape(role_holder[1])})(?!{re.escape(image_string)})'
+        )
+    role_pattern = re.compile(
+        fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}\w+{re.escape(role_holder[1])}'
+        )
+    sender_pattern = re.compile(
+        fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}(?P<sender>\w+){re.escape(role_holder[1])}'
+        )
+
+    # setup prompts
+    with open(prompts_file) as file:
+        prompts_list = json.load(file)
+    prompts = Prompts(prompts_list)
+    prompt = prompts.get()
+    print_v(verbose, f'setup prompts. first prompt: {prompt}')
+
+    # setup run
+    current_run_length = int(
+        run_length * random.uniform(run_deviation[0], run_deviation[1])
+        )
+    print_v(verbose, f'setup run length: {current_run_length}')
+
+    last_message = {
+        'sender': re.search(sender_pattern, prompt).group('sender').lower(),
+        'text': re.sub(role_pattern, '', prompt).strip(),
+        'image_data': b'',
+        'alt': b'',
+        'sound_data': sounds.get(),
+        'image_terminal': '',
+        'new_run': False
+        }
+    last_sender = last_message['sender']
+    print_v(
+        verbose,
+        f'generated first message (this should be the prompt): {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
+        )
+
+    # set variables
+    start = 0
+    new_run = False
+
+    time.sleep(delay)
+
+    # - main loop --------------------------------------------------------------------------------
     try:
-        # setup queues
-        queues: Dict[str, Queue] = {}
-        for role in roles:
-            queues[role] = multiprocessing.Queue()
-
-        # start image generation process
-        process = multiprocessing.Process(
-            target=generate_images,
-            args=(stylegan_dir, verbose),
-            kwargs=(queues)
-            )
-        process.start()
-        print_v(verbose, 'setup image generators.')
-
-        # setup text generators
-        text_G = TextGenerator(model_folder=gpt_dir, verbose=verbose)
-        print_v(verbose, 'setup text generator.')
-
-        # setup writing states
-        writing_state = {}
-        for role in roles:
-            writing_state[role] = db.Hash(f'writing:{role}')
-            writing_state[role].update(writer=role, state=0)
-        print_v(verbose, 'setup writing states.')
-
-        # get all notification sound paths
-        sounds = Sounds(glob.glob(os.path.join(sound_dir, '*')))
-        print_v(verbose, 'setup sounds')
-
-        # get regex patterns
-        role_holder = role_format.split(r'{role}')
-        split_pattern = re.compile(
-            fr'(?={re.escape(role_holder[0])}\w+{re.escape(role_holder[1])})(?!{re.escape(image_string)})'
-            )
-        role_pattern = re.compile(
-            fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}\w+{re.escape(role_holder[1])}'
-            )
-        sender_pattern = re.compile(
-            fr'(?!{re.escape(image_string)}){re.escape(role_holder[0])}(?P<sender>\w+){re.escape(role_holder[1])}'
-            )
-
-        # setup prompts
-        with open(prompts_file) as file:
-            prompts_list = json.load(file)
-        prompts = Prompts(prompts_list)
-        prompt = prompts.get()
-        print_v(verbose, f'setup prompts. first prompt: {prompt}')
-
-        # setup run
-        current_run_length = int(
-            run_length * random.uniform(run_deviation[0], run_deviation[1])
-            )
-        print_v(verbose, f'setup run length: {current_run_length}')
-
-        last_message = {
-            'sender': re.search(sender_pattern,
-                                prompt).group('sender').lower(),
-            'text': re.sub(role_pattern, '', prompt).strip(),
-            'image_data': b'',
-            'alt': b'',
-            'sound_data': sounds.get(),
-            'image_terminal': '',
-            'new_run': False
-            }
-        last_sender = last_message['sender']
-        print_v(
-            verbose,
-            f'generated first message (this should be the prompt): {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
-            )
-
-        # set variables
-        start = 0
-        new_run = False
-
-        time.sleep(delay)
-
-        # - main loop --------------------------------------------------------------------------------
         while True:
             # wait according to last message (next message in the queue) (reading), but only if the sender changed from the last one
             if last_sender != last_message['sender']:
@@ -352,17 +318,7 @@ def generate(
                 alt = ''
                 image_terminal = ''
                 if image_string in text:
-                    # get image from queue
-                    image: Image = None
-                    while image is None:
-                        try:
-                            image = queues[sender].get()
-                        except queue.Empty:
-                            print_v(
-                                verbose,
-                                f"queue for '{sender}' is empty. trying again in 1 second."
-                                )
-                            time.sleep(1)
+                    image = image_Gs[sender].generate(image_seed[sender])
 
                     # save image as binary
                     image_output = BytesIO()
@@ -378,6 +334,8 @@ def generate(
                     image_terminal = climage.convert(image_output, width=40)
 
                     image_output.close()
+
+                    image_seed[sender] += 1
 
                     # get image alt
                     alt = f'selfie of {sender}'
@@ -455,18 +413,9 @@ def generate(
                     f'generated message: {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
                     )
 
-    except:
-        print_v(
-            verbose,
-            'process ended. terminating subprocesses and closing queues'
-            )
-        if process: process.terminate()
-        if process: process.join()
-        for queue in queues.values():
-            if queue: queue.close()
-            if queue: queue.join_thread()
+    except KeyboardInterrupt:
+        raise SystemExit
 
 
 if __name__ == '__main__':
-    multiprocessing.set_start_method('spawn')
     generate()
