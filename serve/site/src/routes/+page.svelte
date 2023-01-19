@@ -193,7 +193,7 @@
 				</div>
 			{/if}
 			{#each $writing as writing_state}
-				{#if writing_state.state}
+				{#if writing_state.state && !$lost}
 					<!-- add top margin, if current writer differs from the previous message's sender -->
 					<Writing
 						writer={writing_state.writer}

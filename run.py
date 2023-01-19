@@ -102,7 +102,9 @@ def main() -> None:
         # open firefox with link page
         time.sleep(5)
         serve = subprocess.Popen([
-            'firefox', '--kiosk', '--new-window', 'localhost:8000'
+            'firefox',  #'--kiosk',
+  # '--new-window',
+            'localhost:8000'
             ])
 
         generate.wait()
