@@ -95,24 +95,24 @@ def main() -> None:
                                  env=dict(os.environ, GATE=gate))
 
         print('starting generation...')
-        generate = subprocess.Popen([
-            'gnome-terminal',
-            '--',
-            'conda',
-            'run',
-            '-n',
-            'ghosts-cpu',
-            'python3',
-            'generate/generate.py',
-            *settings
-            ],
-                                    env=dict(os.environ, GATE=gate))
+        generate = subprocess.Popen(
+            [
+                'conda',
+                'run',
+                '-n',
+                'ghosts-cpu',
+                'python3',
+                'generate/generate.py',
+                # '--verbose',
+                *settings
+                ],
+            env=dict(os.environ, GATE=gate)
+            )
 
-        # open firefox with link page
-        print('starting firefox in 5 sec...')
+        print('starting browser in 5 sec...')
         time.sleep(5)
-        firefox = subprocess.Popen([
-            'firefox', '--kiosk', '--new-window', 'localhost:8000'
+        browser = subprocess.Popen([
+            'chromium', '--start-fullscreen', 'http://localhost:8000'
             ])
 
         serve.wait()
@@ -125,7 +125,7 @@ def main() -> None:
         if link: link.terminate()
         if serve: serve.terminate()
         if generate: generate.terminate()
-        if firefox: firefox.terminate()
+        if browser: browser.terminate()
 
 
 if __name__ == '__main__':
