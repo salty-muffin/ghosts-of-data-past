@@ -2,6 +2,7 @@ import os
 import json
 import time
 import subprocess
+import sys
 import random
 import string
 import argparse
@@ -23,7 +24,9 @@ def main() -> None:
     link: subprocess.Popen = None
     serve: subprocess.Popen = None
     generate: subprocess.Popen = None
-    firefox: subprocess.Popen = None
+    browser: subprocess.Popen = None
+
+    outs = None
 
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
@@ -92,28 +95,31 @@ def main() -> None:
         serve = subprocess.Popen([
             'conda', 'run', '-n', 'ghosts-cpu', 'python3', 'serve/app.py'
             ],
-                                 env=dict(os.environ, GATE=gate))
-
-        print('starting generation...')
-        generate = subprocess.Popen(
-            [
-                'conda',
-                'run',
-                '-n',
-                'ghosts-cpu',
-                'python3',
-                'generate/generate.py',
-                # '--verbose',
-                *settings
-                ],
-            env=dict(os.environ, GATE=gate)
-            )
+                                 env=dict(os.environ, GATE=gate),
+                                 stdout=subprocess.PIPE,
+                                 stderr=subprocess.PIPE)
 
         print('starting browser in 5 sec...')
         time.sleep(5)
         browser = subprocess.Popen([
             'chromium', '--start-fullscreen', 'http://localhost:8000'
             ])
+
+        print('starting generation...')
+        generate = subprocess.Popen([
+            'conda',
+            'run',
+            '-n',
+            'ghosts-cpu',
+            'python3',
+            'generate/generate.py',
+            '--verbose',
+            *settings
+            ])
+        # generate = subprocess.Popen(
+        #     f'conda run -n ghosts-cpu python3 -u generate/generate.py --verbose {" ".join(settings)} &> log.txt',
+        #     shell=True
+        #     )
 
         serve.wait()
 
