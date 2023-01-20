@@ -21,7 +21,7 @@
 
 <svg id="filter">
 	<filter class="filter" id="melting">
-		<feTurbulence id="turbulence" numOctaves="3" seed="100" result="turbulence">
+		<feTurbulence id="turbulence" numOctaves="1" seed="100" result="turbulence">
 			<animate
 				attributeName="baseFrequency"
 				dur="50s"
@@ -30,8 +30,7 @@
 				repeatCount="indefinite"
 			/>
 		</feTurbulence>
-		<feGaussianBlur in="turbulence" stdDeviation="10" result="softened" />
-		<feDisplacementMap scale="6" in="SourceGraphic" in2="softened" result="displaced" />
+		<feDisplacementMap scale="5" in="SourceGraphic" in2="turbulence" result="displaced" />
 		<!-- <feGaussianBlur in="displaced" stdDeviation="0.2" /> -->
 	</filter>
 </svg>
@@ -40,8 +39,6 @@
 	@use '../lib/scss/variables' as *;
 
 	.link {
-		filter: url(#melting);
-
 		width: 100vw;
 		height: 100vh;
 
@@ -51,7 +48,20 @@
 		align-items: center;
 	}
 
+	@keyframes textMove {
+		from {
+			transform: translateY(-50%);
+		}
+
+		to {
+			transform: translateY(50%);
+		}
+	}
+
 	.text {
+		filter: url(#melting);
+		animation: 30s infinite alternate linear textMove;
+
 		font-size: 3em;
 		line-height: 1.6;
 		font-family: $font-family-text;
@@ -70,7 +80,20 @@
 		}
 	}
 
+	@keyframes qrMove {
+		from {
+			transform: translateX(-20%);
+		}
+
+		to {
+			transform: translateX(20%);
+		}
+	}
+
 	.qr {
+		filter: url(#melting);
+		animation: 30s infinite alternate linear qrMove;
+
 		width: 75vh;
 
 		svg {
