@@ -96,6 +96,8 @@ def main() -> None:
 
         print('starting generation...')
         generate = subprocess.Popen([
+            'gnome-terminal',
+            '--',
             'conda',
             'run',
             '-n',
@@ -109,13 +111,15 @@ def main() -> None:
         # open firefox with link page
         print('starting firefox in 5 sec...')
         time.sleep(5)
-        serve = subprocess.Popen([
+        firefox = subprocess.Popen([
             'firefox', '--kiosk', '--new-window', 'localhost:8000'
             ])
 
-        generate.wait()
+        serve.wait()
 
     except:
+        print('program terminated. exiting...')
+    finally:
         # in case of any exception (including KeyboardInterrupt) terminate all processes
         if redis: redis.terminate()
         if link: link.terminate()
