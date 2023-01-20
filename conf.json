@@ -14,12 +14,12 @@
   "image_string": "[image]",
   "roles": ["artist", "scientist"],
   "colors": ["cyan", "green"],
-  "base_time": 3.0,
-  "letter_time": 0.2,
-  "image_time": 5.0,
-  "run_time": 6,
-  "write_deviation": [0.9, 1.1],
-  "read_deviation": [0.4, 0.6],
+  "base_time": 2.0,
+  "letter_time": 0.15,
+  "image_time": 3.0,
+  "run_time": 5,
+  "write_deviation": [0.85, 1.15],
+  "read_deviation": [0.35, 0.55],
   "rapid": false,
   "verbose": false
 }

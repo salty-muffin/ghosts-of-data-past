@@ -13,6 +13,16 @@
             "justMyCode": true
         },
         {
+            "name": "run",
+            "type": "python",
+            "request": "launch",
+            "program": "run.py",
+            "args": [
+                "https://192.168.178.22:5000"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "generate",
             "type": "python",
             "request": "launch",
