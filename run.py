@@ -107,6 +107,7 @@ def main() -> None:
                                     env=dict(os.environ, GATE=gate))
 
         # open firefox with link page
+        print('starting firefox in 5 sec...')
         time.sleep(5)
         serve = subprocess.Popen([
             'firefox', '--kiosk', '--new-window', 'localhost:8000'
