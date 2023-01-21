@@ -2,10 +2,11 @@ import os
 import json
 import time
 import subprocess
-import sys
 import random
 import string
 import argparse
+import logging
+from datetime import datetime
 
 
 def random_string(length: int) -> str:
@@ -14,6 +15,33 @@ def random_string(length: int) -> str:
 
 
 def main() -> None:
+    # setup logging
+    logger = logging.getLogger(__name__)
+    logger.setLevel(logging.INFO)
+
+    os.makedirs('logs', exist_ok=True)
+
+    sh = logging.StreamHandler()
+    fh = logging.FileHandler(
+        os.path.join(
+            'logs', f'run_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
+            ),
+        encoding='utf-8'
+        )
+
+    formatter = logging.Formatter(
+        '%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S'
+        )
+
+    sh.setFormatter(formatter)
+    sh.setLevel(logging.INFO)
+    fh.setFormatter(formatter)
+    fh.setLevel(logging.INFO)
+
+    logger.addHandler(sh)
+    logger.addHandler(fh)
+
     # parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument('domain')
@@ -26,20 +54,18 @@ def main() -> None:
     generate: subprocess.Popen = None
     browser: subprocess.Popen = None
 
-    outs = None
-
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
     domain = args.domain
-    print(f'the gate is: {gate}')
-    print(f'the domain is: {domain}')
+    logger.info(f'the gate is: {gate}')
+    logger.info(f'the domain is: {domain}')
 
     # open json configuration file
     try:
         with open('conf.json') as file:
             conf = json.load(file)
-    except Exception:
-        print("could not open 'conf.json'.")
+    except Exception as ex:
+        logger.error(f"could not open 'conf.json': {ex}")
         return
 
     # setup settings list
@@ -73,51 +99,65 @@ def main() -> None:
     settings = list(filter(lambda setting: setting is not None, settings))
 
     try:
-        print('building the link site...')
+        logger.info('building the link site...')
         subprocess.run(['npm', 'run', 'build'],
-                       cwd='link/site',
+                       cwd=os.path.join('link', 'site'),
                        env=dict(os.environ, GATE=gate, DOMAIN=domain))
 
-        print('building the serve site...')
-        subprocess.run(['npm', 'run', 'build'], cwd='serve/site')
+        logger.info('building the serve site...')
+        subprocess.run(['npm', 'run', 'build'],
+                       cwd=os.path.join('serve', 'site'))
 
-        print('starting redis...')
+        logger.info('starting redis...')
         redis = subprocess.Popen(['redis-server', 'redis.conf'])
 
-        print('starting link server...')
+        logger.info('starting link server...')
         link = subprocess.Popen([
-            'conda', 'run', '-n', 'ghosts-cpu', 'python3', 'link/app.py'
+            'conda',
+            'run',
+            '-n',
+            'ghosts-cpu',
+            'python3',
+            os.path.join('link', 'app.py')
             ])
 
-        print('starting site server...')
+        logger.info('starting site server...')
         serve = subprocess.Popen([
-            'conda', 'run', '-n', 'ghosts-cpu', 'python3', 'serve/app.py'
+            'conda',
+            'run',
+            '-n',
+            'ghosts-cpu',
+            'python3',
+            os.path.join('serve', 'app.py')
             ],
                                  env=dict(os.environ, GATE=gate))
 
-        print('starting browser in 5 sec...')
+        logger.info('starting browser in 5 sec...')
         time.sleep(5)
         browser = subprocess.Popen([
             'chromium', '--start-fullscreen', 'http://localhost:8000'
             ])
 
-        print('starting generation...')
+        logger.info('starting generation...')
         generate = subprocess.Popen([
             'conda',
             'run',
             '-n',
             'ghosts-cpu',
             'python3',
-            'generate/generate.py',
+            os.path.join('generate', 'generate.py'),
             # '--verbose',
             *settings
             ])
 
         serve.wait()
 
-    except:
-        print('program terminated. exiting...')
+    except Exception as ex:
+        logger.error(f'program terminated due to error: {ex}')
+    except KeyboardInterrupt:
+        logger.info('program terminated by user')
     finally:
+        logger.info('exiting...')
         # in case of any exception (including KeyboardInterrupt) terminate all processes
         if redis: redis.terminate()
         if link: link.terminate()

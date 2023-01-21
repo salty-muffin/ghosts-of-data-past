@@ -2,6 +2,7 @@ import time
 import torch
 import random
 from aitextgen import aitextgen
+from logging import Logger
 
 
 class TextGenerator:
@@ -12,20 +13,29 @@ class TextGenerator:
             self,
             model: str = None,
             model_folder: str = None,
-            verbose: bool = True
+            logger: Logger = True
         ) -> None:
 
-        self._verbose = verbose
+        self._logger = logger
 
         # checking for cuda
         cuda_avail = torch.cuda.is_available()
-        print(f'cuda is {"not" if not cuda_avail else ""} available for gpt')
+        self._warning(
+            f'cuda is {"not" if not cuda_avail else ""} available for gpt'
+            )
 
         self._gpt2 = aitextgen(
             model=model, model_folder=model_folder, to_gpu=cuda_avail
             )
 
         self._model = model if model else model_folder
+
+    def _debug(self, message: str) -> None:
+        if self._logger: self._logger.debug(message)
+
+    def _warning(self, message: str) -> None:
+        if self._logger: self._logger.warning(message)
+        else: print(message)
 
     def generate(
         self,
@@ -40,10 +50,9 @@ class TextGenerator:
         n: int = 1
         ):
 
-        if self._verbose:
-            print(
-                f'generating message for seed {seed} with "{self._model}"... ',
-                )
+        self._debug(
+            f'generating message for seed {seed} with "{self._model}"... ',
+            )
 
         start = time.time()
 
@@ -62,10 +71,6 @@ class TextGenerator:
             top_p=top_p,
             )
 
-        # for index, response in enumerate(responses):
-        #     if '[image]' in response:
-        #         which_n = index
-
-        if self._verbose: print(f'done in {time.time() - start}s')
+        self._debug(f'done in {time.time() - start}s')
 
         return responses[which_n]

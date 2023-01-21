@@ -1,11 +1,11 @@
 from typing import Tuple
 
-import os
 import time
 import numpy as np
 import PIL.Image
 import pickle
 import torch
+from logging import Logger
 
 
 def make_transform(translate: Tuple[float, float], angle: float):
@@ -28,31 +28,41 @@ class ImageGenerator:
     def __init__(
         self,
         network: str,  # network pickle filename
-        verbose: bool = True,
+        logger: Logger = None,
         ) -> None:
 
-        self._verbose = verbose
+        self._logger = logger
 
         # checking for cuda
         cuda_avail = torch.cuda.is_available()
         if cuda_avail:
-            print('cuda is available for stylegan')
+            self._info('cuda is available for stylegan')
             self._device = torch.device('cuda')
         else:
-            print('cuda is not available for stylegan')
+            self._warning('cuda is not available for stylegan')
             self._device = torch.device('cpu')
 
         # loading model
-        if self._verbose:
-            print(f'loading networks from "{network}"... ', end='')
+        self._debug(f'loading networks from "{network}"... ', end='')
         with open(network, 'rb') as file:
             self._G = pickle.load(file)['G_ema'].to(self._device)
-        print('done')
+        self._info('done')
 
         # empty label
         self._label = torch.zeros([1, self._G.c_dim], device=self._device)
 
         self._network = network
+
+    def _debug(self, message: str) -> None:
+        if self._logger: self._logger.debug(message)
+
+    def _info(self, message: str) -> None:
+        if self._logger: self._logger.info(message)
+        else: print(message)
+
+    def _warning(self, message: str) -> None:
+        if self._logger: self._logger.warning(message)
+        else: print(message)
 
     def generate(
             self,
@@ -67,10 +77,10 @@ class ImageGenerator:
         start = time.time()
 
         # generate image
-        if self._verbose:
-            print(
-                f'generating image for seed {seed} with "{self._network}"... ',
-                )
+
+        self._debug(
+            f'generating image for seed {seed} with "{self._network}"... ',
+            )
         z = torch.from_numpy(
             np.random.RandomState(seed).randn(1, self._G.z_dim)
             ).to(self._device)
@@ -93,6 +103,6 @@ class ImageGenerator:
                + 128).clamp(0, 255).to(torch.uint8)
         pil_img = PIL.Image.fromarray(img[0].cpu().numpy(), 'RGB')
 
-        if self._verbose: print(f'done in {time.time() - start}s')
+        self._debug(f'done in {time.time() - start}s')
 
         return pil_img
