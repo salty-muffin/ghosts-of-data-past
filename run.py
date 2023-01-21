@@ -82,22 +82,18 @@ def main() -> None:
         subprocess.run(['npm', 'run', 'build'], cwd='serve/site')
 
         print('starting redis...')
-        redis = subprocess.Popen(['redis-server', 'redis.conf'],
-                                 env=dict(os.environ, GATE=gate))
+        redis = subprocess.Popen(['redis-server', 'redis.conf'])
 
         print('starting link server...')
         link = subprocess.Popen([
             'conda', 'run', '-n', 'ghosts-cpu', 'python3', 'link/app.py'
-            ],
-                                env=dict(os.environ, GATE=gate))
+            ])
 
         print('starting site server...')
         serve = subprocess.Popen([
             'conda', 'run', '-n', 'ghosts-cpu', 'python3', 'serve/app.py'
             ],
-                                 env=dict(os.environ, GATE=gate),
-                                 stdout=subprocess.PIPE,
-                                 stderr=subprocess.PIPE)
+                                 env=dict(os.environ, GATE=gate))
 
         print('starting browser in 5 sec...')
         time.sleep(5)
@@ -113,13 +109,9 @@ def main() -> None:
             'ghosts-cpu',
             'python3',
             'generate/generate.py',
-            '--verbose',
+            # '--verbose',
             *settings
             ])
-        # generate = subprocess.Popen(
-        #     f'conda run -n ghosts-cpu python3 -u generate/generate.py --verbose {" ".join(settings)} &> log.txt',
-        #     shell=True
-        #     )
 
         serve.wait()
 
