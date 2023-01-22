@@ -23,7 +23,6 @@ from datetime import datetime
 from io import BytesIO
 from walrus import Database
 import climage
-from termcolor import colored
 
 from generators.image_generator import ImageGenerator
 from generators.text_generator import TextGenerator
@@ -101,8 +100,7 @@ def generate_images(
     image_Gs: Dict[str, ImageGenerator] = {}
     for role in queues:
         image_Gs[role] = ImageGenerator(
-            os.path.join(stylegan_dir, f'{role}_stylegan3_model.pkl'),
-            logger=logger
+            logger, os.path.join(stylegan_dir, f'{role}_stylegan3_model.pkl')
             )
 
     # set image seed starting points
@@ -141,7 +139,6 @@ def generate_images(
 @click.option('--role_format',     type=str,                     help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
 @click.option('--image_string',    type=str,                     help='how an image is declared in the text (e.g. [image])', required=True)
 @click.option('--roles',           type=parse_comma_list,        help='list of roles (e.g \'artist, scientist\'). must be all lower case', required=True)
-@click.option('--colors',          type=parse_comma_list,        help='colors for the roles in the terminal (should be the same count as roles)', required=True)
 @click.option('--base_time',       type=float,                   default=3.0, help='minimum time for writing all types of messages', required=True)
 @click.option('--letter_time',     type=float,                   default=0.2, help='time it takes to write one letter', required=True)
 @click.option('--image_time',      type=float,                   default=6.0, help='time it takes to take an image', required=True)
@@ -166,7 +163,6 @@ def generate(
         role_format: str,
         image_string: str,
         roles: List[str],
-        colors: List[str],
         base_time: float,
         letter_time: float,
         image_time: float,
@@ -182,32 +178,22 @@ def generate(
     """
 
     # setup logging
+    logging.basicConfig(
+        level=logging.DEBUG if verbose else logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.FileHandler(
+                os.path.join(
+                    'logs',
+                    f'generate_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
+                    ),
+                encoding='utf-8'
+                ),
+            logging.StreamHandler()
+            ]
+        )
     logger = logging.getLogger(__name__)
-    logger.setLevel(logging.DEBUG if verbose else logging.INFO)
-
-    os.makedirs('logs', exist_ok=True)
-
-    sh = logging.StreamHandler()
-    fh = logging.FileHandler(
-        os.path.join(
-            'logs',
-            f'generate_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
-            ),
-        encoding='utf-8'
-        )
-
-    formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-        )
-
-    sh.setFormatter(formatter)
-    sh.setLevel(logging.DEBUG if verbose else logging.INFO)
-    fh.setFormatter(formatter)
-    fh.setLevel(logging.DEBUG if verbose else logging.INFO)
-
-    logger.addHandler(sh)
-    logger.addHandler(fh)
 
     # setup redis database
     db = Database(host='localhost', db=0)
@@ -221,26 +207,27 @@ def generate(
         # start image generation process
         process = multiprocessing.Process(
             target=generate_images,
-            args=(stylegan_dir, verbose),
-            kwargs=(queues)
+            kwargs=({
+                'logger': logger, 'stylegan_dir': stylegan_dir, **queues
+                })
             )
         process.start()
-        logger.debug('setup image generators.')
+        logger.info('setup image generators.')
 
         # setup text generators
-        text_G = TextGenerator(model_folder=gpt_dir, logger=logger)
-        logger.debug('setup text generator.')
+        text_G = TextGenerator(logger, model_folder=gpt_dir)
+        logger.info('setup text generator.')
 
         # setup writing states
         writing_state = {}
         for role in roles:
             writing_state[role] = db.Hash(f'writing:{role}')
             writing_state[role].update(writer=role, state=0)
-        logger.debug('setup writing states.')
+        logger.info('setup writing states.')
 
         # get all notification sound paths
         sounds = Sounds(glob.glob(os.path.join(sound_dir, '*')))
-        logger.debug('setup sounds')
+        logger.info('setup sounds')
 
         # get regex patterns
         role_holder = role_format.split(r'{role}')
@@ -259,13 +246,13 @@ def generate(
             prompts_list = json.load(file)
         prompts = Prompts(prompts_list)
         prompt = prompts.get()
-        logger.debug(f'setup prompts. first prompt: {prompt}')
+        logger.info(f'setup prompts. first prompt: {prompt}')
 
         # setup run
         current_run_length = int(
             run_length * random.uniform(run_deviation[0], run_deviation[1])
             )
-        logger.debug(f'setup run length: {current_run_length}')
+        logger.info(f'setup run length: {current_run_length}')
 
         last_message = {
             'sender': re.search(sender_pattern,
@@ -278,7 +265,7 @@ def generate(
             'new_run': False
             }
         last_sender = last_message['sender']
-        logger.debug(
+        logger.info(
             f'generated first message (this should be the prompt): {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
             )
 
@@ -306,8 +293,6 @@ def generate(
             last_sender = last_message['sender']
             logger.debug(f'waiting for readtime: {read_time}')
             if not rapid: time.sleep(read_time)
-
-            if not verbose: logger.info(f'{last_message["sender"]}> ', end='')
 
             # set sender of last message (next message in the queue) to writing
             writing_state[last_message['sender']
@@ -345,7 +330,7 @@ def generate(
                     * random.uniform(run_deviation[0], run_deviation[1])
                     )
                 new_run = True
-                logger.debug(
+                logger.info(
                     f'conversation run ended. new prompt: {prompt}. new run length: {current_run_length}'
                     )
 
@@ -357,8 +342,8 @@ def generate(
                     * random.uniform(run_deviation[0], run_deviation[1])
                     )
                 new_run = True
-                logger.debug(
-                    f'conversation run ended. new prompt: {prompt}. new run length: {current_run_length}'
+                logger.warning(
+                    f'no valid messages. starting new run. new prompt: {prompt}. new run length: {current_run_length}'
                     )
             # get sender
             sender = re.search(sender_pattern,
@@ -383,7 +368,7 @@ def generate(
                         try:
                             image = queues[sender].get()
                         except queue.Empty:
-                            logger.debug(
+                            logger.warning(
                                 f"queue for '{sender}' is empty. trying again in 1 second."
                                 )
                             time.sleep(1)
@@ -450,13 +435,8 @@ def generate(
                 current_run_length -= 1
 
                 # print the message to terminal
-                if verbose:
-                    logger.info(f'{last_message["sender"]}> ', end='')
                 logger.info(
-                    colored(
-                        last_message['text'],
-                        colors[roles.index(last_message["sender"])]
-                        )
+                    f'{last_message["sender"]}> {last_message["text"]}'
                     )
                 if (last_message['image_terminal']):
                     logger.info(last_message['image_terminal'], end='')

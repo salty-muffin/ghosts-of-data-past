@@ -16,31 +16,21 @@ def random_string(length: int) -> str:
 
 def main() -> None:
     # setup logging
-    logger = logging.getLogger(__name__)
-    logger.setLevel(logging.INFO)
-
-    os.makedirs('logs', exist_ok=True)
-
-    sh = logging.StreamHandler()
-    fh = logging.FileHandler(
-        os.path.join(
-            'logs', f'run_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
-            ),
-        encoding='utf-8'
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.FileHandler(
+                os.path.join(
+                    'logs',
+                    f'run_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
+                    ),
+                encoding='utf-8'
+                ),
+            logging.StreamHandler()
+            ]
         )
-
-    formatter = logging.Formatter(
-        '%(asctime)s - %(levelname)s - %(message)s',
-        datefmt='%Y-%m-%d %H:%M:%S'
-        )
-
-    sh.setFormatter(formatter)
-    sh.setLevel(logging.INFO)
-    fh.setFormatter(formatter)
-    fh.setLevel(logging.INFO)
-
-    logger.addHandler(sh)
-    logger.addHandler(fh)
 
     # parse arguments
     parser = argparse.ArgumentParser()
@@ -57,15 +47,15 @@ def main() -> None:
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
     domain = args.domain
-    logger.info(f'the gate is: {gate}')
-    logger.info(f'the domain is: {domain}')
+    logging.info(f'the gate is: {gate}')
+    logging.info(f'the domain is: {domain}')
 
     # open json configuration file
     try:
         with open('conf.json') as file:
             conf = json.load(file)
     except Exception as ex:
-        logger.error(f"could not open 'conf.json': {ex}")
+        logging.error(f"could not open 'conf.json': {ex}")
         return
 
     # setup settings list
@@ -84,7 +74,6 @@ def main() -> None:
         f'--role_format={conf["role_format"]}',  # how a role is declared in the text (e.g. '[{{role}}] '). must include {{role}}/{{ROLE}}
         f'--image_string={conf["image_string"]}',  # how an image is declared in the text (e.g. [image])
         f'--roles={",".join(str(n) for n in conf["roles"])}',  # list of roles (e.g 'artist, scientist'). must be all lower case
-        f'--colors={",".join(str(n) for n in conf["colors"])}',  # colors for the roles in the terminal (should be the same count as roles)
         f'--base_time={conf["base_time"]}',  # minimum time for writing all types of messages
         f'--letter_time={conf["letter_time"]}',  # time it takes to write one letter
         f'--image_time={conf["image_time"]}',  # time it takes to take an image
@@ -99,19 +88,19 @@ def main() -> None:
     settings = list(filter(lambda setting: setting is not None, settings))
 
     try:
-        logger.info('building the link site...')
+        logging.info('building the link site...')
         subprocess.run(['npm', 'run', 'build'],
                        cwd=os.path.join('link', 'site'),
                        env=dict(os.environ, GATE=gate, DOMAIN=domain))
 
-        logger.info('building the serve site...')
+        logging.info('building the serve site...')
         subprocess.run(['npm', 'run', 'build'],
                        cwd=os.path.join('serve', 'site'))
 
-        logger.info('starting redis...')
+        logging.info('starting redis...')
         redis = subprocess.Popen(['redis-server', 'redis.conf'])
 
-        logger.info('starting link server...')
+        logging.info('starting link server...')
         link = subprocess.Popen([
             'conda',
             'run',
@@ -121,7 +110,7 @@ def main() -> None:
             os.path.join('link', 'app.py')
             ])
 
-        logger.info('starting site server...')
+        logging.info('starting site server...')
         serve = subprocess.Popen([
             'conda',
             'run',
@@ -132,13 +121,13 @@ def main() -> None:
             ],
                                  env=dict(os.environ, GATE=gate))
 
-        logger.info('starting browser in 5 sec...')
+        logging.info('starting browser in 5 sec...')
         time.sleep(5)
         browser = subprocess.Popen([
             'chromium', '--start-fullscreen', 'http://localhost:8000'
             ])
 
-        logger.info('starting generation...')
+        logging.info('starting generation...')
         generate = subprocess.Popen([
             'conda',
             'run',
@@ -153,11 +142,11 @@ def main() -> None:
         serve.wait()
 
     except Exception as ex:
-        logger.error(f'program terminated due to error: {ex}')
+        logging.error(f'program terminated due to error: {ex}')
     except KeyboardInterrupt:
-        logger.info('program terminated by user')
+        logging.info('program terminated by user')
     finally:
-        logger.info('exiting...')
+        logging.info('exiting...')
         # in case of any exception (including KeyboardInterrupt) terminate all processes
         if redis: redis.terminate()
         if link: link.terminate()

@@ -1,8 +1,8 @@
 import time
 import torch
 import random
-from aitextgen import aitextgen
 from logging import Logger
+from aitextgen import aitextgen
 
 
 class TextGenerator:
@@ -11,16 +11,16 @@ class TextGenerator:
     """
     def __init__(
             self,
+            logger: Logger,
             model: str = None,
-            model_folder: str = None,
-            logger: Logger = True
+            model_folder: str = None
         ) -> None:
 
         self._logger = logger
 
         # checking for cuda
         cuda_avail = torch.cuda.is_available()
-        self._warning(
+        self._logger.warning(
             f'cuda is {"not" if not cuda_avail else ""} available for gpt'
             )
 
@@ -29,13 +29,6 @@ class TextGenerator:
             )
 
         self._model = model if model else model_folder
-
-    def _debug(self, message: str) -> None:
-        if self._logger: self._logger.debug(message)
-
-    def _warning(self, message: str) -> None:
-        if self._logger: self._logger.warning(message)
-        else: print(message)
 
     def generate(
         self,
@@ -50,7 +43,7 @@ class TextGenerator:
         n: int = 1
         ):
 
-        self._debug(
+        self._logger.debug(
             f'generating message for seed {seed} with "{self._model}"... ',
             )
 
@@ -71,6 +64,6 @@ class TextGenerator:
             top_p=top_p,
             )
 
-        self._debug(f'done in {time.time() - start}s')
+        self._logger.debug(f'done in {time.time() - start}s')
 
         return responses[which_n]
