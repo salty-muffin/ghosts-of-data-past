@@ -22,7 +22,6 @@ import logging
 from datetime import datetime
 from io import BytesIO
 from walrus import Database
-import climage
 
 from generators.image_generator import ImageGenerator
 from generators.text_generator import TextGenerator
@@ -261,7 +260,6 @@ def generate(
             'image_data': b'',
             'alt': b'',
             'sound_data': sounds.get(),
-            'image_terminal': '',
             'new_run': False
             }
         last_sender = last_message['sender']
@@ -360,7 +358,6 @@ def generate(
                 # is there an image
                 image_data = b''
                 alt = ''
-                image_terminal = ''
                 if image_string in text:
                     # get image from queue
                     image: Image = None
@@ -384,7 +381,6 @@ def generate(
                         )
 
                     image_data = image_output.getvalue()
-                    image_terminal = climage.convert(image_output, width=40)
 
                     image_output.close()
 
@@ -438,8 +434,8 @@ def generate(
                 logger.info(
                     f'{last_message["sender"]}> {last_message["text"]}'
                     )
-                if (last_message['image_terminal']):
-                    logger.info(last_message['image_terminal'])
+                if (last_message['image_data']):
+                    logger.info('IMAGE')
 
                 # save massage to be sent after next generation. it is necessary
                 # to send this message only after the next was generated, because
@@ -451,7 +447,6 @@ def generate(
                     'image_data': image_data,
                     'alt': alt,
                     'sound_data': sounds.get(),
-                    'image_terminal': image_terminal,
                     'new_run': new_run
                     }
                 new_run = False

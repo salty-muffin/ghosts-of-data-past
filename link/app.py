@@ -13,7 +13,6 @@ from flask import Flask
 app = Flask(
     __name__, static_url_path='', static_folder=os.path.join('site', 'build')
     )
-app.config.from_object('config.ProdConfig')
 
 
 # index page
@@ -41,4 +40,4 @@ if __name__ == '__main__':
         )
 
     logging.info('starting link server on port 8000')
-    app.run(host='0.0.0.0', port=8000)
+    app.run(port=8000)

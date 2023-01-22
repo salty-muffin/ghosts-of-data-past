@@ -29,7 +29,7 @@ socketio = SocketIO(app)
 
 # background task function
 def chat():
-    print('connecting to redis database')
+    logging.info('connecting to redis database')
     database = redis.Redis(host='localhost', port=6379, db=0)
     subscriber = database.pubsub()
     subscriber.psubscribe('__keyspace@0__:*')
@@ -75,11 +75,11 @@ def chat():
 # on connect start the background thread (if it's the first connect)
 @socketio.on('connect')
 def connect():
-    print('client connected')
+    logging.info('client connected')
     global thread
     with thread_lock:
         if thread is None:
-            print('starting background thread')
+            logging.info('starting background thread')
             thread = socketio.start_background_task(chat)
 
 
