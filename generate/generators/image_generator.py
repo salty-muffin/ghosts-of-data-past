@@ -1,11 +1,11 @@
 from typing import Tuple
 
-import os
 import time
 import numpy as np
 import PIL.Image
 import pickle
 import torch
+from logging import Logger
 
 
 def make_transform(translate: Tuple[float, float], angle: float):
@@ -26,28 +26,27 @@ class ImageGenerator:
     generates images from stylegan3 network .pkl file and returns them as pillow images.
     """
     def __init__(
-        self,
-        network: str,  # network pickle filename
-        verbose: bool = True,
+            self,
+            logger: Logger,
+            network: str  # network pickle filename
         ) -> None:
 
-        self._verbose = verbose
+        self._logger = logger
 
         # checking for cuda
         cuda_avail = torch.cuda.is_available()
         if cuda_avail:
-            print('cuda is available for stylegan')
+            self._logger.info('cuda is available for stylegan')
             self._device = torch.device('cuda')
         else:
-            print('cuda is not available for stylegan')
+            self._logger.warning('cuda is not available for stylegan')
             self._device = torch.device('cpu')
 
         # loading model
-        if self._verbose:
-            print(f'loading networks from "{network}"... ', end='')
+        self._logger.debug(f'loading networks from "{network}"... ', end='')
         with open(network, 'rb') as file:
             self._G = pickle.load(file)['G_ema'].to(self._device)
-        print('done')
+        self._logger.info('done')
 
         # empty label
         self._label = torch.zeros([1, self._G.c_dim], device=self._device)
@@ -67,10 +66,10 @@ class ImageGenerator:
         start = time.time()
 
         # generate image
-        if self._verbose:
-            print(
-                f'generating image for seed {seed} with "{self._network}"... ',
-                )
+
+        self._logger.debug(
+            f'generating image for seed {seed} with "{self._network}"... ',
+            )
         z = torch.from_numpy(
             np.random.RandomState(seed).randn(1, self._G.z_dim)
             ).to(self._device)
@@ -93,6 +92,6 @@ class ImageGenerator:
                + 128).clamp(0, 255).to(torch.uint8)
         pil_img = PIL.Image.fromarray(img[0].cpu().numpy(), 'RGB')
 
-        if self._verbose: print(f'done in {time.time() - start}s')
+        self._logger.debug(f'done in {time.time() - start}s')
 
         return pil_img

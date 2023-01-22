@@ -13,7 +13,6 @@
   "role_format": "[{role}]",
   "image_string": "[image]",
   "roles": ["artist", "scientist"],
-  "colors": ["cyan", "green"],
   "base_time": 2.0,
   "letter_time": 0.15,
   "image_time": 3.0,

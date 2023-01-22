@@ -124,7 +124,7 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<!-- <Message
+			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -153,7 +153,7 @@
 				displaySender={false}
 				attributes={data.chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
+			<!-- <Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -168,8 +168,8 @@
 				/>
 			{/each}
 			<!-- message that is shown when the connection is lost -->
-			{#if $lost}
-				<div class="message__wrapper message--left message--breathing message--spaced">
+			{#if true || $lost}
+				<div class="message__wrapper message--center message--breathing message--spaced">
 					<div class="message__body">
 						<h6 class="message__sender">connection lost</h6>
 						<span class="message__text"
@@ -179,17 +179,7 @@
 								>ghostsonthe.net</a
 							>.
 						</span>
-						<span class="message__timestamp">??:??</span>
 					</div>
-					<svg
-						class="message__tip"
-						width="25"
-						height="21"
-						viewBox="0 0 25 21"
-						xmlns="http://www.w3.org/2000/svg"
-					>
-						<path d="M9 0C9 16 1 20 1 20C1 20 9 16 25 16" />
-					</svg>
 				</div>
 			{/if}
 			{#each $writing as writing_state}
@@ -260,6 +250,10 @@
 
 	.message--spaced {
 		margin-top: map-get($margin-secondary, 'sm');
+	}
+
+	.message--center {
+		align-self: center;
 	}
 
 	.chat__nav {
