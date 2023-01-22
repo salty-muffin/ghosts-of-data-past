@@ -10,6 +10,8 @@ from flask import Flask, request
 from flask_socketio import SocketIO
 import redis
 import time
+import logging
+from datetime import datetime
 
 gate = os.environ.get('GATE')
 
@@ -110,4 +112,21 @@ def page_not_found(e):
 
 # run server
 if __name__ == '__main__':
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        datefmt='%Y-%m-%d %H:%M:%S',
+        handlers=[
+            logging.FileHandler(
+                os.path.join(
+                    'logs',
+                    f'serve_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
+                    ),
+                encoding='utf-8'
+                ),
+            logging.StreamHandler()
+            ]
+        )
+
+    logging.info('starting serve server on port 5000')
     socketio.run(app, host='0.0.0.0', port=5000)

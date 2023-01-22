@@ -439,7 +439,7 @@ def generate(
                     f'{last_message["sender"]}> {last_message["text"]}'
                     )
                 if (last_message['image_terminal']):
-                    logger.info(last_message['image_terminal'], end='')
+                    logger.info(last_message['image_terminal'])
 
                 # save massage to be sent after next generation. it is necessary
                 # to send this message only after the next was generated, because
@@ -468,8 +468,8 @@ def generate(
         if process: process.terminate()
         if process: process.join()
         for _queue in queues.values():
-            if _queue: queue.close()
-            if _queue: queue.join_thread()
+            if _queue: _queue.close()
+            if _queue: _queue.join_thread()
 
 
 if __name__ == '__main__':
