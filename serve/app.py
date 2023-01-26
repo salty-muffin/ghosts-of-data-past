@@ -12,12 +12,18 @@ import redis
 import time
 import logging
 from datetime import datetime
+from dotenv import load_dotenv
+
+load_dotenv()
 
 gate = os.environ.get('GATE')
+passwd = os.environ.get('PASSWD')
 
 # threading
 thread = None
 thread_lock = Lock()
+
+connections = 0
 
 # flask & socketio setup
 app = Flask(
@@ -75,12 +81,23 @@ def chat():
 # on connect start the background thread (if it's the first connect)
 @socketio.on('connect')
 def connect():
+    global connections
+    connections += 1
+
     logging.info('client connected')
     global thread
     with thread_lock:
         if thread is None:
             logging.info('starting background thread')
             thread = socketio.start_background_task(chat)
+
+
+@socketio.on('disconnect')
+def disconnect():
+    global connections
+    connections -= 1
+
+    logging.info('client disconnected')
 
 
 # index page
@@ -90,6 +107,15 @@ def index():
         return flask.send_file('site/build/index.html')
     else:
         return flask.send_file('site/build/lost.html')
+
+
+# status page
+@app.route('/status')
+def index():
+    if request.args.get('passwd') == passwd or not passwd:
+        return {'gate': gate, 'connection': connections}
+    else:
+        return flask.send_file('site/build/404.html')
 
 
 @app.errorhandler(404)
