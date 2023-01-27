@@ -41,6 +41,7 @@ def main() -> None:
     redis: subprocess.Popen = None
     link: subprocess.Popen = None
     serve: subprocess.Popen = None
+    tunnel: subprocess.Popen = None
     generate: subprocess.Popen = None
     browser: subprocess.Popen = None
 
@@ -121,7 +122,17 @@ def main() -> None:
             ],
                                  env=dict(os.environ, GATE=gate))
 
+        logging.info('starting ngrok tunnel...')
+
         logging.info('starting browser in 5 sec...')
+        tunnel = subprocess.Popen([
+            'ngrok',
+            'http',
+            '--region=eu',
+            '--hostname=link.ghostsonthe.net',
+            '5000',
+            ])
+
         time.sleep(5)
         browser = subprocess.Popen([
             'chromium', '--start-fullscreen', 'http://localhost:8000'
@@ -151,6 +162,7 @@ def main() -> None:
         if redis: redis.terminate()
         if link: link.terminate()
         if serve: serve.terminate()
+        if tunnel: tunnel.terminate()
         if generate: generate.terminate()
         if browser: browser.terminate()
 
