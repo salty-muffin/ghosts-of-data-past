@@ -18,7 +18,7 @@
             "request": "launch",
             "program": "run.py",
             "args": [
-                "http://192.168.178.22:5000"
+                "https://link.ghostsonthe.net"
             ],
             "console": "integratedTerminal"
         },
