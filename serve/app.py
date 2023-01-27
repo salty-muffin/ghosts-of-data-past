@@ -111,7 +111,7 @@ def index():
 
 # status page
 @app.route('/status')
-def index():
+def status():
     if request.args.get('passwd') == passwd or not passwd:
         return {'gate': gate, 'connection': connections}
     else:
