@@ -16,6 +16,7 @@ def random_string(length: int) -> str:
 
 def main() -> None:
     # setup logging
+    os.mkdir('logs', exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
