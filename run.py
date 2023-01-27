@@ -47,7 +47,7 @@ def main() -> None:
 
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
-    domain = args.domain
+    domain: str = args.domain
     logging.info(f'the gate is: {gate}')
     logging.info(f'the domain is: {domain}')
 
@@ -129,7 +129,7 @@ def main() -> None:
             'ngrok',
             'http',
             '--region=eu',
-            '--hostname=link.ghostsonthe.net',
+            f'--hostname={domain.replace("http://", "").replace("https://", "")}',
             '5000',
             ])
 
