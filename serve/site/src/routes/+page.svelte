@@ -124,7 +124,7 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<Message
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -152,7 +152,7 @@
 				timestamp={1651313416949}
 				displaySender={false}
 				attributes={data.chatAttributes}
-			/>
+			/> -->
 			<!-- <Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
@@ -168,7 +168,7 @@
 				/>
 			{/each}
 			<!-- message that is shown when the connection is lost -->
-			{#if true || $lost}
+			{#if $lost}
 				<div class="message__wrapper message--center message--breathing message--spaced">
 					<div class="message__body">
 						<h6 class="message__sender">connection lost</h6>

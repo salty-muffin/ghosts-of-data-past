@@ -25,6 +25,7 @@
 		}
 		if ($gate && message.gate !== $gate) {
 			lost.set(true);
+			socket.disconnect();
 		}
 
 		// take care that message is only processed, if sender has been writing before
@@ -71,6 +72,7 @@
 		}
 		if ($gate && event.gate !== $gate) {
 			lost.set(true);
+			socket.disconnect();
 		}
 
 		if (!$lost) {
