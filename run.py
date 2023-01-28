@@ -131,7 +131,7 @@ def main() -> None:
             'http',
             '--region=eu',
             f'--hostname={domain.replace("http://", "").replace("https://", "")}',
-            '5000',
+            '5000'
             ])
 
         time.sleep(5)
