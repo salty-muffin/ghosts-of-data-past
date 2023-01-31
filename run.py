@@ -16,6 +16,7 @@ def random_string(length: int) -> str:
 
 def main() -> None:
     # setup logging
+    os.makedirs('logs', exist_ok=True)
     logging.basicConfig(
         level=logging.INFO,
         format='%(asctime)s - %(levelname)s - %(message)s',
@@ -41,12 +42,13 @@ def main() -> None:
     redis: subprocess.Popen = None
     link: subprocess.Popen = None
     serve: subprocess.Popen = None
+    tunnel: subprocess.Popen = None
     generate: subprocess.Popen = None
     browser: subprocess.Popen = None
 
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
-    domain = args.domain
+    domain: str = args.domain
     logging.info(f'the gate is: {gate}')
     logging.info(f'the domain is: {domain}')
 
@@ -121,7 +123,17 @@ def main() -> None:
             ],
                                  env=dict(os.environ, GATE=gate))
 
+        logging.info('starting ngrok tunnel...')
+
         logging.info('starting browser in 5 sec...')
+        tunnel = subprocess.Popen([
+            'ngrok',
+            'http',
+            '--region=eu',
+            f'--hostname={domain.replace("http://", "").replace("https://", "")}',
+            '5000'
+            ])
+
         time.sleep(5)
         browser = subprocess.Popen([
             'chromium', '--start-fullscreen', 'http://localhost:8000'
@@ -151,6 +163,7 @@ def main() -> None:
         if redis: redis.terminate()
         if link: link.terminate()
         if serve: serve.terminate()
+        if tunnel: tunnel.terminate()
         if generate: generate.terminate()
         if browser: browser.terminate()
 

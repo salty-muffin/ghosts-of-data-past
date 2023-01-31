@@ -44,7 +44,7 @@
 
 		display: flex;
 		flex-direction: column;
-		justify-content: center;
+		justify-content: flex-end;
 		align-items: center;
 	}
 
@@ -62,7 +62,7 @@
 		filter: url(#melting);
 		animation: 30s infinite alternate linear textMove;
 
-		font-size: 3em;
+		font-size: 2.5em;
 		line-height: 1.6;
 		font-family: $font-family-text;
 		color: map-get($colors, 'foreground');
@@ -94,7 +94,7 @@
 		filter: url(#melting);
 		animation: 30s infinite alternate linear qrMove;
 
-		width: 75vh;
+		width: 70vh;
 
 		svg {
 			& > path:first-of-type {
