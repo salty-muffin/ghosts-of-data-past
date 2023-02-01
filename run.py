@@ -1,3 +1,5 @@
+from typing import Dict
+
 import os
 import json
 import time
@@ -89,6 +91,8 @@ def main() -> None:
     # filter out none
     settings = list(filter(lambda setting: setting is not None, settings))
 
+    processes: Dict[str, subprocess.Popen] = {}
+
     try:
         logging.info('building the link site...')
         subprocess.run(['npm', 'run', 'build'],
@@ -100,10 +104,10 @@ def main() -> None:
                        cwd=os.path.join('serve', 'site'))
 
         logging.info('starting redis...')
-        redis = subprocess.Popen(['redis-server', 'redis.conf'])
+        processes['redis'] = subprocess.Popen(['redis-server', 'redis.conf'])
 
         logging.info('starting link server...')
-        link = subprocess.Popen([
+        processes['link'] = subprocess.Popen([
             'conda',
             'run',
             '-n',
@@ -113,7 +117,7 @@ def main() -> None:
             ])
 
         logging.info('starting site server...')
-        serve = subprocess.Popen([
+        processes['serve'] = subprocess.Popen([
             'conda',
             'run',
             '-n',
@@ -121,12 +125,12 @@ def main() -> None:
             'python3',
             os.path.join('serve', 'app.py')
             ],
-                                 env=dict(os.environ, GATE=gate))
+                                              env=dict(os.environ, GATE=gate))
 
         logging.info('starting ngrok tunnel...')
 
         logging.info('starting browser in 5 sec...')
-        tunnel = subprocess.Popen([
+        processes['tunnel'] = subprocess.Popen([
             'ngrok',
             'http',
             '--region=eu',
@@ -135,12 +139,12 @@ def main() -> None:
             ])
 
         time.sleep(5)
-        browser = subprocess.Popen([
+        processes['browser'] = subprocess.Popen([
             'chromium', '--start-fullscreen', 'http://localhost:8000'
             ])
 
         logging.info('starting generation...')
-        generate = subprocess.Popen([
+        processes['generate'] = subprocess.Popen([
             'conda',
             'run',
             '-n',
@@ -151,7 +155,7 @@ def main() -> None:
             *settings
             ])
 
-        serve.wait()
+        processes['serve'].wait()
 
     except Exception as ex:
         logging.error(f'program terminated due to error: {ex}')
@@ -160,12 +164,10 @@ def main() -> None:
     finally:
         logging.info('exiting...')
         # in case of any exception (including KeyboardInterrupt) terminate all processes
-        if redis: redis.terminate()
-        if link: link.terminate()
-        if serve: serve.terminate()
-        if tunnel: tunnel.terminate()
-        if generate: generate.terminate()
-        if browser: browser.terminate()
+        for name, process in processes.items():
+            if process:
+                process.terminate()
+                process.wait()
 
 
 if __name__ == '__main__':
