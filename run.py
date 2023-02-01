@@ -164,7 +164,7 @@ def main() -> None:
     finally:
         logging.info('exiting...')
         # in case of any exception (including KeyboardInterrupt) terminate all processes
-        for name, process in processes.items():
+        for process in processes.values():
             if process:
                 process.terminate()
                 process.wait()
