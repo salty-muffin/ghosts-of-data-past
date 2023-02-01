@@ -54,7 +54,7 @@
 		}
 
 		to {
-			transform: translateY(50%);
+			transform: translateY(0);
 		}
 	}
 
