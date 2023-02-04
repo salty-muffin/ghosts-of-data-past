@@ -8,7 +8,7 @@
   "stylegan_dir": "generate/models",
   "sound_dir": "generate/sounds",
   "prompts_file": "generate/prompts.json",
-  "run_length": 15,
+  "run_length": 30,
   "run_deviation": [0.75, 1.25],
   "role_format": "[{role}]",
   "image_string": "[image]",

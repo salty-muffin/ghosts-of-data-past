@@ -65,7 +65,7 @@ def main() -> None:
         f'--stylegan_dir={conf["stylegan_dir"]}',  # directory of stylegan3 model file (formatted like this: 'folder/{{role}}_stylegan3_model.pkl')
         f'--sound_dir={conf["sound_dir"]}',  # directory where the notification sounds are located
         f'--prompts_file={conf["prompts_file"]}',  # path to json file with starting prompts
-        f'--run_length={conf["run_length"]}',  # how long is an average conversation run, before the next prompt gets set. set top 0 to deactive
+        f'--run_length={conf["run_length"]}',  # how long is an average conversation run, before the next prompt gets set. set to 0 to deactive
         f'--run_deviation={",".join(str(n) for n in conf["run_deviation"])}',  # minimun & maximum deviation of the conversation run length
         f'--role_format={conf["role_format"]}',  # how a role is declared in the text (e.g. '[{{role}}] '). must include {{role}}/{{ROLE}}
         f'--image_string={conf["image_string"]}',  # how an image is declared in the text (e.g. [image])
