@@ -66,6 +66,7 @@ def main() -> None:
 
     # get all models
     model_dirs = sorted(glob.glob('test_models/*'))
+    model_dirs.remove('test_models/old')
 
     try:
         for dir in model_dirs:
