@@ -133,7 +133,7 @@ def generate_images(
 @click.option('--stylegan_dir',    type=click.Path(exists=True), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
 @click.option('--sound_dir',       type=click.Path(exists=True), help='directory where the notification sounds are located', required=True)
 @click.option('--prompts_file',    type=click.Path(exists=True), help='path to json file with starting prompts', required=True)
-@click.option('--run_length',      type=int,                     default=50, help='how long is an average conversation run, before the next prompt gets set. set top 0 to deactive', required=True)
+@click.option('--run_length',      type=int,                     default=50, help='how long is an average conversation run, before the next prompt gets set. set to 0 to deactive', required=True)
 @click.option('--run_deviation',   type=parse_min_max,           default=[0.75, 1.25], help='minimun & maximum deviation of the conversation run length', required=True)
 @click.option('--role_format',     type=str,                     help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
 @click.option('--image_string',    type=str,                     help='how an image is declared in the text (e.g. [image])', required=True)
@@ -144,6 +144,7 @@ def generate_images(
 @click.option('--run_time',        type=float,                   default=10.0, help='time to wait between runs', required=True)
 @click.option('--write_deviation', type=parse_min_max,           default=[0.8, 1.2], help='minimun & maximum deviation of the write time', required=True)
 @click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the read time', required=True)
+@click.option('--runs',            type=int,                     default=0, help='how many runs to do (infinite, if zero)', required=True)
 @click.option('--rapid',           is_flag=True,                 help='skip all wait times')
 @click.option('--verbose',         is_flag=True,                 help='print additional information')
 # yapf: enable
@@ -168,6 +169,7 @@ def generate(
         run_time: float,
         write_deviation: List[float],
         read_deviation: List[float],
+        runs: int,
         rapid: bool,
         verbose: bool
     ) -> None:
@@ -175,6 +177,8 @@ def generate(
     generates text messages with gpt2 & selfies with stylegan3.
     pushes these messages to a redis database
     """
+
+    remaining_runs = runs
 
     # setup logging
     logging.basicConfig(
@@ -328,9 +332,16 @@ def generate(
                     * random.uniform(run_deviation[0], run_deviation[1])
                     )
                 new_run = True
+
                 logger.info(
-                    f'conversation run ended. new prompt: {prompt}. new run length: {current_run_length}'
+                    f'conversation run ended. new prompt: {responses_list[0]}. new run length: {current_run_length}. The new run will appear one line later in the log.'
                     )
+
+                # stop if designated runs are reached
+                if runs:
+                    remaining_runs -= 1
+                    if remaining_runs <= 0:
+                        raise SystemExit
 
             # if not proper responses were generated, start with new prompt
             if not responses_list:
@@ -340,18 +351,19 @@ def generate(
                     * random.uniform(run_deviation[0], run_deviation[1])
                     )
                 new_run = True
+
                 logger.warning(
-                    f'no valid messages. starting new run. new prompt: {prompt}. new run length: {current_run_length}'
+                    f'no valid messages. starting new run. new prompt: {responses_list[0]}. new run length: {current_run_length}. The new run will appear one line later in the log.'
                     )
             # get sender
             sender = re.search(sender_pattern,
                                responses_list[0]).group('sender').lower()
 
-            # only go on, if sender is valid
-            if sender in roles:
-                # remove sender from message
-                text = re.sub(role_pattern, '', responses_list[0]).strip()
+            # remove sender from message
+            text = re.sub(role_pattern, '', responses_list[0]).strip()
 
+            # only go on, if sender is valid & and there is text
+            if sender in roles and text:
                 # get promt for the next generation
                 prompt = responses_list[0]
 
@@ -453,6 +465,9 @@ def generate(
                 logger.debug(
                     f'generated message: {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
                     )
+
+            else:
+                logger.warning('invalid sender or text')
 
     except Exception as ex:
         logger.error(f'terminated because of error: {ex}')
