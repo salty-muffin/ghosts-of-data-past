@@ -95,71 +95,101 @@ def main() -> None:
         subprocess.run(['npm', 'run', 'build'],
                        cwd=os.path.join('serve', 'site'))
 
-        logging.info('starting redis...')
-        processes['redis'] = subprocess.Popen(['redis-server', 'redis.conf'])
+        def redis():
+            logging.info('starting redis...')
+            processes['redis'] = subprocess.Popen([
+                'redis-server', 'redis.conf'
+                ])
 
-        logging.info('starting link server...')
-        processes['link'] = subprocess.Popen([
-            'conda',
-            'run',
-            '-n',
-            'ghosts-cpu',
-            'python3',
-            os.path.join('link', 'app.py')
-            ])
+        def link():
+            logging.info('starting link server...')
+            processes['link'] = subprocess.Popen([
+                'conda',
+                'run',
+                '-n',
+                'ghosts-cpu',
+                'python3',
+                os.path.join('link', 'app.py')
+                ])
 
-        logging.info('starting site server...')
-        processes['serve'] = subprocess.Popen([
-            'conda',
-            'run',
-            '-n',
-            'ghosts-cpu',
-            'python3',
-            os.path.join('serve', 'app.py')
-            ],
-                                              env=dict(os.environ, GATE=gate))
+        def serve():
+            logging.info('starting site server...')
+            processes['serve'] = subprocess.Popen([
+                'conda',
+                'run',
+                '-n',
+                'ghosts-cpu',
+                'python3',
+                os.path.join('serve', 'app.py')
+                ],
+                                                  env=dict(
+                                                      os.environ, GATE=gate
+                                                      ))
 
-        logging.info('starting ngrok tunnel...')
+        def browser():
+            logging.info('starting browser in 5 sec...')
+            time.sleep(5)
+            processes['browser'] = subprocess.Popen([
+                'chromium', '--start-fullscreen', 'http://localhost:8000'
+                ])
 
-        logging.info('starting browser in 5 sec...')
-        processes['tunnel'] = subprocess.Popen([
-            'ngrok',
-            'http',
-            '--region=eu',
-            f'--hostname={domain.replace("http://", "").replace("https://", "")}',
-            '5000'
-            ])
+        def tunnel():
+            logging.info('starting ngrok tunnel...')
+            processes['tunnel'] = subprocess.Popen([
+                'ngrok',
+                'http',
+                '--region=eu',
+                f'--hostname={domain.replace("http://", "").replace("https://", "")}',
+                '5000'
+                ])
 
-        time.sleep(5)
-        processes['browser'] = subprocess.Popen([
-            'chromium', '--start-fullscreen', 'http://localhost:8000'
-            ])
+        def generate():
+            logging.info('starting generation...')
+            processes['generate'] = subprocess.Popen([
+                'conda',
+                'run',
+                '-n',
+                'ghosts-cpu',
+                'python3',
+                os.path.join('generate', 'generate.py'),
+                # '--verbose',
+                *settings
+                ])
 
-        logging.info('starting generation...')
-        processes['generate'] = subprocess.Popen([
-            'conda',
-            'run',
-            '-n',
-            'ghosts-cpu',
-            'python3',
-            os.path.join('generate', 'generate.py'),
-            # '--verbose',
-            *settings
-            ])
+        redis()
+        link()
+        serve()
+        browser()
+        tunnel()
+        generate()
 
-        processes['serve'].wait()
+        running = True
+        while running:
+            for name, process in processes.items():
+                if process.poll() is not None:
+                    logging.warning(
+                        f'{name} got terminated. attempting restart...'
+                        )
+                    if name == 'redis': redis()
+                    if name == 'link': link()
+                    if name == 'serve': serve()
+                    if name == 'browser': browser()
+                    if name == 'tunnel': tunnel()
+                    if name == 'generate': generate()
+
+            time.sleep(5)
 
     except Exception as ex:
         logging.error(f'program terminated due to error: {ex}')
     except KeyboardInterrupt:
         logging.info('program terminated by user')
-    finally:
-        logging.info('exiting...')
-        # in case of any exception (including KeyboardInterrupt) terminate all processes
-        for process in processes.values():
-            if process:
-                process.terminate()
-                process.wait()
+
+    logging.info('exiting...')
+    # in case of any exception (including KeyboardInterrupt) terminate all processes
+    for process in processes.values():
+        if process:
+            process.kill()
+            process.wait()
 
 
 if __name__ == '__main__':
