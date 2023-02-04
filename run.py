@@ -177,6 +177,8 @@ def main() -> None:
                     if name == 'tunnel': tunnel()
                     if name == 'generate': generate()
 
+                    time.sleep(55)
+
             time.sleep(5)
 
     except Exception as ex:
