@@ -2,11 +2,7 @@ from typing import Dict
 
 import os
 import json
-import time
 import subprocess
-import random
-import string
-import argparse
 import logging
 import glob
 from datetime import datetime
@@ -53,7 +49,7 @@ def main() -> None:
         f'--stylegan_dir={conf["stylegan_dir"]}',  # directory of stylegan3 model file (formatted like this: 'folder/{{role}}_stylegan3_model.pkl')
         f'--sound_dir={conf["sound_dir"]}',  # directory where the notification sounds are located
         f'--prompts_file={conf["prompts_file"]}',  # path to json file with starting prompts
-        f'--run_length={conf["run_length"]}',  # how long is an average conversation run, before the next prompt gets set. set top 0 to deactive
+        f'--run_length={conf["run_length"]}',  # how long is an average conversation run, before the next prompt gets set. set to 0 to deactive
         f'--run_deviation={",".join(str(n) for n in conf["run_deviation"])}',  # minimun & maximum deviation of the conversation run length
         f'--role_format={conf["role_format"]}',  # how a role is declared in the text (e.g. '[{{role}}] '). must include {{role}}/{{ROLE}}
         f'--image_string={conf["image_string"]}',  # how an image is declared in the text (e.g. [image])
@@ -64,6 +60,7 @@ def main() -> None:
         f'--run_time={conf["run_time"]}',  # time to wait between runs
         f'--write_deviation={",".join(str(n) for n in conf["write_deviation"])}',  # minimun & maximum deviation of the write time
         f'--read_deviation={",".join(str(n) for n in conf["read_deviation"])}',  # minimun & maximum deviation of the read time
+        f'--runs=3',
         '--rapid'
         ]
 
@@ -77,16 +74,13 @@ def main() -> None:
                 'conda',
                 'run',
                 '-n',
-                'ghosts-cpu',
+                'ghosts',
                 'python3',
                 os.path.join('generate', 'generate.py'),
                 f'--gpt_dir={dir}',
                 *settings,
                 ])
 
-            time.sleep(120)
-
-            generate.terminate()
             generate.wait()
 
     except Exception as ex:
