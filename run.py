@@ -40,14 +40,6 @@ def main() -> None:
     parser.add_argument('domain')
     args = parser.parse_args()
 
-    # declare popen objects, so they can be terminated in case of exception
-    redis: subprocess.Popen = None
-    link: subprocess.Popen = None
-    serve: subprocess.Popen = None
-    tunnel: subprocess.Popen = None
-    generate: subprocess.Popen = None
-    browser: subprocess.Popen = None
-
     # set gate (access code) and domain to later be used as environment variables
     gate = random_string(4)
     domain: str = args.domain

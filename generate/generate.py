@@ -309,7 +309,7 @@ def generate(
                     temperature=temp,
                     top_k=top_k,
                     top_p=top_p,
-                    n=best_of
+                    n=best_of,  # batch_size=best_of
                     ).replace(prompt, '')
                 # split the message so it only contains single responses in a list
                 responses_list = [
