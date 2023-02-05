@@ -61,7 +61,8 @@ def main() -> None:
         f'--write_deviation={",".join(str(n) for n in conf["write_deviation"])}',  # minimun & maximum deviation of the write time
         f'--read_deviation={",".join(str(n) for n in conf["read_deviation"])}',  # minimun & maximum deviation of the read time
         f'--runs=3',
-        '--rapid'
+        f'--memory={conf["memory"]}',
+        '--rapid',  # '--verbose'
         ]
 
     # get all models

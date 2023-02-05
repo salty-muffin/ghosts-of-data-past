@@ -77,7 +77,9 @@ class Sounds:
 
 class Prompts:
     def __init__(self, prompts: List[str]) -> None:
-        self._prompts = prompts
+        self._prompts = [
+            f'{prompt}\n' for prompt in prompts
+            ]  # append newline to each prompt
         self._prompts_copy = []
 
     def get(self) -> str:
@@ -143,7 +145,6 @@ def generate_images(
 @click.option('--write_deviation', type=parse_min_max,           default=[0.8, 1.2], help='minimun & maximum deviation of the write time', required=True)
 @click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the read time', required=True)
 @click.option('--runs',            type=int,                     default=0, help='how many runs to do (infinite, if zero)', required=True)
-@click.option('--memory',          type=int,                     default=1, help='how many generated messages get used for the prompt (e.g. the last 2)', required=True)
 @click.option('--rapid',           is_flag=True,                 help='skip all wait times')
 @click.option('--verbose',         is_flag=True,                 help='print additional information')
 # yapf: enable
@@ -169,7 +170,6 @@ def generate(
         write_deviation: List[float],
         read_deviation: List[float],
         runs: int,
-        memory: int,
         rapid: bool,
         verbose: bool
     ) -> None:
@@ -248,8 +248,8 @@ def generate(
         with open(prompts_file) as file:
             prompts_list = json.load(file)
         prompts = Prompts(prompts_list)
-        prompt = [prompts.get()]
-        logger.info(f'setup prompts. first prompt: {prompt[0]}')
+        prompt = prompts.get()
+        logger.info(f'setup prompts. first prompt: {prompt}')
 
         # setup run
         current_run_length = int(
@@ -259,8 +259,8 @@ def generate(
 
         last_message = {
             'sender': re.search(sender_pattern,
-                                prompt[0]).group('sender').lower(),
-            'text': re.sub(role_pattern, '', prompt[0]).strip(),
+                                prompt).group('sender').lower(),
+            'text': re.sub(role_pattern, '', prompt).strip(),
             'image_data': b'',
             'alt': b'',
             'sound_data': sounds.get(),
@@ -307,16 +307,14 @@ def generate(
 
             # generate a message
             if not current_run_length <= 0 or run_length == 0:
-                current_prompt = '\n'.join([line.strip()
-                                            for line in prompt]) + '\n'
                 responses = text_G.generate(
-                    current_prompt,
+                    prompt,
                     max_length=128,
                     temperature=temp,
                     top_k=top_k,
                     top_p=top_p,
                     n=best_of,  # batch_size=best_of
-                    ).replace(current_prompt, '')
+                    ).replace(prompt, '')
                 # split the message so it only contains single responses in a list
                 responses_list = [
                     response.strip(
@@ -367,9 +365,7 @@ def generate(
             # only go on, if sender is valid & and there is text
             if sender in roles and text:
                 # get promt for the next generation
-                prompt.append(responses_list[0])
-                if len(prompt) > memory:
-                    prompt.pop(0)
+                prompt = responses_list[0]
 
                 # is there an image
                 image_data = b''
