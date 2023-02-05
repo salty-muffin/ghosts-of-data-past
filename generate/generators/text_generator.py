@@ -65,5 +65,8 @@ class TextGenerator:
             )
 
         self._logger.debug(f'done in {time.time() - start}s')
+        self._logger.debug(f'messages:')
+        for response in responses:
+            self._logger.debug(response)
 
         return responses[which_n]
