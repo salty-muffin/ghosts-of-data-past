@@ -366,7 +366,7 @@ def generate(
 
             # only go on, if sender is valid & and there is text
             if sender in roles and text:
-                # get promt for the next generation
+                # get prompt for the next generation
                 prompt.append(responses_list[0])
                 if len(prompt) > memory:
                     prompt.pop(0)
