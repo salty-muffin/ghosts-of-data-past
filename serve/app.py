@@ -113,7 +113,7 @@ def index():
 @app.route('/status')
 def status():
     if request.args.get('passwd') == passwd or not passwd:
-        return {'gate': gate, 'connection': connections}
+        return {'gate': gate, 'connections': connections}
     else:
         return flask.send_file('site/build/404.html')
 
