@@ -60,14 +60,15 @@ def main() -> None:
         f'--run_time={conf["run_time"]}',  # time to wait between runs
         f'--write_deviation={",".join(str(n) for n in conf["write_deviation"])}',  # minimun & maximum deviation of the write time
         f'--read_deviation={",".join(str(n) for n in conf["read_deviation"])}',  # minimun & maximum deviation of the read time
-        f'--runs=3',
+        f'--runs=1',
         f'--memory={conf["memory"]}',
-        '--rapid',  # '--verbose'
+        '--rapid',
+        '--verbose'
         ]
 
     # get all models
     model_dirs = sorted(glob.glob('test_models/*'))
-    model_dirs.remove('test_models/old')
+    if 'test_models/old' in model_dirs: model_dirs.remove('test_models/old')
 
     try:
         for dir in model_dirs:
@@ -76,7 +77,7 @@ def main() -> None:
                 'conda',
                 'run',
                 '-n',
-                'ghosts',
+                'ghosts-cpu',
                 'python3',
                 os.path.join('generate', 'generate.py'),
                 f'--gpt_dir={dir}',
