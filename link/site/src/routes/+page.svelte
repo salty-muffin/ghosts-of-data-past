@@ -10,7 +10,7 @@
 	</div>
 	<div class="text">
 		<p>
-			This links to <a href="{data.domain}{data.gate ? `/?gate=${data.gate}` : ''}"
+			this links to <a href="{data.domain}{data.gate ? `/?gate=${data.gate}` : ''}"
 				>{data.domain.replace('http://', '').replace('https://', '')}{data.gate
 					? `/?gate=${data.gate}`
 					: ''}</a
