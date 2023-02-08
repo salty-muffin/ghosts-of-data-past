@@ -101,16 +101,16 @@ def main() -> None:
                 'redis-server', 'redis.conf'
                 ])
 
-        def link():
-            logging.info('starting link server...')
-            processes['link'] = subprocess.Popen([
-                'conda',
-                'run',
-                '-n',
-                'ghosts-cpu',
-                'python3',
-                os.path.join('link', 'app.py')
-                ])
+        # def link():
+        #     logging.info('starting link server...')
+        #     processes['link'] = subprocess.Popen([
+        #         'conda',
+        #         'run',
+        #         '-n',
+        #         'ghosts-cpu',
+        #         'python3',
+        #         os.path.join('link', 'app.py')
+        #         ])
 
         def serve():
             logging.info('starting site server...')
@@ -130,7 +130,16 @@ def main() -> None:
             logging.info('starting browser in 5 sec...')
             time.sleep(5)
             processes['browser'] = subprocess.Popen([
-                'chromium', '--start-fullscreen', 'http://localhost:8000'
+                'chromium',
+                '--start-fullscreen',
+                '--incognito',
+                os.path.join(
+                    f'file://{os.path.dirname(os.path.abspath(__file__))}',
+                    'link',
+                    'site',
+                    'build',
+                    'index.html'
+                    )
                 ])
 
         def tunnel():
@@ -157,7 +166,7 @@ def main() -> None:
                 ])
 
         redis()
-        link()
+        # link()
         serve()
         browser()
         tunnel()
@@ -171,7 +180,7 @@ def main() -> None:
                         f'{name} got terminated. attempting restart...'
                         )
                     if name == 'redis': redis()
-                    if name == 'link': link()
+                    # if name == 'link': link()
                     if name == 'serve': serve()
                     if name == 'browser': browser()
                     if name == 'tunnel': tunnel()
