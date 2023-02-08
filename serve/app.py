@@ -102,7 +102,7 @@ def connect():
             to=request.sid
             )
 
-    logging.info('client connected')
+    logging.info(f'client connected with id {request.sid}')
     global thread
     with thread_lock:
         if thread is None:
