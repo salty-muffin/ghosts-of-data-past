@@ -3,6 +3,7 @@
 #
 # zeno gries 2023
 
+from typing import Dict
 import os
 from threading import Lock
 import flask
@@ -23,7 +24,9 @@ passwd = os.environ.get('PASSWD')
 thread = None
 thread_lock = Lock()
 
+# global variables
 connections = 0
+writing_state: Dict[bytes, bytes] = None
 
 # flask & socketio setup
 app = Flask(
@@ -35,6 +38,8 @@ socketio = SocketIO(app)
 
 # background task function
 def chat():
+    global writing_state
+
     logging.info('connecting to redis database')
     database = redis.Redis(host='localhost', port=6379, db=0)
     subscriber = database.pubsub()
@@ -57,10 +62,11 @@ def chat():
                             'state':
                             int(writing_state[b'state'].decode('utf-8')),
                             'gate': gate if gate else ''
-                            },
+                            }
                         )
                 # get incoming messages
                 else:
+                    # writing_state = None
                     chat_message = database.hgetall(key)
                     socketio.emit(
                         'chat_message',
@@ -83,6 +89,18 @@ def chat():
 def connect():
     global connections
     connections += 1
+
+    # send writing state to user
+    if writing_state is not None:
+        socketio.emit(
+            'writing_state',
+            {
+                'writer': writing_state[b'writer'].decode('utf-8'),
+                'state': int(writing_state[b'state'].decode('utf-8')),
+                'gate': gate if gate else ''
+                },
+            to=request.sid
+            )
 
     logging.info('client connected')
     global thread
