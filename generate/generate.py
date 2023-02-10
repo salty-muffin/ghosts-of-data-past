@@ -198,6 +198,32 @@ def generate(
         )
     logger = logging.getLogger(__name__)
 
+    # print out all command line arguments
+    logger.info(f'delay: {delay}')
+    logger.info(f'gpt_dir: {gpt_dir}')
+    logger.info(f'temp: {temp}')
+    logger.info(f'top_k: {top_k}')
+    logger.info(f'top_p: {top_p}')
+    logger.info(f'best_of: {best_of}')
+    logger.info(f'stylegan_dir: {stylegan_dir}')
+    logger.info(f'sound_dir: {sound_dir}')
+    logger.info(f'prompts_file: {prompts_file}')
+    logger.info(f'run_length: {run_length}')
+    logger.info(f'run_deviation: {run_deviation}')
+    logger.info(f'role_format: {role_format}')
+    logger.info(f'image_string: {image_string}')
+    logger.info(f'roles: {roles}')
+    logger.info(f'base_time: {base_time}')
+    logger.info(f'letter_time: {letter_time}')
+    logger.info(f'image_time: {image_time}')
+    logger.info(f'run_time: {run_time}')
+    logger.info(f'write_deviation: {write_deviation}')
+    logger.info(f'read_deviation: {read_deviation}')
+    logger.info(f'runs: {runs}')
+    logger.info(f'memory: {memory}')
+    logger.info(f'rapid: {rapid}')
+    logger.info(f'verbose: {verbose}')
+
     # setup redis database
     db = Database(host='localhost', db=0)
 
