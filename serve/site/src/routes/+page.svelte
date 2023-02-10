@@ -222,6 +222,9 @@
 	}
 
 	.chat__container {
+		position: fixed;
+		top: 0;
+		max-height: -webkit-fill-available;
 		width: min($chat-width, 100%);
 		height: min($chat-height, 100%);
 
@@ -239,6 +242,7 @@
 		/* margin-bottom: map-get($nav-size, 'sm'); */
 
 		overflow-y: auto;
+		overflow-x: hidden;
 
 		width: 100%;
 	}
@@ -274,6 +278,7 @@
 
 	@media only screen and (min-height: $chat-height) {
 		.chat__container {
+			top: unset;
 			// add borders as the screen grows
 			border-top: map-get($border-width, 'lg') solid map-get($colors, 'foreground');
 			border-bottom: map-get($border-width, 'lg') solid map-get($colors, 'foreground');

@@ -65,6 +65,8 @@
 		font-size: 2.5em;
 		line-height: 1.6;
 		font-family: $font-family-text;
+		font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+			'ss05' 1;
 		color: map-get($colors, 'foreground');
 
 		font-weight: 200;
@@ -76,6 +78,8 @@
 		a {
 			color: map-get($colors, 'foreground');
 			font-family: $font-family-underline;
+			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+				'ss05' 1, 'ss09' 1;
 			text-decoration: none;
 		}
 	}

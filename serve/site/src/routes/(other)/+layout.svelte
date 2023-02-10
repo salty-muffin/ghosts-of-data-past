@@ -41,6 +41,8 @@
 			h1 {
 				font-size: map-get($title-size, 'sm');
 				font-family: $font-family-text;
+				font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+					'ss05' 1;
 				hyphens: auto;
 				letter-spacing: unset;
 				margin: 0;
@@ -64,6 +66,8 @@
 			margin-top: 1.5em;
 
 			font-family: $font-family-text;
+			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+				'ss05' 1;
 			// font-variation-settings: 'wght' 550, 'ital' 5;
 			text-transform: none;
 			letter-spacing: unset;
