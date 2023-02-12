@@ -1,3 +1,7 @@
+# for testing different models with a set of parameters
+#
+# zeno gries 2023
+
 from typing import Union, List
 
 import os
@@ -122,6 +126,7 @@ def test(
                             'ghosts-cpu',
                             'python3',
                             os.path.join('generate', 'generate.py'),
+                            f'--logfile={os.path.split(dir)[-1]}'
                             f'--gpt_dir={dir}',
                             f'--temp={temp}',
                             f'--top_k={top_k}',

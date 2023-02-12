@@ -144,6 +144,7 @@ def generate_images(
 @click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the read time', required=True)
 @click.option('--runs',            type=int,                     default=0, help='how many runs to do (infinite, if zero)', required=True)
 @click.option('--memory',          type=int,                     default=1, help='how many generated messages get used for the prompt (e.g. the last 2)', required=True)
+@click.option('--logfile',         type=str,                     default='generate', help='name of the logfile (creation time gets added at the end)', required=True)
 @click.option('--rapid',           is_flag=True,                 help='skip all wait times')
 @click.option('--verbose',         is_flag=True,                 help='print additional information')
 # yapf: enable
@@ -170,6 +171,7 @@ def generate(
         read_deviation: List[float],
         runs: int,
         memory: int,
+        logfile: str,
         rapid: bool,
         verbose: bool
     ) -> None:
@@ -189,7 +191,7 @@ def generate(
             logging.FileHandler(
                 os.path.join(
                     'logs',
-                    f'generate_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
+                    f'{logfile}_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
                     ),
                 encoding='utf-8'
                 ),

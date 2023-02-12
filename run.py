@@ -1,3 +1,8 @@
+# script for executing all scripts & programs to host
+# ghosts of data past
+#
+# zeno gries 2023
+
 from typing import Dict
 
 import os
@@ -88,7 +93,7 @@ def main() -> None:
     try:
         logging.info('building the link site...')
         subprocess.run(['npm', 'run', 'build'],
-                       cwd=os.path.join('link', 'site'),
+                       cwd='link',
                        env=dict(os.environ, GATE=gate, DOMAIN=domain))
 
         logging.info('building the serve site...')
@@ -100,17 +105,6 @@ def main() -> None:
             processes['redis'] = subprocess.Popen([
                 'redis-server', 'redis.conf'
                 ])
-
-        # def link():
-        #     logging.info('starting link server...')
-        #     processes['link'] = subprocess.Popen([
-        #         'conda',
-        #         'run',
-        #         '-n',
-        #         'ghosts-cpu',
-        #         'python3',
-        #         os.path.join('link', 'app.py')
-        #         ])
 
         def serve():
             logging.info('starting site server...')
@@ -136,7 +130,6 @@ def main() -> None:
                 os.path.join(
                     f'file://{os.path.dirname(os.path.abspath(__file__))}',
                     'link',
-                    'site',
                     'build',
                     'index.html'
                     )
@@ -166,21 +159,19 @@ def main() -> None:
                 ])
 
         redis()
-        # link()
         serve()
         browser()
         tunnel()
         generate()
 
-        running = True
-        while running:
+        # check each program and restart it if it is not running
+        while True:
             for name, process in processes.items():
                 if process.poll() is not None:
                     logging.warning(
                         f'{name} got terminated. attempting restart...'
                         )
                     if name == 'redis': redis()
-                    # if name == 'link': link()
                     if name == 'serve': serve()
                     if name == 'browser': browser()
                     if name == 'tunnel': tunnel()
