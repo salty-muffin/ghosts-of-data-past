@@ -59,7 +59,7 @@
 		&.sidenote--hover {
 			font-family: $font-family-underline;
 			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-				'ss05' 1, 'ss09' 1;
+				'ss05' 1, 'ss09' 1, 'sups' 1;
 		}
 	}
 
