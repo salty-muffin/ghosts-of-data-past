@@ -12,6 +12,7 @@ dependencies:
   - pillow=9.0
   - ninja=1.10
   - pytorch=1.11
+  - pytorch-lightning=1.9
   - torchvision
   - torchaudio
   - cudatoolkit=11.3
