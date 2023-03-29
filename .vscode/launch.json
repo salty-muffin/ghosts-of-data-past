@@ -28,11 +28,12 @@
             "request": "launch",
             "program": "test_models.py",
             "args": [
-                "--runs=1",
+                "--runs=3",
                 "--models_dir=test_models",
                 "--temps=1.0,1.4",
                 "--top_ks=6",
-                "--top_ps=0.7"
+                "--top_ps=0.7",
+                "--verbose"
             ],
             "console": "integratedTerminal"
         },
