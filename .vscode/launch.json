@@ -33,7 +33,7 @@
                 "--temps=1.0,1.4",
                 "--top_ks=6",
                 "--top_ps=0.7",
-                "--verbose"
+                // "--verbose"
             ],
             "console": "integratedTerminal"
         },
@@ -97,26 +97,6 @@
                 "--read_deviation=0.35,0.55",
                 "--rapid",
                 // "--verbose"
-            ],
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "generate old",
-            "type": "python",
-            "request": "launch",
-            "program": "generate/generate.old.py",
-            "args": [
-                "--gptdir=generate/models/gpt2_model.old",
-                "--stylegandir=generate/models",
-                "--sounddir=generate/notification-sounds",
-                "--prompt=[SCIENTIST:] I can't believe you.",
-                "--roles=artist,scientist",
-                "--colors=cyan,green",
-                "--basetime=3.0",
-                "--lettertime=0.2",
-                "--imagetime=6.0",
-                "--readfactor=0.8",
-                "--randomfactor=0.9,1.1"
             ],
             "console": "integratedTerminal"
         },
