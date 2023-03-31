@@ -1,7 +1,7 @@
 {
   "delay": 0,
-  "gpt_dir": "generate/models/trained_model_04",
-  "temp": 1.0,
+  "gpt_dir": "generate/models/model_01_200",
+  "temp": 1.4,
   "top_k": 6,
   "top_p": 0.7,
   "best_of": 2,
