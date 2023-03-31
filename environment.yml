@@ -7,11 +7,12 @@ dependencies:
   - python=3.9
   - pip
   - yapf=0.31
-  - numpy=1.21
+  - numpy=1.22
   - click=8.0
   - pillow=9.0
   - ninja=1.10
   - pytorch=1.11
+  - pytorch-lightning=1.9
   - torchvision
   - torchaudio
   - cudatoolkit=11.3

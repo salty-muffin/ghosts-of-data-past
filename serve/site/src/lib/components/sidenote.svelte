@@ -58,6 +58,8 @@
 
 		&.sidenote--hover {
 			font-family: $font-family-underline;
+			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+				'ss05' 1, 'ss09' 1, 'sups' 1;
 		}
 	}
 
@@ -94,6 +96,8 @@
 			color: map-get($colors, 'foreground');
 			// text-decoration: underline;
 			font-family: $font-family-underline;
+			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+				'ss05' 1, 'ss09' 1;
 			font-weight: 350;
 		}
 	}
@@ -102,11 +106,15 @@
 		.sidenote__marker {
 			color: map-get($colors, 'link');
 			font-family: $font-family-underline;
+			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+				'ss05' 1, 'ss09' 1;
 		}
 
 		.sidenote__close {
 			// text-decoration: underline;
 			font-family: $font-family-underline;
+			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+				'ss05' 1, 'ss09' 1;
 			font-weight: 350;
 		}
 	}

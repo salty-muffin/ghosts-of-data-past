@@ -16,11 +16,15 @@ body {
 	font-size: 100%;
 
 	font-family: $font-family-text;
+	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+		'ss05' 1;
 	color: map-get($colors, 'foreground');
 }
 
 button {
 	font-family: $font-family-text;
+	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+		'ss05' 1;
 }
 
 h1,
@@ -81,6 +85,8 @@ button {
 		color: map-get($colors, 'foreground');
 		// text-decoration: underline;
 		font-family: $font-family-underline;
+		font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+		'ss05' 1, 'ss09' 1;
 		font-weight: 200;
 	}
 }
@@ -128,6 +134,8 @@ button {
 	button {
 		// text-decoration: underline;
 		font-family: $font-family-underline;
+		font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
+		'ss05' 1, 'ss09' 1;
 		font-weight: 200;
 	}
 }

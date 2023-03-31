@@ -23,19 +23,34 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "test models",
+            "type": "python",
+            "request": "launch",
+            "program": "test_models.py",
+            "args": [
+                "--runs=3",
+                "--models_dir=test_models",
+                "--temps=1.0,1.4",
+                "--top_ks=6",
+                "--top_ps=0.7",
+                // "--verbose"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "generate",
             "type": "python",
             "request": "launch",
             "program": "generate/generate.py",
             "args": [
                 "--delay=0",
-                "--gpt_dir=generate/models/trained_model_04",
-                "--temp=1.0",
+                "--gpt_dir=generate/models/model_01_200",
+                "--temp=1.4",
                 "--top_k=6",
                 "--top_p=0.7",
                 "--best_of=2",
                 "--stylegan_dir=generate/models",
-                "--sound_dir=generate/sounds",
+                "--sound_dir=generate/sounds/mp3",
                 "--prompts_file=generate/prompts.json",
                 "--run_length=15",
                 "--run_deviation=0.75,1.25",
@@ -82,26 +97,6 @@
                 "--read_deviation=0.35,0.55",
                 "--rapid",
                 // "--verbose"
-            ],
-            "console": "integratedTerminal"
-        },
-        {
-            "name": "generate old",
-            "type": "python",
-            "request": "launch",
-            "program": "generate/generate.old.py",
-            "args": [
-                "--gptdir=generate/models/gpt2_model.old",
-                "--stylegandir=generate/models",
-                "--sounddir=generate/notification-sounds",
-                "--prompt=[SCIENTIST:] I can't believe you.",
-                "--roles=artist,scientist",
-                "--colors=cyan,green",
-                "--basetime=3.0",
-                "--lettertime=0.2",
-                "--imagetime=6.0",
-                "--readfactor=0.8",
-                "--randomfactor=0.9,1.1"
             ],
             "console": "integratedTerminal"
         },

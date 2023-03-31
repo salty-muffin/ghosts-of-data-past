@@ -4,9 +4,6 @@
 	src: url('/fonts/ABCFavoritVariable.woff2') format('woff2'),
 		url('/fonts/ABCFavoritVariable.woff') format('woff');
 	font-weight: 200 700;
-
-	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-		'ss05' 1;
 }
 
 // ABC Favorit Lining
@@ -14,9 +11,6 @@
 	font-family: 'ABC Favorit Lining';
 	src: url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Light.woff2') format('woff2'),
 		url('/fonts/ABCFavoritLining/ABCFavoritLiningEdu-Light.woff') format('woff');
-
-	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-		'ss05' 1, 'ss09' 1;
 
 	font-weight: 300;
 	font-style: normal;

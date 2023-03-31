@@ -1,3 +1,8 @@
+# script for executing all scripts & programs to host
+# ghosts of data past
+#
+# zeno gries 2023
+
 from typing import Dict
 
 import os
@@ -88,7 +93,7 @@ def main() -> None:
     try:
         logging.info('building the link site...')
         subprocess.run(['npm', 'run', 'build'],
-                       cwd=os.path.join('link', 'site'),
+                       cwd='link',
                        env=dict(os.environ, GATE=gate, DOMAIN=domain))
 
         logging.info('building the serve site...')
@@ -99,17 +104,6 @@ def main() -> None:
             logging.info('starting redis...')
             processes['redis'] = subprocess.Popen([
                 'redis-server', 'redis.conf'
-                ])
-
-        def link():
-            logging.info('starting link server...')
-            processes['link'] = subprocess.Popen([
-                'conda',
-                'run',
-                '-n',
-                'ghosts-cpu',
-                'python3',
-                os.path.join('link', 'app.py')
                 ])
 
         def serve():
@@ -130,7 +124,15 @@ def main() -> None:
             logging.info('starting browser in 5 sec...')
             time.sleep(5)
             processes['browser'] = subprocess.Popen([
-                'chromium', '--start-fullscreen', 'http://localhost:8000'
+                'chromium',
+                '--start-fullscreen',
+                '--incognito',
+                os.path.join(
+                    f'file://{os.path.dirname(os.path.abspath(__file__))}',
+                    'link',
+                    'build',
+                    'index.html'
+                    )
                 ])
 
         def tunnel():
@@ -157,21 +159,19 @@ def main() -> None:
                 ])
 
         redis()
-        link()
         serve()
         browser()
         tunnel()
         generate()
 
-        running = True
-        while running:
+        # check each program and restart it if it is not running
+        while True:
             for name, process in processes.items():
                 if process.poll() is not None:
                     logging.warning(
                         f'{name} got terminated. attempting restart...'
                         )
                     if name == 'redis': redis()
-                    if name == 'link': link()
                     if name == 'serve': serve()
                     if name == 'browser': browser()
                     if name == 'tunnel': tunnel()

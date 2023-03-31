@@ -19,7 +19,7 @@
   "run_time": 5,
   "write_deviation": [0.85, 1.15],
   "read_deviation": [0.35, 0.55],
-  "memory": 2,
+  "memory": 1,
   "rapid": false,
   "verbose": false
 }

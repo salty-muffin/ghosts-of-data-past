@@ -1,6 +1,6 @@
 # ghosts of data past
 
-a ghost from data generator - generates a chat with text messages and selfies from recorded conversations
+a ghost from data generator - generates a chat with text messages and selfies from recorded conversations, including unique notification sounds
 
 ## background
 
@@ -24,21 +24,10 @@ the same applies to the sounds used.
 3. as the site served is built with sveltekit, it's dependencies must be installed and it must be built: `cd serve/site && npm install && npm run build`
 4. install redis according to these [instructions](https://redis.io/docs/getting-started/installation/install-redis-on-linux/)
 5. possibly necessary to disable redis autostart `sudo systemctl disable redis-server`
-
-## run
-
-all the steps below should be executed from individual terminals or at least in individual processes
-
-1. start the redis server: `redis-server redis.conf`
-2. enter the conda environment: `conda activate ghosts` or `conda activate ghosts-cpu`
-3. start the generate script with `python3 generate/generate.py --gptdir=generate/models/gpt2_model --stylegandir=generate/models --sounddir=generate/notification-sounds --prompt=[SCIENTIST:] I can't believe you. --roles=artist,scientist --colors=cyan,green --basetime=3.0 --lettertime=0.2 --imagetime=6.0 --readfactor=0.8 --randomfactor=0.9,1.1` (this is only an example configuration)
-4. start the server with `python3 serve/app.py`
-
-alternativly the run script does all of this automatically, but needs to have chromium installed.
+6. if run from the run script, chromium & ngrok need to be installed
+7. if automated with crontab, symlinks need to be created for node and nom with: `ln -s PATH_TO_BINARY (can be found by running which node/npm) /usr/bin/node & /usr/bin/npm`
 
 ## notes
-
-this repo includes a modified version of [@jsdevtools/rehype-toc](https://github.com/JS-DevTools/rehype-toc). i had to modify it to get the automatically generated table of contents working with mdsvex and put it in the root of this repo as a .tgz file.
 
 the fonts used in this project are [abc favorit](https://abcdinamo.com/typefaces/favorit) variable and [pw smokey](https://www.dafont.com/pwsmokey.font). the fonts are not tracked in this repo for licensing reasons.
 
