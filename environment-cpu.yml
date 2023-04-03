@@ -19,7 +19,7 @@ dependencies:
       - aitextgen==0.5.1
       - python-dotenv==0.20.0
       - shortuuid==1.0.8
-      - eventlet==0.33.0
+      - eventlet==0.33.3
       - flask==2.1.2
       - flask-socketio==5.1.2
       - redis==4.3.2
