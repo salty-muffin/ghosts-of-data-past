@@ -21,7 +21,7 @@ import shortuuid
 import logging
 from datetime import datetime
 from io import BytesIO
-from walrus import Database
+from walrus import Database, Hash
 
 from generators.image_generator import ImageGenerator
 from generators.text_generator import TextGenerator
@@ -250,7 +250,7 @@ def generate(
         logger.info('setup text generator.')
 
         # setup writing states
-        writing_state = {}
+        writing_state: Dict[str, Hash] = {}
         for role in roles:
             writing_state[role] = db.Hash(f'writing:{role}')
             writing_state[role].update(writer=role, state=0)
@@ -296,7 +296,7 @@ def generate(
             }
         last_sender = last_message['sender']
         logger.info(
-            f'generated first message (this should be the prompt): {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
+            f'first message (this should be the prompt): {last_message["sender"]}> {last_message["text"]} [image: {bool(last_message["image_data"])}]'
             )
 
         # set variables
@@ -323,6 +323,14 @@ def generate(
             last_sender = last_message['sender']
             logger.debug(f'waiting for readtime: {read_time}')
             if not rapid: time.sleep(read_time)
+
+            # if it is a new run, wait the run_time
+            if last_message['new_run']:
+                logger.info(
+                    f'conversation run ended. new prompt: {responses_list[0]}. new run length: {current_run_length}.'
+                    )
+
+                if not rapid: time.sleep(run_time)
 
             # set sender of last message (next message in the queue) to writing
             writing_state[last_message['sender']
@@ -362,10 +370,6 @@ def generate(
                     * random.uniform(run_deviation[0], run_deviation[1])
                     )
                 new_run = True
-
-                logger.info(
-                    f'conversation run ended. new prompt: {responses_list[0]}. new run length: {current_run_length}. The new run will appear one line later in the log.'
-                    )
 
                 # stop if designated runs are reached
                 if runs:
@@ -453,10 +457,6 @@ def generate(
                 logger.debug(f'waiting for writetime: {write_time}')
                 if not rapid: time.sleep(write_time)
 
-                # if it is a new run, wait the run_time
-                if last_message['new_run'] and not rapid:
-                    time.sleep(run_time)
-
                 # push the last generated message to the database
                 message = db.Hash(shortuuid.uuid())
                 message.update(
@@ -495,7 +495,7 @@ def generate(
                     }
                 new_run = False
                 logger.debug(
-                    f'generated message: {last_message["sender"]}> {last_message["text"]} image: {bool(last_message["image_data"])}'
+                    f'generated message: {last_message["sender"]}> {last_message["text"]} [image: {bool(last_message["image_data"])}]'
                     )
 
             else:
