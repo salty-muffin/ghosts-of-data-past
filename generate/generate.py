@@ -6,7 +6,7 @@
 
 from typing import Union, List, Dict
 from queue import Queue
-from PIL import Image
+from PIL.Image import Image
 
 import os
 import multiprocessing
@@ -122,31 +122,32 @@ def generate_images(
 
 # yapf: disable
 @click.command()
-@click.option('--delay',           type=float,                   default=0, help='how long to wait before starting (for documentation purposes)', required=True)
-@click.option('--gpt_dir',         type=click.Path(exists=True), help='directory of gpt2 model', required=True)
-@click.option('--temp',            type=float,                   default=0.7, help='temperature for gpt2 generation', required=True)
-@click.option('--top_k',           type=int,                     default=0, help='if nonzero, limits the sampled tokens to the top k values', required=True)
-@click.option('--top_p',           type=float,                   default=0.7, help='if nonzero, limits the sampled tokens to the cumulative probability', required=True)
-@click.option('--best_of',         type=int,                     default=1, help='how many generations should be done at a time (if n > 1, the result will be selected randomly', required=True)
-@click.option('--stylegan_dir',    type=click.Path(exists=True), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
-@click.option('--sound_dir',       type=click.Path(exists=True), help='directory where the notification sounds are located', required=True)
-@click.option('--prompts_file',    type=click.Path(exists=True), help='path to json file with starting prompts', required=True)
-@click.option('--run_length',      type=int,                     default=50, help='how long is an average conversation run, before the next prompt gets set. set to 0 to deactive', required=True)
-@click.option('--run_deviation',   type=parse_min_max,           default=[0.75, 1.25], help='minimun & maximum deviation of the conversation run length', required=True)
-@click.option('--role_format',     type=str,                     help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
-@click.option('--image_string',    type=str,                     help='how an image is declared in the text (e.g. [image])', required=True)
-@click.option('--roles',           type=parse_comma_list,        help='list of roles (e.g \'artist, scientist\'). must be all lower case', required=True)
-@click.option('--base_time',       type=float,                   default=3.0, help='minimum time for writing all types of messages', required=True)
-@click.option('--letter_time',     type=float,                   default=0.2, help='time it takes to write one letter', required=True)
-@click.option('--image_time',      type=float,                   default=6.0, help='time it takes to take an image', required=True)
-@click.option('--run_time',        type=float,                   default=10.0, help='time to wait between runs', required=True)
-@click.option('--write_deviation', type=parse_min_max,           default=[0.8, 1.2], help='minimun & maximum deviation of the write time', required=True)
-@click.option('--read_deviation',  type=parse_min_max,           default=[0.6, 1.4], help='minimun & maximum deviation of the read time', required=True)
-@click.option('--runs',            type=int,                     default=0, help='how many runs to do (infinite, if zero)', required=True)
-@click.option('--memory',          type=int,                     default=1, help='how many generated messages get used for the prompt (e.g. the last 2)', required=True)
-@click.option('--logfile',         type=str,                     default='generate', help='name of the logfile (creation time gets added at the end)', required=True)
-@click.option('--rapid',           is_flag=True,                 help='skip all wait times')
-@click.option('--verbose',         is_flag=True,                 help='print additional information')
+@click.option('--delay',           type=float, default=0,                         help='how long to wait before starting (for documentation purposes)', required=True)
+@click.option('--gpt_dir',         type=click.Path(exists=True, file_okay=False), help='directory of gpt2 model', required=True)
+@click.option('--temp',            type=float, default=0.7,                       help='temperature for gpt2 generation', required=True)
+@click.option('--top_k',           type=int, default=0,                           help='if nonzero, limits the sampled tokens to the top k values', required=True)
+@click.option('--top_p',           type=float, default=0.7,                       help='if nonzero, limits the sampled tokens to the cumulative probability', required=True)
+@click.option('--best_of',         type=int, default=1,                           help='how many generations should be done at a time (if n > 1, the result will be selected randomly', required=True)
+@click.option('--stylegan_dir',    type=click.Path(exists=True, file_okay=False), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
+@click.option('--sound_dir',       type=click.Path(exists=True, file_okay=False), help='directory where the notification sounds are located', required=True)
+@click.option('--prompts_file',    type=click.Path(exists=True, dir_okay=False),  help='path to json file with starting prompts', required=True)
+@click.option('--run_length',      type=int, default=50,                          help='how long is an average conversation run, before the next prompt gets set. set to 0 to deactive', required=True)
+@click.option('--run_deviation',   type=parse_min_max, default=[0.75, 1.25],      help='minimun & maximum deviation of the conversation run length', required=True)
+@click.option('--role_format',     type=str,                                      help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
+@click.option('--image_string',    type=str,                                      help='how an image is declared in the text (e.g. [image])', required=True)
+@click.option('--roles',           type=parse_comma_list,                         help='list of roles (e.g \'artist, scientist\'). must be all lower case', required=True)
+@click.option('--base_time',       type=float, default=3.0,                       help='minimum time for writing all types of messages', required=True)
+@click.option('--letter_time',     type=float, default=0.2,                       help='time it takes to write one letter', required=True)
+@click.option('--image_time',      type=float, default=6.0,                       help='time it takes to take an image', required=True)
+@click.option('--run_time',        type=float, default=10.0,                      help='time to wait between runs', required=True)
+@click.option('--write_deviation', type=parse_min_max, default=[0.8, 1.2],        help='minimun & maximum deviation of the write time', required=True)
+@click.option('--read_deviation',  type=parse_min_max, default=[0.6, 1.4],        help='minimun & maximum deviation of the read time', required=True)
+@click.option('--runs',            type=int, default=0,                           help='how many runs to do (infinite, if zero)', required=True)
+@click.option('--memory',          type=int, default=1,                           help='how many generated messages get used for the prompt (e.g. the last 2)', required=True)
+@click.option('--logfile',         type=str, default='generate',                  help='name of the logfile (creation time gets added at the end)', required=True)
+@click.option('--rapid',           is_flag=True,                                  help='skip all wait times')
+@click.option('--verbose',         is_flag=True,                                  help='print additional information')
+@click.option('--out_dir',         type=click.Path(file_okay=False),              help='directory to generate the conversation to (messages in a .json file and images as .jpgs)', required=False)
 # yapf: enable
 def generate(
         delay: int,
@@ -173,7 +174,8 @@ def generate(
         memory: int,
         logfile: str,
         rapid: bool,
-        verbose: bool
+        verbose: bool,
+        out_dir: str = None
     ) -> None:
     """
     generates text messages with gpt2 & selfies with stylegan3.
@@ -228,6 +230,12 @@ def generate(
 
     # setup redis database
     db = Database(host='localhost', db=0)
+
+    # prepare generation to file
+    messages = []
+    image_counter = 0
+    if out_dir:
+        os.makedirs(out_dir, exist_ok=True)
 
     try:
         # setup queues
@@ -292,7 +300,8 @@ def generate(
             'image_data': b'',
             'alt': b'',
             'sound_data': sounds.get(),
-            'new_run': False
+            'new_run': False,
+            'image_path': ''
             }
         last_sender = last_message['sender']
         logger.info(
@@ -405,6 +414,7 @@ def generate(
 
                 # is there an image
                 image_data = b''
+                image_path = ''
                 alt = ''
                 if image_string in text:
                     # get image from queue
@@ -422,11 +432,23 @@ def generate(
                     image_output = BytesIO()
                     image.save(
                         image_output,
-                        "JPEG",
+                        'JPEG',
                         quality=70,
                         optimize=True,
                         progressive=True
                         )
+
+                    # save image to file, if outdir is set
+                    if out_dir:
+                        image_path = f'image_{str(image_counter).zfill(10)}.jpg'
+                        image.save(
+                            os.path.join(out_dir, image_path),
+                            'JPEG',
+                            quality=70,
+                            optimize=True,
+                            progressive=True
+                            )
+                        image_counter += 1
 
                     image_data = image_output.getvalue()
 
@@ -472,14 +494,28 @@ def generate(
                     writer=last_message['sender'], state=0
                     )
 
+                # write message to file, if out_dir is set
+                if out_dir:
+                    new_message = {
+                        'sender': last_message['sender'],
+                        'text': last_message['text'],
+                        }
+                    if last_message['image_path']:
+                        new_message['image_path'] = last_message['image_path']
+                    if last_message['new_run']:
+                        new_message['new_run'] = last_message['new_run']
+                    messages.append(new_message)
+                    with open(
+                        os.path.join(out_dir, 'messages.json'), "w+"
+                        ) as file:
+                        json.dump(messages, file)
+
                 current_run_length -= 1
 
                 # print the message to terminal
                 logger.info(
-                    f'{last_message["sender"]}> {last_message["text"]}'
+                    f'{last_message["sender"]}> {last_message["text"]} [image: {bool(last_message["image_data"])}]'
                     )
-                if (last_message['image_data']):
-                    logger.info('IMAGE')
 
                 # save massage to be sent after next generation. it is necessary
                 # to send this message only after the next was generated, because
@@ -491,7 +527,8 @@ def generate(
                     'image_data': image_data,
                     'alt': alt,
                     'sound_data': sounds.get(),
-                    'new_run': new_run
+                    'new_run': new_run,
+                    'image_path': image_path
                     }
                 new_run = False
                 logger.debug(
