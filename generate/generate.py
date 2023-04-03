@@ -122,32 +122,33 @@ def generate_images(
 
 # yapf: disable
 @click.command()
-@click.option('--delay',           type=float, default=0,                         help='how long to wait before starting (for documentation purposes)', required=True)
-@click.option('--gpt_dir',         type=click.Path(exists=True, file_okay=False), help='directory of gpt2 model', required=True)
-@click.option('--temp',            type=float, default=0.7,                       help='temperature for gpt2 generation', required=True)
-@click.option('--top_k',           type=int, default=0,                           help='if nonzero, limits the sampled tokens to the top k values', required=True)
-@click.option('--top_p',           type=float, default=0.7,                       help='if nonzero, limits the sampled tokens to the cumulative probability', required=True)
-@click.option('--best_of',         type=int, default=1,                           help='how many generations should be done at a time (if n > 1, the result will be selected randomly', required=True)
-@click.option('--stylegan_dir',    type=click.Path(exists=True, file_okay=False), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
-@click.option('--sound_dir',       type=click.Path(exists=True, file_okay=False), help='directory where the notification sounds are located', required=True)
-@click.option('--prompts_file',    type=click.Path(exists=True, dir_okay=False),  help='path to json file with starting prompts', required=True)
-@click.option('--run_length',      type=int, default=50,                          help='how long is an average conversation run, before the next prompt gets set. set to 0 to deactive', required=True)
-@click.option('--run_deviation',   type=parse_min_max, default=[0.75, 1.25],      help='minimun & maximum deviation of the conversation run length', required=True)
-@click.option('--role_format',     type=str,                                      help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
-@click.option('--image_string',    type=str,                                      help='how an image is declared in the text (e.g. [image])', required=True)
-@click.option('--roles',           type=parse_comma_list,                         help='list of roles (e.g \'artist, scientist\'). must be all lower case', required=True)
-@click.option('--base_time',       type=float, default=3.0,                       help='minimum time for writing all types of messages', required=True)
-@click.option('--letter_time',     type=float, default=0.2,                       help='time it takes to write one letter', required=True)
-@click.option('--image_time',      type=float, default=6.0,                       help='time it takes to take an image', required=True)
-@click.option('--run_time',        type=float, default=10.0,                      help='time to wait between runs', required=True)
-@click.option('--write_deviation', type=parse_min_max, default=[0.8, 1.2],        help='minimun & maximum deviation of the write time', required=True)
-@click.option('--read_deviation',  type=parse_min_max, default=[0.6, 1.4],        help='minimun & maximum deviation of the read time', required=True)
-@click.option('--runs',            type=int, default=0,                           help='how many runs to do (infinite, if zero)', required=True)
-@click.option('--memory',          type=int, default=1,                           help='how many generated messages get used for the prompt (e.g. the last 2)', required=True)
-@click.option('--logfile',         type=str, default='generate',                  help='name of the logfile (creation time gets added at the end)', required=True)
-@click.option('--rapid',           is_flag=True,                                  help='skip all wait times')
-@click.option('--verbose',         is_flag=True,                                  help='print additional information')
-@click.option('--out_dir',         type=click.Path(file_okay=False),              help='directory to generate the conversation to (messages in a .json file and images as .jpgs)', required=False)
+@click.option('--delay',            type=float, default=0,                         help='how long to wait before starting (for documentation purposes)', required=True)
+@click.option('--gpt_dir',          type=click.Path(exists=True, file_okay=False), help='directory of gpt2 model', required=True)
+@click.option('--temp',             type=float, default=0.7,                       help='temperature for gpt2 generation', required=True)
+@click.option('--top_k',            type=int, default=0,                           help='if nonzero, limits the sampled tokens to the top k values', required=True)
+@click.option('--top_p',            type=float, default=0.7,                       help='if nonzero, limits the sampled tokens to the cumulative probability', required=True)
+@click.option('--best_of',          type=int, default=1,                           help='how many generations should be done at a time (if n > 1, the result will be selected randomly', required=True)
+@click.option('--stylegan_dir',     type=click.Path(exists=True, file_okay=False), help='directory of stylegan3 model file (formatted like this: \'folder/{{role}}_stylegan3_model.pkl\')', required=True)
+@click.option('--sound_dir',        type=click.Path(exists=True, file_okay=False), help='directory where the notification sounds are located', required=True)
+@click.option('--prompts_file',     type=click.Path(exists=True, dir_okay=False),  help='path to json file with starting prompts', required=True)
+@click.option('--run_length',       type=int, default=50,                          help='how long is an average conversation run, before the next prompt gets set. set to 0 to deactive', required=True)
+@click.option('--run_deviation',    type=parse_min_max, default=[0.75, 1.25],      help='minimun & maximum deviation of the conversation run length', required=True)
+@click.option('--role_format',      type=str,                                      help='how a role is declared in the text (e.g. \'[{{role}}] \'). must include {{role}}/{{ROLE}}', required=True)
+@click.option('--image_string',     type=str,                                      help='how an image is declared in the text (e.g. [image])', required=True)
+@click.option('--roles',            type=parse_comma_list,                         help='list of roles (e.g \'artist, scientist\'). must be all lower case', required=True)
+@click.option('--base_time',        type=float, default=3.0,                       help='minimum time for writing all types of messages', required=True)
+@click.option('--letter_time',      type=float, default=0.2,                       help='time it takes to write one letter', required=True)
+@click.option('--image_time',       type=float, default=6.0,                       help='time it takes to take an image', required=True)
+@click.option('--run_time',         type=float, default=10.0,                      help='time to wait between runs', required=True)
+@click.option('--write_deviation',  type=parse_min_max, default=[0.8, 1.2],        help='minimun & maximum deviation of the write time', required=True)
+@click.option('--read_deviation',   type=parse_min_max, default=[0.6, 1.4],        help='minimun & maximum deviation of the read time', required=True)
+@click.option('--runs',             type=int, default=0,                           help='how many runs to do (infinite, if zero)', required=True)
+@click.option('--memory',           type=int, default=1,                           help='how many generated messages get used for the prompt (e.g. the last 2)', required=True)
+@click.option('--logfile',          type=str, default='generate',                  help='name of the logfile (creation time gets added at the end)', required=True)
+@click.option('--rapid',            is_flag=True,                                  help='skip all wait times')
+@click.option('--verbose',          is_flag=True,                                  help='print additional information')
+@click.option('--out_dir',          type=click.Path(file_okay=False),              help='directory to generate the conversation to (messages in a .json file and images as .jpgs)', required=False)
+@click.option('--conversation_dir', type=click.Path(file_okay=False, exists=True), help='directory to generate the conversation from (from previous generation)', required=False)
 # yapf: enable
 def generate(
         delay: int,
@@ -175,7 +176,8 @@ def generate(
         logfile: str,
         rapid: bool,
         verbose: bool,
-        out_dir: str = None
+        out_dir: str = None,
+        conversation_dir: str = None
     ) -> None:
     """
     generates text messages with gpt2 & selfies with stylegan3.
@@ -237,25 +239,35 @@ def generate(
     if out_dir:
         os.makedirs(out_dir, exist_ok=True)
 
+    # prepare generation from file
+    loaded_messages: List[Dict[str, Union[str, bool]]] = []
+    message_count = 1
+    if conversation_dir:
+        with open(os.path.join(conversation_dir, 'messages.json')) as file:
+            loaded_messages = json.load(file)
+
     try:
-        # setup queues
-        queues: Dict[str, Queue] = {}
-        for role in roles:
-            queues[role] = multiprocessing.Queue()
+        if not conversation_dir:
+            # setup queues
+            queues: Dict[str, Queue] = {}
+            for role in roles:
+                queues[role] = multiprocessing.Queue()
 
-        # start image generation process
-        process = multiprocessing.Process(
-            target=generate_images,
-            kwargs=({
-                'logger': logger, 'stylegan_dir': stylegan_dir, **queues
-                })
-            )
-        process.start()
-        logger.info('setup image generators.')
+            # start image generation process
+            process = multiprocessing.Process(
+                target=generate_images,
+                kwargs=({
+                    'logger': logger, 'stylegan_dir': stylegan_dir, **queues
+                    })
+                )
+            process.start()
+            logger.info('setup image generators.')
 
-        # setup text generators
-        text_G = TextGenerator(logger, model_folder=gpt_dir)
-        logger.info('setup text generator.')
+            # setup text generators
+            text_G = TextGenerator(logger, model_folder=gpt_dir)
+            logger.info('setup text generator.')
+        else:
+            process = None
 
         # setup writing states
         writing_state: Dict[str, Hash] = {}
@@ -303,6 +315,16 @@ def generate(
             'new_run': False,
             'image_path': ''
             }
+        if conversation_dir:
+            last_message = {
+                'sender': loaded_messages[0]['sender'],
+                'text': loaded_messages[0]['text'],
+                'image_data': b'',
+                'alt': b'',
+                'sound_data': sounds.get(),
+                'new_run': False,
+                'image_path': ''
+                }
         last_sender = last_message['sender']
         logger.info(
             f'first message (this should be the prompt): {last_message["sender"]}> {last_message["text"]} [image: {bool(last_message["image_data"])}]'
@@ -315,7 +337,7 @@ def generate(
         time.sleep(delay)
 
         # - main loop --------------------------------------------------------------------------------
-        while True:
+        while message_count < len(loaded_messages) or not loaded_messages:
             # wait according to last message (next message in the queue) (reading), but only if the sender changed from the last one
             if last_sender != last_message['sender']:
                 read_time = get_wait_time(
@@ -351,115 +373,141 @@ def generate(
             )  # don't record starttime on repeat generation
 
             # generate a message
-            if not current_run_length <= 0 or run_length == 0:
-                current_prompt = '\n'.join([line.strip()
-                                            for line in prompt]) + '\n'
-                responses = text_G.generate(
-                    current_prompt,
-                    max_length=128,
-                    temperature=temp,
-                    top_k=top_k,
-                    top_p=top_p,
-                    n=best_of,  # batch_size=best_of
-                    ).replace(current_prompt, '')
-                # split the message so it only contains single responses in a list
-                responses_list = [
-                    response.strip(
-                        ' '
-                        )  # strip any leading or trailing spaces (but not newlines)
-                    for response in re.split(split_pattern, responses)
-                    if re.search(role_pattern, response) is
-                    not None  # response must include a sender to be valid
-                    ]
+            if not conversation_dir:
+                if not current_run_length <= 0 or run_length == 0:
+                    current_prompt = '\n'.join([
+                        line.strip() for line in prompt
+                        ]) + '\n'
+                    responses = text_G.generate(
+                        current_prompt,
+                        max_length=128,
+                        temperature=temp,
+                        top_k=top_k,
+                        top_p=top_p,
+                        n=best_of,  # batch_size=best_of
+                        ).replace(current_prompt, '')
+                    # split the message so it only contains single responses in a list
+                    responses_list = [
+                        response.strip(
+                            ' '
+                            )  # strip any leading or trailing spaces (but not newlines)
+                        for response in re.split(split_pattern, responses)
+                        if re.search(role_pattern, response) is
+                        not None  # response must include a sender to be valid
+                        ]
+                else:
+                    # if conversation run is at an end, get a new prompt from command line parameters
+                    responses_list = [prompts.get()]
+                    current_run_length = int(
+                        run_length
+                        * random.uniform(run_deviation[0], run_deviation[1])
+                        )
+                    new_run = True
+
+                    # stop if designated runs are reached
+                    if runs:
+                        remaining_runs -= 1
+                        if remaining_runs <= 0:
+                            raise SystemExit
+
+                # if not proper responses were generated, start with new prompt
+                if not responses_list:
+                    responses_list = [prompts.get()]
+                    current_run_length = int(
+                        run_length
+                        * random.uniform(run_deviation[0], run_deviation[1])
+                        )
+                    new_run = True
+
+                    logger.warning(
+                        f'no valid messages. starting new run. new prompt: {responses_list[0]}. new run length: {current_run_length}. The new run will appear one line later in the log.'
+                        )
+                # get sender
+                sender = re.search(sender_pattern,
+                                   responses_list[0]).group('sender').lower()
+
+                # remove sender from message
+                text = re.sub(role_pattern, '', responses_list[0]).strip()
             else:
-                # if conversation run is at an end, get a new prompt from command line parameters
-                responses_list = [prompts.get()]
-                current_run_length = int(
-                    run_length
-                    * random.uniform(run_deviation[0], run_deviation[1])
-                    )
-                new_run = True
+                sender = loaded_messages[message_count]['sender']
+                text = loaded_messages[message_count]['text']
 
-                # stop if designated runs are reached
-                if runs:
-                    remaining_runs -= 1
-                    if remaining_runs <= 0:
-                        raise SystemExit
-
-            # if not proper responses were generated, start with new prompt
-            if not responses_list:
-                responses_list = [prompts.get()]
-                current_run_length = int(
-                    run_length
-                    * random.uniform(run_deviation[0], run_deviation[1])
-                    )
-                new_run = True
-
-                logger.warning(
-                    f'no valid messages. starting new run. new prompt: {responses_list[0]}. new run length: {current_run_length}. The new run will appear one line later in the log.'
-                    )
-            # get sender
-            sender = re.search(sender_pattern,
-                               responses_list[0]).group('sender').lower()
-
-            # remove sender from message
-            text = re.sub(role_pattern, '', responses_list[0]).strip()
+                if 'new_run' in loaded_messages[message_count].keys():
+                    new_run = True
 
             # only go on, if sender is valid & and there is text
-            if sender in roles and text:
-                # get prompt for the next generation
-                prompt.append(responses_list[0])
-                if len(prompt) > memory:
-                    prompt.pop(0)
-
+            if sender in roles and text or conversation_dir:
                 # is there an image
                 image_data = b''
                 image_path = ''
                 alt = ''
-                if image_string in text:
-                    # get image from queue
-                    image: Image = None
-                    while image is None:
-                        try:
-                            image = queues[sender].get()
-                        except queue.Empty:
-                            logger.warning(
-                                f"queue for '{sender}' is empty. trying again in 1 second."
-                                )
-                            time.sleep(1)
 
-                    # save image as binary
-                    image_output = BytesIO()
-                    image.save(
-                        image_output,
-                        'JPEG',
-                        quality=70,
-                        optimize=True,
-                        progressive=True
-                        )
+                if not conversation_dir:
+                    # get prompt for the next generation
+                    prompt.append(responses_list[0])
+                    if len(prompt) > memory:
+                        prompt.pop(0)
 
-                    # save image to file, if outdir is set
-                    if out_dir:
-                        image_path = f'image_{str(image_counter).zfill(10)}.jpg'
+                    if image_string in text:
+                        # get image from queue
+                        image: Image = None
+                        while image is None:
+                            try:
+                                image = queues[sender].get()
+                            except queue.Empty:
+                                logger.warning(
+                                    f"queue for '{sender}' is empty. trying again in 1 second."
+                                    )
+                                time.sleep(1)
+
+                        # save image as binary
+                        image_output = BytesIO()
                         image.save(
-                            os.path.join(out_dir, image_path),
+                            image_output,
                             'JPEG',
                             quality=70,
                             optimize=True,
                             progressive=True
                             )
-                        image_counter += 1
 
-                    image_data = image_output.getvalue()
+                        # save image to file, if outdir is set
+                        if out_dir:
+                            image_path = f'image_{str(image_counter).zfill(10)}.jpg'
+                            image.save(
+                                os.path.join(out_dir, image_path),
+                                'JPEG',
+                                quality=70,
+                                optimize=True,
+                                progressive=True
+                                )
+                            image_counter += 1
 
-                    image_output.close()
+                        image_data = image_output.getvalue()
 
-                    # get image alt
-                    alt = f'selfie of {sender}'
+                        image_output.close()
 
-                    # remove image placeholder string from message text
-                    text = re.sub(r'  +', ' ', text.replace(image_string, '')
-                                  ).strip()  # get rid of duplicate spaces
+                        # get image alt
+                        alt = f'selfie of {sender}'
+
+                        # remove image placeholder string from message text
+                        text = re.sub(
+                            r'  +', ' ', text.replace(image_string, '')
+                            ).strip()  # get rid of duplicate spaces
+                else:
+                    if 'image_path' in loaded_messages[message_count].keys():
+                        with open(
+                            os.path.join(
+                                conversation_dir,
+                                loaded_messages[message_count]['image_path']
+                                ),
+                            'rb'
+                            ) as file:
+                            image_data = file.read()
+
+                        # get image alt
+                        alt = f'selfie of {sender}'
+
+                    message_count += 1
 
                 # wait according to last message (writing)
                 write_duration = time.time() - start
