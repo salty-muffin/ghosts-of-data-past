@@ -358,7 +358,7 @@ def generate(
             # if it is a new run, wait the run_time
             if last_message['new_run']:
                 logger.info(
-                    f'conversation run ended. new prompt: {responses_list[0]}. new run length: {current_run_length}.'
+                    f'conversation run ended. new run length: {current_run_length}.'
                     )
 
                 if not rapid: time.sleep(run_time)
@@ -591,12 +591,13 @@ def generate(
     except KeyboardInterrupt:
         logger.info('process ended by user')
     finally:
-        logger.info('terminating subprocesses and closing queues...')
-        if process: process.terminate()
-        if process: process.join()
-        for _queue in queues.values():
-            if _queue: _queue.close()
-            if _queue: _queue.join_thread()
+        if not conversation_dir:
+            logger.info('terminating subprocesses and closing queues...')
+            if process: process.terminate()
+            if process: process.join()
+            for _queue in queues.values():
+                if _queue: _queue.close()
+                if _queue: _queue.join_thread()
 
 
 if __name__ == '__main__':
