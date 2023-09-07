@@ -127,7 +127,7 @@
 	about what happened or might have happened here.
 </p>
 <p>
-	II am not the first to make the connection between AI and ghosts, however. Business got there way
+	I am not the first to make the connection between AI and ghosts, however. Business got there way
 	before me. As an example: In 2014, the start-up eterni.me was founded with the aim of enabling
 	people to exist beyond their death: By handing over their most intimate data as well as access to
 	their social media accounts, AIs are supposed to be able to create avatars after the death of
