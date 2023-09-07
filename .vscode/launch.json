@@ -64,8 +64,9 @@
                 "--write_deviation=0.85,1.15",
                 "--read_deviation=0.35,0.55",
                 "--memory=2",
+                // "--runs=5",
                 // "--rapid",
-                // "--conversation_dir=out/01"
+                // "--conversation_dir=out/02"
                 // "--verbose"
             ],
             "console": "integratedTerminal"

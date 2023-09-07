@@ -112,7 +112,7 @@ def main() -> None:
                 'conda',
                 'run',
                 '-n',
-                'ghosts-cpu',
+                'ghosts',
                 'python3',
                 os.path.join('serve', 'app.py')
                 ],
@@ -151,7 +151,7 @@ def main() -> None:
                 'conda',
                 'run',
                 '-n',
-                'ghosts-cpu',
+                'ghosts',
                 'python3',
                 os.path.join('generate', 'generate.py'),
                 # '--verbose',
