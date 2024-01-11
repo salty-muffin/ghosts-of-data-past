@@ -127,7 +127,7 @@
 <p>
 	<a href="https://kdfs.de">
 		<Image
-			image="images/kdfs_logo.png"
+			image="/images/kdfs_logo.png"
 			width={1552}
 			height={639}
 			alt="KdFS Logo"
