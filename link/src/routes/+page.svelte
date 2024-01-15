@@ -5,11 +5,22 @@
 	import type { PageData } from './$types';
 
 	export let data: PageData;
+
+	import { onMount } from 'svelte';
+	import Sketch from './scene';
+
+	let container: HTMLDivElement;
+	let image: HTMLImageElement;
+
+	onMount(() => {
+		const sketch = new Sketch(container, image);
+		sketch.animate();
+	});
 </script>
 
 <div class="link">
-	<div class="link__canvas">
-		<img class="qr" src={data.qr} alt="qr-code" />
+	<div class="link__container" bind:this={container}>
+		<img class="qr" src={data.qr} alt="qr-code" bind:this={image} />
 	</div>
 	<!-- <div class="text">
 		<p>
@@ -30,14 +41,15 @@
 		height: 100vh;
 	}
 
-	.link__canvas {
+	.link__container {
 		position: absolute;
 		inset: 0;
 
-		display: flex;
-		flex-direction: column;
-		justify-content: center;
-		align-items: center;
+		img {
+			visibility: hidden;
+			pointer-events: none;
+			position: absolute;
+		}
 	}
 
 	.qr {
