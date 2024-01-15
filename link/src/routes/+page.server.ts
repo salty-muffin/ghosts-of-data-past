@@ -16,24 +16,15 @@ export const load: PageServerLoad = async () => {
 			domain = env.DOMAIN;
 		}
 
-		let qrData = '';
-		qr.toString(
-			`${domain}/?gate=${gate}`,
-			{ type: 'svg', errorCorrectionLevel: 'Q' },
-			(err, data) => {
-				if (data) {
-					qrData = data;
-				}
-				if (err) {
-					throw error(500, `could not create qr code: ${err}`);
-				}
-			}
-		);
-
 		return {
 			gate: gate,
 			domain: domain,
-			qr: qrData
+			qr: qr.toDataURL(`${domain}/?gate=${gate}`, {
+				type: 'image/png',
+				errorCorrectionLevel: 'Q',
+				color: { dark: '#ffffffff', light: '#00000000' },
+				width: 500
+			})
 		};
 	} catch (err) {
 		throw error(500, `could not open text file: ${err}`);
