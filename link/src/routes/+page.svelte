@@ -1,4 +1,7 @@
 <script lang="ts">
+	import '$lib/scss/fonts.scss';
+	import '$lib/scss/global.scss';
+
 	import type { PageData } from './$types';
 
 	export let data: PageData;
