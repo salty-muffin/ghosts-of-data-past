@@ -5,6 +5,6 @@ varying vec2 vUv;
 
 void main() {
     vec4 offset = texture(uDataTexture, vUv);
-    gl_FragColor = texture(uTexture, vUv + 0.1 * offset.rg);
+    gl_FragColor = texture(uTexture, vUv + offset.rg);
     // gl_FragColor = offset;
 }

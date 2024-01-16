@@ -13,20 +13,17 @@
 	let canvas: HTMLCanvasElement;
 
 	onMount(() => {
-		// create canvas
-		// const canvas = new OffscreenCanvas(150, 150);
+		// load image
+		const image = new Image();
+		image.src = data.qr;
 
 		// draw text & qr code on canvas
-		const ctx = canvas.getContext('2d');
+		const ctx = canvas.getContext('2d', { alpha: false });
 		if (ctx) {
 			const draw = () => {
 				// get current height
 				canvas.width = container.offsetWidth;
 				canvas.height = container.offsetHeight;
-
-				// load image
-				const image = new Image();
-				image.src = data.qr;
 
 				// draw image
 				const imageSize = container.offsetHeight * 0.5;
@@ -65,8 +62,15 @@
 			draw();
 			window.addEventListener('resize', draw);
 
-			const sketch = new Sketch(container, canvas);
-			sketch.animate();
+			const initSketch = () => {
+				const sketch = new Sketch(container, canvas);
+				sketch.animate();
+			};
+			if (image.complete) {
+				initSketch();
+			} else {
+				image.addEventListener('load', initSketch);
+			}
 		}
 	});
 </script>
