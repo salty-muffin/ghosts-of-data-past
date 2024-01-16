@@ -10,27 +10,69 @@
 	import Sketch from './scene';
 
 	let container: HTMLDivElement;
-	let image: HTMLImageElement;
+	let canvas: HTMLCanvasElement;
 
 	onMount(() => {
-		const sketch = new Sketch(container, image);
-		sketch.animate();
+		// create canvas
+		// const canvas = new OffscreenCanvas(150, 150);
+
+		// draw text & qr code on canvas
+		const ctx = canvas.getContext('2d');
+		if (ctx) {
+			const draw = () => {
+				// get current height
+				canvas.width = container.offsetWidth;
+				canvas.height = container.offsetHeight;
+
+				// load image
+				const image = new Image();
+				image.src = data.qr;
+
+				// draw image
+				const imageSize = container.offsetHeight * 0.5;
+
+				ctx.drawImage(
+					image,
+					(container.offsetWidth - imageSize) / 2,
+					(container.offsetHeight - imageSize) / 2,
+					imageSize,
+					imageSize
+				);
+
+				// draw text
+				ctx.font = '1px "ABC Favorit Lining", sans-serif';
+				const textSize =
+					(container.offsetWidth /
+						ctx.measureText(
+							`${data.domain.replace('http://', '').replace('https://', '')}${
+								data.gate ? `/?gate=${data.gate}` : ''
+							}`
+						).width) *
+					0.5;
+				ctx.font = `${textSize}px "ABC Favorit Lining", sans-serif`;
+				ctx.textAlign = 'center';
+				ctx.textBaseline = 'top';
+				ctx.fillStyle = 'rgb(255 255 255 / 100%)';
+				ctx.fillText(
+					`${data.domain.replace('http://', '').replace('https://', '')}${
+						data.gate ? `/?gate=${data.gate}` : ''
+					}`,
+					container.offsetWidth / 2,
+					container.offsetHeight * 0.8
+				);
+			};
+
+			draw();
+			window.addEventListener('resize', draw);
+
+			const sketch = new Sketch(container, canvas);
+			sketch.animate();
+		}
 	});
 </script>
 
-<div class="link">
-	<div class="link__container" bind:this={container}>
-		<img class="qr" src={data.qr} alt="qr-code" bind:this={image} />
-	</div>
-	<!-- <div class="text">
-		<p>
-			this links to <a href="{data.domain}{data.gate ? `/?gate=${data.gate}` : ''}"
-				>{data.domain.replace('http://', '').replace('https://', '')}{data.gate
-					? `/?gate=${data.gate}`
-					: ''}</a
-			>
-		</p>
-	</div> -->
+<div class="link" bind:this={container}>
+	<canvas id="canvas" bind:this={canvas} />
 </div>
 
 <style global lang="scss">
@@ -39,14 +81,10 @@
 	.link {
 		width: 100vw;
 		height: 100vh;
-	}
 
-	.link__container {
-		position: absolute;
-		inset: 0;
-
-		img {
-			visibility: hidden;
+		img,
+		canvas {
+			display: none;
 			pointer-events: none;
 			position: absolute;
 		}
