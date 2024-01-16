@@ -59,17 +59,17 @@
 				);
 			};
 
-			draw();
-			window.addEventListener('resize', draw);
+			const init = () => {
+				draw();
+				window.addEventListener('resize', draw);
 
-			const initSketch = () => {
 				const sketch = new Sketch(container, canvas);
 				sketch.animate();
 			};
 			if (image.complete) {
-				initSketch();
+				init();
 			} else {
-				image.addEventListener('load', initSketch);
+				image.addEventListener('load', init);
 			}
 		}
 	});
