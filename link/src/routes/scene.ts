@@ -38,11 +38,11 @@ export default class Sketch {
 
 	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
 		// settings
-		this.grid = 300;
-		this.relaxation = 0.98;
+		this.grid = 200;
+		this.relaxation = 0.95;
 		// MOUSE STUFF ---
 		this.radius = 0.11;
-		this.strength = 0.2;
+		this.strength = 0.1;
 		// MOUSE STUFF ---
 
 		// store bindings
@@ -91,23 +91,23 @@ export default class Sketch {
 		const width = this.grid;
 		const height = this.grid;
 
+		// buffer for the dispacement texture
 		const size = width * height;
 		const data = new Float32Array(4 * size);
 
 		for (let i = 0; i < size; i++) {
-			const r = Math.random() * 2 - 1;
-			const g = Math.random() * 2 - 1;
+			const r = Math.random();
+			const g = Math.random();
 
 			const stride = i * 4;
 
 			data[stride] = r;
 			data[stride + 1] = g;
-			data[stride + 2] = 0;
+			data[stride + 2] = 0.5;
 			data[stride + 3] = 1;
 		}
 
-		// used the buffer to create a DataTexture
-
+		// use the buffer to create a DataTexture
 		this.displacementTexture = new THREE.DataTexture(
 			data,
 			width,
@@ -135,12 +135,6 @@ export default class Sketch {
 			extensions: { derivatives: true },
 			side: THREE.DoubleSide,
 			uniforms: {
-				time: {
-					value: 0
-				},
-				resolution: {
-					value: new THREE.Vector4()
-				},
 				uTexture: {
 					value: this.texture
 				},
@@ -169,8 +163,8 @@ export default class Sketch {
 		if (this.displacementTexture) {
 			const data = this.displacementTexture.image.data;
 			for (let i = 0; i < data.length; i += 4) {
-				data[i] *= this.relaxation;
-				data[i + 1] *= this.relaxation;
+				data[i] = (data[i] - 0.5) * this.relaxation + 0.5;
+				data[i + 1] = (data[i + 1] - 0.5) * this.relaxation + 0.5;
 			}
 
 			// MOUSE STUFF ---
