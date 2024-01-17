@@ -2,6 +2,10 @@ import * as THREE from 'three';
 import fragment from '$lib/shaders/fragment.glsl?raw';
 import vertex from '$lib/shaders/vertex.glsl?raw';
 
+const clamp = (n: number, min: number, max: number) => {
+	return Math.max(min, Math.min(n, max));
+};
+
 export default class Sketch {
 	container: HTMLDivElement;
 	canvas: HTMLCanvasElement;
@@ -39,9 +43,9 @@ export default class Sketch {
 	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
 		// settings
 		this.grid = 200;
-		this.relaxation = 0.95;
+		this.relaxation = 0.985;
 		// MOUSE STUFF ---
-		this.radius = 0.11;
+		this.radius = 0.2;
 		this.strength = 0.1;
 		// MOUSE STUFF ---
 
@@ -181,9 +185,9 @@ export default class Sketch {
 					if (distance < maxDistSq) {
 						const index = 4 * (i + this.grid * j);
 
-						let power = maxDist / Math.sqrt(distance);
-						power = Math.max(0, Math.min(power, 10));
-						// if(distance <this.grid/32) power = 1;
+						let power = maxDist / Math.sqrt(distance) - 1;
+						power = clamp(power, 0, 10);
+						// if(distance <this.size/32) power = 1;
 						// power = 1;
 
 						data[index] -= this.strength * this.mouse.vX * power;
