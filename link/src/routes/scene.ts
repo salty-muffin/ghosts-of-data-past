@@ -18,11 +18,13 @@ export default class Sketch {
 
 	plane?: THREE.Mesh;
 
-	grid: number;
-	relaxation: number;
+	grid = 200;
+	relaxation = 0.985;
 	// MOUSE STUFF ---
-	radius: number;
-	strength: number;
+	radius = 0.2;
+	strength = 0.1;
+
+	mouseDown = false;
 	// MOUSE STUFF ---
 
 	displacementTexture?: THREE.DataTexture;
@@ -41,14 +43,6 @@ export default class Sketch {
 	// MOUSE STUFF ---
 
 	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
-		// settings
-		this.grid = 200;
-		this.relaxation = 0.985;
-		// MOUSE STUFF ---
-		this.radius = 0.2;
-		this.strength = 0.1;
-		// MOUSE STUFF ---
-
 		// store bindings
 		this.container = container;
 		this.canvas = canvas;
@@ -76,14 +70,24 @@ export default class Sketch {
 		window.addEventListener('resize', this.resize.bind(this));
 
 		// MOUSE STUFF ---
+		window.addEventListener('mousedown', (e) => {
+			if (e.button == 0) {
+				this.mouseDown = true;
+			}
+		});
+		window.addEventListener('mouseup', (e) => {
+			if (e.button == 0) {
+				this.mouseDown = false;
+			}
+		});
 		window.addEventListener('mousemove', (e) => {
 			this.mouse.x = e.clientX / this.container.offsetWidth;
 			this.mouse.y = e.clientY / this.container.offsetHeight;
 
 			// console.log(this.mouse.x,this.mouse.y)
 
-			this.mouse.vX = this.mouse.x - this.mouse.prevX;
-			this.mouse.vY = this.mouse.y - this.mouse.prevY;
+			this.mouse.vX = this.mouseDown ? this.mouse.x - this.mouse.prevX : 0;
+			this.mouse.vY = this.mouseDown ? this.mouse.y - this.mouse.prevY : 0;
 
 			this.mouse.prevX = this.mouse.x;
 			this.mouse.prevY = this.mouse.y;

@@ -19,7 +19,7 @@ export const load: PageServerLoad = async () => {
 		return {
 			gate: gate,
 			domain: domain,
-			qr: qr.toDataURL(`${domain}/?gate=${gate}`, {
+			qr: await qr.toDataURL(`${domain}/?gate=${gate}`, {
 				type: 'image/png',
 				errorCorrectionLevel: 'Q',
 				color: { dark: '#ffffffff', light: '#00000000' },
