@@ -2,13 +2,10 @@ import * as THREE from 'three';
 import fragment from '$lib/shaders/fragment.glsl?raw';
 import vertex from '$lib/shaders/vertex.glsl?raw';
 
-const clamp = (n: number, min: number, max: number) => {
-	return Math.max(min, Math.min(n, max));
-};
-
 export default class Sketch {
 	container: HTMLDivElement;
 	canvas: HTMLCanvasElement;
+	displacementVideo: HTMLVideoElement;
 
 	frustumSize: number;
 
@@ -18,34 +15,19 @@ export default class Sketch {
 
 	plane?: THREE.Mesh;
 
-	grid = 200;
-	relaxation = 0.985;
-	// MOUSE STUFF ---
-	radius = 0.2;
-	strength = 0.1;
-
-	mouseDown = false;
-	// MOUSE STUFF ---
-
-	displacementTexture?: THREE.DataTexture;
+	displacementTexture?: THREE.VideoTexture;
 	texture?: THREE.Texture;
 	material?: THREE.ShaderMaterial;
 
-	// MOUSE STUFF ---
-	mouse: { x: number; y: number; vX: number; vY: number; prevX: number; prevY: number } = {
-		x: 0,
-		y: 0,
-		vX: 0,
-		vY: 0,
-		prevX: 0,
-		prevY: 0
-	};
-	// MOUSE STUFF ---
-
-	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
+	constructor(
+		container: HTMLDivElement,
+		canvas: HTMLCanvasElement,
+		displacement: HTMLVideoElement
+	) {
 		// store bindings
 		this.container = container;
 		this.canvas = canvas;
+		this.displacementVideo = displacement;
 
 		// set up camera
 		this.frustumSize = 3;
@@ -60,7 +42,6 @@ export default class Sketch {
 		container.appendChild(this.renderer.domElement);
 
 		// set up contents
-		this.regenerateGrid();
 		this.addObjects();
 
 		// adjust to viewport size
@@ -68,70 +49,6 @@ export default class Sketch {
 
 		// set up event listnener for resize
 		window.addEventListener('resize', this.resize.bind(this));
-
-		// MOUSE STUFF ---
-		window.addEventListener('mousedown', (e) => {
-			if (e.button == 0) {
-				this.mouseDown = true;
-			}
-		});
-		window.addEventListener('mouseup', (e) => {
-			if (e.button == 0) {
-				this.mouseDown = false;
-			}
-		});
-		window.addEventListener('mousemove', (e) => {
-			this.mouse.x = e.clientX / this.container.offsetWidth;
-			this.mouse.y = e.clientY / this.container.offsetHeight;
-
-			// console.log(this.mouse.x,this.mouse.y)
-
-			this.mouse.vX = this.mouseDown ? this.mouse.x - this.mouse.prevX : 0;
-			this.mouse.vY = this.mouseDown ? this.mouse.y - this.mouse.prevY : 0;
-
-			this.mouse.prevX = this.mouse.x;
-			this.mouse.prevY = this.mouse.y;
-		});
-		// MOUSE STUFF ---
-	}
-
-	regenerateGrid() {
-		const width = this.grid;
-		const height = this.grid;
-
-		// buffer for the dispacement texture
-		const size = width * height;
-		const data = new Float32Array(4 * size);
-
-		for (let i = 0; i < size; i++) {
-			const r = Math.random();
-			const g = Math.random();
-
-			const stride = i * 4;
-
-			data[stride] = r;
-			data[stride + 1] = g;
-			data[stride + 2] = 0.5;
-			data[stride + 3] = 1;
-		}
-
-		// use the buffer to create a DataTexture
-		this.displacementTexture = new THREE.DataTexture(
-			data,
-			width,
-			height,
-			THREE.RGBAFormat,
-			THREE.FloatType
-		);
-		this.displacementTexture.magFilter = THREE.NearestFilter;
-		this.displacementTexture.needsUpdate = true;
-
-		this.displacementTexture.magFilter = this.displacementTexture.minFilter = THREE.NearestFilter;
-
-		if (this.material) {
-			this.material.uniforms.uDataTexture.value = this.displacementTexture;
-			this.material.uniforms.uDataTexture.value.needsUpdate = true;
-		}
 	}
 
 	addObjects() {
@@ -139,6 +56,8 @@ export default class Sketch {
 
 		this.texture = new THREE.Texture(this.canvas);
 		this.texture.needsUpdate = true;
+
+		this.displacementTexture = new THREE.VideoTexture(this.displacementVideo);
 		this.material = new THREE.ShaderMaterial({
 			extensions: { derivatives: true },
 			side: THREE.DoubleSide,
@@ -153,6 +72,7 @@ export default class Sketch {
 			vertexShader: vertex,
 			fragmentShader: fragment
 		});
+
 		this.plane = new THREE.Mesh(geometry, this.material);
 		this.scene.add(this.plane);
 	}
@@ -168,51 +88,11 @@ export default class Sketch {
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
 
-		if (this.displacementTexture) {
-			const data = this.displacementTexture.image.data;
-			for (let i = 0; i < data.length; i += 4) {
-				data[i] = (data[i] - 0.5) * this.relaxation + 0.5;
-				data[i + 1] = (data[i + 1] - 0.5) * this.relaxation + 0.5;
-			}
-
-			// MOUSE STUFF ---
-			const gridMouseX = this.grid * this.mouse.x;
-			const gridMouseY = this.grid * (1 - this.mouse.y);
-			const maxDist = this.grid * this.radius;
-			const aspect = this.container.offsetHeight / this.container.offsetWidth;
-
-			for (let i = 0; i < this.grid; i++) {
-				for (let j = 0; j < this.grid; j++) {
-					const distance = (gridMouseX - i) ** 2 / aspect + (gridMouseY - j) ** 2;
-					const maxDistSq = maxDist ** 2;
-
-					if (distance < maxDistSq) {
-						const index = 4 * (i + this.grid * j);
-
-						let power = maxDist / Math.sqrt(distance) - 1;
-						power = clamp(power, 0, 10);
-						// if(distance <this.size/32) power = 1;
-						// power = 1;
-
-						data[index] -= this.strength * this.mouse.vX * power;
-						data[index + 1] += this.strength * this.mouse.vY * power;
-					}
-				}
-			}
-
-			this.mouse.vX *= 0.9;
-			this.mouse.vY *= 0.9;
-			// MOUSE STUFF ---
-
-			this.displacementTexture.needsUpdate = true;
-		}
-
 		this.renderer.render(this.scene, this.camera);
 	}
 
 	resize() {
 		this.updateCanavas();
-		this.regenerateGrid();
 
 		this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
 	}

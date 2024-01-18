@@ -11,6 +11,7 @@
 
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
+	let displacement: HTMLVideoElement;
 
 	onMount(() => {
 		// load image
@@ -63,10 +64,11 @@
 				draw();
 				window.addEventListener('resize', draw);
 
-				const sketch = new Sketch(container, canvas);
+				const sketch = new Sketch(container, canvas, displacement);
 				sketch.animate();
+				displacement.play();
 			};
-			if (image.complete) {
+			if (image.complete && displacement) {
 				init();
 			} else {
 				image.addEventListener('load', init);
@@ -77,6 +79,8 @@
 
 <div class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
+	<!-- svelte-ignore a11y-media-has-caption -->
+	<video loop src="/videos/02.mp4" bind:this={displacement} />
 </div>
 
 <style global lang="scss">
@@ -86,8 +90,8 @@
 		width: 100vw;
 		height: 100vh;
 
-		img,
-		canvas {
+		video,
+		#canvas {
 			display: none;
 			pointer-events: none;
 			position: absolute;
