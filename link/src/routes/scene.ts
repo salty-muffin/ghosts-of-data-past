@@ -15,6 +15,8 @@ export default class Sketch {
 
 	plane?: THREE.Mesh;
 
+	resolution = { x: 0, y: 0 };
+
 	displacementTexture?: THREE.VideoTexture;
 	texture?: THREE.Texture;
 	material?: THREE.ShaderMaterial;
@@ -41,11 +43,11 @@ export default class Sketch {
 		this.renderer.setSize(container.offsetWidth, container.offsetHeight);
 		container.appendChild(this.renderer.domElement);
 
-		// set up contents
-		this.addObjects();
-
 		// adjust to viewport size
 		this.resize();
+
+		// set up contents
+		this.addObjects();
 
 		// set up event listnener for resize
 		window.addEventListener('resize', this.resize.bind(this));
@@ -67,6 +69,15 @@ export default class Sketch {
 				},
 				uDataTexture: {
 					value: this.displacementTexture
+				},
+				uResolution: {
+					value: [this.resolution.x, this.resolution.y]
+				},
+				uBlur: {
+					value: true
+				},
+				uBlurRadius: {
+					value: 50
 				}
 			},
 			vertexShader: vertex,
@@ -92,8 +103,8 @@ export default class Sketch {
 	}
 
 	resize() {
-		this.updateCanavas();
+		this.resolution = { x: this.container.offsetWidth, y: this.container.offsetHeight };
 
-		this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+		this.renderer.setSize(this.resolution.x, this.resolution.y);
 	}
 }
