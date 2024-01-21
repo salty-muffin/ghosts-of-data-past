@@ -20,7 +20,7 @@ export default class Sketch {
 
 	resolution = { x: 0, y: 0 };
 
-	gridX = 160;
+	gridX = 320;
 	gridY = 0;
 	relaxation = 0.985;
 	// MOUSE STUFF ---
@@ -157,7 +157,7 @@ export default class Sketch {
 					value: [this.resolution.x, this.resolution.y]
 				},
 				uBlur: {
-					value: true
+					value: false
 				},
 				uBlurRadius: {
 					value: 50
