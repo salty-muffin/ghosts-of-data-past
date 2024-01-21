@@ -45,6 +45,8 @@ export default class Sketch {
 	};
 	// MOUSE STUFF ---
 
+	first = false;
+
 	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
 		// store bindings
 		this.container = container;
@@ -103,7 +105,7 @@ export default class Sketch {
 
 		// buffer for the dispacement texture
 		const size = this.gridX * this.gridY;
-		const data = new Float32Array(4 * size);
+		const data = new Float32Array(2 * size);
 
 		for (let i = 0; i < size; i++) {
 			// const r = Math.random();
@@ -111,12 +113,10 @@ export default class Sketch {
 			const r = 0.5;
 			const g = 0.5;
 
-			const stride = i * 4;
+			const stride = i * 2;
 
 			data[stride] = r;
 			data[stride + 1] = g;
-			data[stride + 2] = 0.5;
-			data[stride + 3] = 1;
 		}
 
 		// use the buffer to create a DataTexture
@@ -124,7 +124,7 @@ export default class Sketch {
 			data,
 			this.gridX,
 			this.gridY,
-			THREE.RGBAFormat,
+			THREE.RGFormat,
 			THREE.FloatType
 		);
 		this.displacementTexture.magFilter = THREE.NearestFilter;
@@ -160,7 +160,7 @@ export default class Sketch {
 					value: false
 				},
 				uBlurRadius: {
-					value: 50
+					value: 25
 				}
 			},
 			vertexShader: vertex,
@@ -182,8 +182,13 @@ export default class Sketch {
 		requestAnimationFrame(this.animate.bind(this));
 
 		if (this.displacementTexture) {
+			if (!this.first) {
+				console.log(new Int8Array(this.displacementTexture.image.data.buffer));
+				this.first = true;
+			}
+
 			const data = this.displacementTexture.image.data;
-			for (let i = 0; i < data.length; i += 4) {
+			for (let i = 0; i < data.length; i += 2) {
 				data[i] = (data[i] - 0.5) * this.relaxation + 0.5;
 				data[i + 1] = (data[i + 1] - 0.5) * this.relaxation + 0.5;
 			}
@@ -199,7 +204,7 @@ export default class Sketch {
 					const maxDistSq = maxDist ** 2;
 
 					if (distance < maxDistSq) {
-						const index = 4 * (i + this.gridX * j);
+						const index = 2 * (i + this.gridX * j);
 
 						let power = maxDist / Math.sqrt(distance) - 1;
 						power = clamp(power, 0, 10);
