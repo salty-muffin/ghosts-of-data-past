@@ -18,7 +18,10 @@ export default class Sketch {
 
 	plane?: THREE.Mesh;
 
-	grid = 200;
+	resolution = { x: 0, y: 0 };
+
+	gridX = 320;
+	gridY = 0;
 	relaxation = 0.985;
 	// MOUSE STUFF ---
 	radius = 0.2;
@@ -32,7 +35,7 @@ export default class Sketch {
 	material?: THREE.ShaderMaterial;
 
 	// MOUSE STUFF ---
-	mouse: { x: number; y: number; vX: number; vY: number; prevX: number; prevY: number } = {
+	mouse = {
 		x: 0,
 		y: 0,
 		vX: 0,
@@ -59,12 +62,12 @@ export default class Sketch {
 		this.renderer.setSize(container.offsetWidth, container.offsetHeight);
 		container.appendChild(this.renderer.domElement);
 
+		// adjust to viewport size
+		this.resize();
+
 		// set up contents
 		this.regenerateGrid();
 		this.addObjects();
-
-		// adjust to viewport size
-		this.resize();
 
 		// set up event listnener for resize
 		window.addEventListener('resize', this.resize.bind(this));
@@ -81,8 +84,8 @@ export default class Sketch {
 			}
 		});
 		window.addEventListener('mousemove', (e) => {
-			this.mouse.x = e.clientX / this.container.offsetWidth;
-			this.mouse.y = e.clientY / this.container.offsetHeight;
+			this.mouse.x = e.clientX / this.resolution.x;
+			this.mouse.y = e.clientY / this.resolution.y;
 
 			// console.log(this.mouse.x,this.mouse.y)
 
@@ -96,16 +99,17 @@ export default class Sketch {
 	}
 
 	regenerateGrid() {
-		const width = this.grid;
-		const height = this.grid;
+		this.gridY = this.gridX * (this.resolution.y / this.resolution.x);
 
 		// buffer for the dispacement texture
-		const size = width * height;
+		const size = this.gridX * this.gridY;
 		const data = new Float32Array(4 * size);
 
 		for (let i = 0; i < size; i++) {
-			const r = Math.random();
-			const g = Math.random();
+			// const r = Math.random();
+			// const g = Math.random();
+			const r = 0.5;
+			const g = 0.5;
 
 			const stride = i * 4;
 
@@ -118,8 +122,8 @@ export default class Sketch {
 		// use the buffer to create a DataTexture
 		this.displacementTexture = new THREE.DataTexture(
 			data,
-			width,
-			height,
+			this.gridX,
+			this.gridY,
 			THREE.RGBAFormat,
 			THREE.FloatType
 		);
@@ -176,18 +180,17 @@ export default class Sketch {
 			}
 
 			// MOUSE STUFF ---
-			const gridMouseX = this.grid * this.mouse.x;
-			const gridMouseY = this.grid * (1 - this.mouse.y);
-			const maxDist = this.grid * this.radius;
-			const aspect = this.container.offsetHeight / this.container.offsetWidth;
+			const gridMouseX = this.gridX * this.mouse.x;
+			const gridMouseY = this.gridY * (1 - this.mouse.y);
+			const maxDist = this.gridX * this.radius;
 
-			for (let i = 0; i < this.grid; i++) {
-				for (let j = 0; j < this.grid; j++) {
-					const distance = (gridMouseX - i) ** 2 / aspect + (gridMouseY - j) ** 2;
+			for (let i = 0; i < this.gridX; i++) {
+				for (let j = 0; j < this.gridY; j++) {
+					const distance = (gridMouseX - i) ** 2 / 1 + (gridMouseY - j) ** 2;
 					const maxDistSq = maxDist ** 2;
 
 					if (distance < maxDistSq) {
-						const index = 4 * (i + this.grid * j);
+						const index = 4 * (i + this.gridX * j);
 
 						let power = maxDist / Math.sqrt(distance) - 1;
 						power = clamp(power, 0, 10);
@@ -214,6 +217,8 @@ export default class Sketch {
 		this.updateCanavas();
 		this.regenerateGrid();
 
-		this.renderer.setSize(this.container.offsetWidth, this.container.offsetHeight);
+		this.resolution = { x: this.container.offsetWidth, y: this.container.offsetHeight };
+
+		this.renderer.setSize(this.resolution.x, this.resolution.y);
 	}
 }
