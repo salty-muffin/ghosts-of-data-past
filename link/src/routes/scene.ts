@@ -16,6 +16,10 @@ export default class Sketch {
 	camera: THREE.OrthographicCamera;
 	renderer: THREE.Renderer;
 
+	clock: THREE.Clock;
+	delta = 0;
+	interval = 1 / 60;
+
 	plane?: THREE.Mesh;
 
 	resolution = { x: 0, y: 0 };
@@ -61,6 +65,8 @@ export default class Sketch {
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(container.offsetWidth, container.offsetHeight);
 		container.appendChild(this.renderer.domElement);
+
+		this.clock = new THREE.Clock();
 
 		// adjust to viewport size
 		this.resize();
@@ -155,7 +161,7 @@ export default class Sketch {
 					value: [this.resolution.x, this.resolution.y]
 				},
 				uBlur: {
-					value: false
+					value: true
 				},
 				uBlurRadius: {
 					value: 25
@@ -179,45 +185,51 @@ export default class Sketch {
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
 
-		if (this.displacementTexture) {
-			const data = this.displacementTexture.image.data;
-			for (let i = 0; i < data.length; i += 2) {
-				data[i] = data[i] * this.relaxation;
-				data[i + 1] = data[i + 1] * this.relaxation;
-			}
+		this.delta += this.clock.getDelta();
 
-			// MOUSE STUFF ---
-			const gridMouseX = this.gridX * this.mouse.x;
-			const gridMouseY = this.gridY * (1 - this.mouse.y);
-			const maxDist = this.gridX * this.radius;
+		if (this.delta > this.interval) {
+			if (this.displacementTexture) {
+				const data = this.displacementTexture.image.data;
+				for (let i = 0; i < data.length; i += 2) {
+					data[i] = data[i] * this.relaxation;
+					data[i + 1] = data[i + 1] * this.relaxation;
+				}
 
-			for (let i = 0; i < this.gridX; i++) {
-				for (let j = 0; j < this.gridY; j++) {
-					const distance = (gridMouseX - i) ** 2 / 1 + (gridMouseY - j) ** 2;
-					const maxDistSq = maxDist ** 2;
+				// MOUSE STUFF ---
+				const gridMouseX = this.gridX * this.mouse.x;
+				const gridMouseY = this.gridY * (1 - this.mouse.y);
+				const maxDist = this.gridX * this.radius;
 
-					if (distance < maxDistSq) {
-						const index = 2 * (i + this.gridX * j);
+				for (let i = 0; i < this.gridX; i++) {
+					for (let j = 0; j < this.gridY; j++) {
+						const distance = (gridMouseX - i) ** 2 / 1 + (gridMouseY - j) ** 2;
+						const maxDistSq = maxDist ** 2;
 
-						let power = maxDist / Math.sqrt(distance) - 1;
-						power = clamp(power, 0, 10);
-						// if(distance <this.size/32) power = 1;
-						// power = 1;
+						if (distance < maxDistSq) {
+							const index = 2 * (i + this.gridX * j);
 
-						data[index] -= this.strength * this.mouse.vX * power;
-						data[index + 1] += this.strength * this.mouse.vY * power;
+							let power = maxDist / Math.sqrt(distance) - 1;
+							power = clamp(power, 0, 10);
+							// if(distance <this.size/32) power = 1;
+							// power = 1;
+
+							data[index] -= this.strength * this.mouse.vX * power;
+							data[index + 1] += this.strength * this.mouse.vY * power;
+						}
 					}
 				}
+
+				this.mouse.vX *= 0.9;
+				this.mouse.vY *= 0.9;
+				// MOUSE STUFF ---
+
+				this.displacementTexture.needsUpdate = true;
 			}
 
-			this.mouse.vX *= 0.9;
-			this.mouse.vY *= 0.9;
-			// MOUSE STUFF ---
+			this.renderer.render(this.scene, this.camera);
 
-			this.displacementTexture.needsUpdate = true;
+			this.delta = this.delta % this.interval;
 		}
-
-		this.renderer.render(this.scene, this.camera);
 	}
 
 	resize() {

@@ -24,5 +24,5 @@ void main() {
         offset = texture(uDataTexture, vUv);
     }
     gl_FragColor = texture(uTexture, vUv + offset.rg);
-    gl_FragColor = offset + vec4(0.5);
+    // gl_FragColor = offset + vec4(0.5);
 }
