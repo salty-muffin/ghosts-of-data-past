@@ -23,8 +23,6 @@ void main() {
     } else {
         offset = texture(uDataTexture, vUv);
     }
-
-    vec4 mappedOffset = vec4(2) * (offset - 0.5);
-    gl_FragColor = texture(uTexture, vUv + mappedOffset.rg);
-    // gl_FragColor = offset;
+    gl_FragColor = texture(uTexture, vUv + offset.rg);
+    gl_FragColor = offset + vec4(0.5);
 }

@@ -45,8 +45,6 @@ export default class Sketch {
 	};
 	// MOUSE STUFF ---
 
-	first = false;
-
 	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
 		// store bindings
 		this.container = container;
@@ -110,8 +108,8 @@ export default class Sketch {
 		for (let i = 0; i < size; i++) {
 			// const r = Math.random();
 			// const g = Math.random();
-			const r = 0.5;
-			const g = 0.5;
+			const r = 0;
+			const g = 0;
 
 			const stride = i * 2;
 
@@ -182,15 +180,10 @@ export default class Sketch {
 		requestAnimationFrame(this.animate.bind(this));
 
 		if (this.displacementTexture) {
-			if (!this.first) {
-				console.log(new Int8Array(this.displacementTexture.image.data.buffer));
-				this.first = true;
-			}
-
 			const data = this.displacementTexture.image.data;
 			for (let i = 0; i < data.length; i += 2) {
-				data[i] = (data[i] - 0.5) * this.relaxation + 0.5;
-				data[i + 1] = (data[i + 1] - 0.5) * this.relaxation + 0.5;
+				data[i] = data[i] * this.relaxation;
+				data[i + 1] = data[i + 1] * this.relaxation;
 			}
 
 			// MOUSE STUFF ---
