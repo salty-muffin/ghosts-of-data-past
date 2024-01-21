@@ -20,7 +20,7 @@ export default class Sketch {
 
 	resolution = { x: 0, y: 0 };
 
-	gridX = 320;
+	gridX = 160;
 	gridY = 0;
 	relaxation = 0.985;
 	// MOUSE STUFF ---
@@ -152,6 +152,15 @@ export default class Sketch {
 				},
 				uDataTexture: {
 					value: this.displacementTexture
+				},
+				uResolution: {
+					value: [this.resolution.x, this.resolution.y]
+				},
+				uBlur: {
+					value: true
+				},
+				uBlurRadius: {
+					value: 50
 				}
 			},
 			vertexShader: vertex,
