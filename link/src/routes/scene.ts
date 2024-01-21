@@ -28,7 +28,7 @@ export default class Sketch {
 	gridY = 0;
 	relaxation = 0.985;
 	// MOUSE STUFF ---
-	radius = 0.2;
+	radius = 0.3;
 	strength = 0.1;
 
 	mouseDown = false;
@@ -105,7 +105,8 @@ export default class Sketch {
 	}
 
 	regenerateGrid() {
-		this.gridY = this.gridX * (this.resolution.y / this.resolution.x);
+		this.gridX = Math.floor(this.gridX);
+		this.gridY = Math.ceil(this.gridX * (this.resolution.y / this.resolution.x));
 
 		// buffer for the dispacement texture
 		const size = this.gridX * this.gridY;
@@ -164,7 +165,7 @@ export default class Sketch {
 					value: true
 				},
 				uBlurRadius: {
-					value: 25
+					value: 10
 				}
 			},
 			vertexShader: vertex,
