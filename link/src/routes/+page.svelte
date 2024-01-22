@@ -13,7 +13,17 @@
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
 
-	onMount(() => {
+	let show = false;
+
+	let sketch: Sketch;
+
+	let relaxation: number;
+	let radius: number;
+	let strength: number;
+
+	$: if (sketch) sketch.setParameters(relaxation / 10000 + 0.99, radius / 100, strength / 100);
+
+	$: onMount(() => {
 		// load image
 		const image = new Image();
 		image.src = data.qr;
@@ -64,8 +74,12 @@
 				draw();
 				window.addEventListener('resize', draw);
 
-				const sketch = new Sketch(container, canvas);
+				sketch = new Sketch(container, canvas, 5);
 				sketch.animate();
+
+				relaxation = (sketch.relaxation - 0.99) * 10000;
+				radius = sketch.radius * 100;
+				strength = sketch.strength * 100;
 
 				window.addEventListener('keydown', (e) => {
 					if (e.key == ' ') {
@@ -82,6 +96,12 @@
 							sketch.stop();
 						}
 					}
+					if (e.key == 's') {
+						show = !show;
+					}
+					if (e.key == 'r') {
+						sketch.resetRecording();
+					}
 				});
 			};
 			if (image.complete) {
@@ -91,12 +111,67 @@
 			}
 		}
 	});
+
+	const downloadData = () => {
+		if (sketch) {
+			const blob = new Blob([sketch.displacementTextureBuffer]);
+
+			const url = window.URL.createObjectURL(blob);
+
+			const a = document.createElement('a');
+			a.href = url;
+			a.download = 'distortion_data.dat';
+			a.target = '_blank';
+			a.style.display = 'none';
+			document.body.appendChild(a);
+			a.click();
+			a.remove();
+
+			setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+		}
+	};
 </script>
 
 <div class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
 	{#key timestamp}
-		<span id="timestamp" class:recording={$timestamp.recording}>{$timestamp.time}</span>
+		<span id="timestamp" class="ui" class:recording={$timestamp.recording}>{$timestamp.time}</span>
+		<span id="info" class="ui">
+			press SPACE for recording, P for playback, S to display extras & R to reset recording
+		</span>
+		<button id="save" class="ui" class:show on:click={downloadData}>save recording</button>
+		<div id="settings" class="ui" class:show>
+			<input
+				type="range"
+				id="relaxation"
+				name="relaxation"
+				min="0"
+				max="100"
+				step="5"
+				bind:value={relaxation}
+			/>
+			<label for="relaxation">relaxation</label>
+			<input
+				type="range"
+				id="radius"
+				name="radius"
+				min="0"
+				max="100"
+				step="5"
+				bind:value={radius}
+			/>
+			<label for="radius">radius</label>
+			<input
+				type="range"
+				id="strength"
+				name="strength"
+				min="0"
+				max="100"
+				step="5"
+				bind:value={strength}
+			/>
+			<label for="strength">strength</label>
+		</div>
 	{/key}
 </div>
 
@@ -114,16 +189,52 @@
 		position: absolute;
 	}
 
-	#timestamp {
+	.ui {
 		position: absolute;
-		left: 1em;
-		top: 1em;
 
 		color: white;
+	}
+
+	#timestamp {
+		left: 1em;
+		top: 1em;
 
 		&.recording {
 			color: red;
 		}
+	}
+
+	#save {
+		position: absolute;
+		left: 1em;
+		bottom: 1em;
+
+		color: black;
+
+		display: none;
+		&.show {
+			display: block;
+		}
+	}
+
+	#settings {
+		right: 1em;
+		bottom: 1em;
+
+		flex-direction: column;
+
+		display: none;
+		&.show {
+			display: flex;
+		}
+	}
+
+	#info {
+		position: absolute;
+		right: 1em;
+		top: 1em;
+
+		color: white;
 	}
 
 	.qr {

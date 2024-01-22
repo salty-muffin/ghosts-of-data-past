@@ -22,7 +22,7 @@ export default class Sketch {
 	interval = 1 / 60;
 
 	elapsedTime: THREE.Clock;
-	maxRecordingTime = 5;
+	maxRecordingTime: number;
 	playing = false;
 
 	plane?: THREE.Mesh;
@@ -31,13 +31,14 @@ export default class Sketch {
 
 	gridX = 320;
 	gridY = 0;
-	relaxation = 0.985;
+	relaxation = 0.995;
 	radius = 0.3;
 	strength = 0.1;
 
 	mouseDown = false;
 
 	displacementTexture?: THREE.DataTexture;
+	displacementData?: Float32Array;
 	texture?: THREE.Texture;
 	material?: THREE.ShaderMaterial;
 
@@ -54,10 +55,12 @@ export default class Sketch {
 		prevY: 0
 	};
 
-	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement) {
+	constructor(container: HTMLDivElement, canvas: HTMLCanvasElement, recordingLength = 10) {
 		// store bindings
 		this.container = container;
 		this.canvas = canvas;
+
+		this.maxRecordingTime = recordingLength;
 
 		// set up camera
 		this.scene = new THREE.Scene();
@@ -105,6 +108,12 @@ export default class Sketch {
 			this.mouse.prevX = this.mouse.x;
 			this.mouse.prevY = this.mouse.y;
 		});
+	}
+
+	setParameters(relaxation: number, radius: number, strength: number) {
+		this.relaxation = relaxation;
+		this.radius = radius;
+		this.strength = strength;
 	}
 
 	startRecording() {
@@ -168,6 +177,7 @@ export default class Sketch {
 			data[stride] = r;
 			data[stride + 1] = g;
 		}
+		this.displacementData = data.slice();
 
 		// use the buffer to create a DataTexture
 		this.displacementTexture = new THREE.DataTexture(
@@ -194,6 +204,21 @@ export default class Sketch {
 		this.displacementTextureBuffer = new Float32Array(
 			this.frameSize * (1 / this.interval) * this.maxRecordingTime
 		);
+
+		this.resetRecording();
+	}
+
+	resetRecording() {
+		this.stopRecording();
+		this.stop();
+
+		this.displacementTextureBuffer.fill(0.0);
+		if (this.displacementTexture) {
+			this.displacementTexture.image.data.fill(0.0);
+		}
+		if (this.displacementData) {
+			this.displacementData.fill(0.0);
+		}
 	}
 
 	addObjects() {
@@ -242,13 +267,13 @@ export default class Sketch {
 		this.delta += this.clock.getDelta();
 
 		if (this.delta > this.interval) {
-			if (this.displacementTexture) {
+			if (this.displacementTexture && this.displacementData) {
 				const data = this.displacementTexture.image.data;
 
 				if (!this.playing) {
 					for (let i = 0; i < data.length; i += 2) {
-						data[i] = data[i] * this.relaxation;
-						data[i + 1] = data[i + 1] * this.relaxation;
+						this.displacementData[i] = this.displacementData[i] * this.relaxation;
+						this.displacementData[i + 1] = this.displacementData[i + 1] * this.relaxation;
 					}
 
 					const gridMouseX = this.gridX * this.mouse.x;
@@ -268,8 +293,8 @@ export default class Sketch {
 								// if(distance <this.size/32) power = 1;
 								// power = 1;
 
-								data[index] -= this.strength * this.mouse.vX * power;
-								data[index + 1] += this.strength * this.mouse.vY * power;
+								this.displacementData[index] -= this.strength * this.mouse.vX * power;
+								this.displacementData[index + 1] += this.strength * this.mouse.vY * power;
 							}
 						}
 					}
@@ -283,7 +308,13 @@ export default class Sketch {
 						timestamp.setTime(Math.floor(elapsedTime));
 
 						if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length) {
+							for (let i = 0; i < data.length; i++) {
+								data[i] =
+									this.displacementData[i] +
+									this.displacementTextureBuffer[i + this.frameIndex * this.frameSize];
+							}
 							this.displacementTextureBuffer.set(data, this.frameIndex * this.frameSize);
+
 							this.frameIndex++;
 						} else {
 							this.stopRecording();
@@ -291,7 +322,6 @@ export default class Sketch {
 					}
 				} else {
 					// if playing, get frame from the buffer
-
 					timestamp.setTime(Math.floor(this.elapsedTime.getElapsedTime()));
 
 					if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length) {
