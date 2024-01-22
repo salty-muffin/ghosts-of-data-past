@@ -202,7 +202,7 @@ export default class Sketch {
 
 		this.frameSize = this.displacementTexture.image.data.length;
 		this.displacementTextureBuffer = new Float32Array(
-			this.frameSize * (1 / this.interval) * this.maxRecordingTime
+			2 + this.frameSize * (1 / this.interval) * this.maxRecordingTime
 		);
 
 		this.resetRecording();
@@ -219,6 +219,9 @@ export default class Sketch {
 		if (this.displacementData) {
 			this.displacementData.fill(0.0);
 		}
+
+		this.displacementTextureBuffer[0] = this.gridX;
+		this.displacementTextureBuffer[1] = this.gridY;
 	}
 
 	addObjects() {
@@ -307,13 +310,16 @@ export default class Sketch {
 						const elapsedTime = this.elapsedTime.getElapsedTime();
 						timestamp.setTime(Math.floor(elapsedTime));
 
-						if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length) {
+						if (
+							(this.frameIndex + 1) * this.frameSize <
+							this.displacementTextureBuffer.length - 2
+						) {
 							for (let i = 0; i < data.length; i++) {
 								data[i] =
 									this.displacementData[i] +
-									this.displacementTextureBuffer[i + this.frameIndex * this.frameSize];
+									this.displacementTextureBuffer[i + 2 + this.frameIndex * this.frameSize];
 							}
-							this.displacementTextureBuffer.set(data, this.frameIndex * this.frameSize);
+							this.displacementTextureBuffer.set(data, 2 + this.frameIndex * this.frameSize);
 
 							this.frameIndex++;
 						} else {
@@ -324,11 +330,11 @@ export default class Sketch {
 					// if playing, get frame from the buffer
 					timestamp.setTime(Math.floor(this.elapsedTime.getElapsedTime()));
 
-					if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length) {
+					if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length - 2) {
 						this.displacementTexture.image.data.set(
 							this.displacementTextureBuffer.subarray(
-								this.frameIndex * this.frameSize,
-								(this.frameIndex + 1) * this.frameSize
+								2 + this.frameIndex * this.frameSize,
+								2 + (this.frameIndex + 1) * this.frameSize
 							)
 						);
 						this.frameIndex++;
