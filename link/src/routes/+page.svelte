@@ -8,6 +8,7 @@
 
 	import { onMount } from 'svelte';
 	import Sketch from './scene';
+	import { timestamp } from '$lib/stores/timestamp';
 
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
@@ -65,6 +66,23 @@
 
 				const sketch = new Sketch(container, canvas);
 				sketch.animate();
+
+				window.addEventListener('keydown', (e) => {
+					if (e.key == ' ') {
+						if (!$timestamp.recording) {
+							sketch.startRecording();
+						} else {
+							sketch.stopRecording();
+						}
+					}
+					if (e.key == 'p') {
+						if (!sketch.playing) {
+							sketch.play();
+						} else {
+							sketch.stop();
+						}
+					}
+				});
 			};
 			if (image.complete) {
 				init();
@@ -77,6 +95,9 @@
 
 <div class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
+	{#key timestamp}
+		<span id="timestamp" class:recording={$timestamp.recording}>{$timestamp.time}</span>
+	{/key}
 </div>
 
 <style global lang="scss">
@@ -85,12 +106,23 @@
 	.link {
 		width: 100vw;
 		height: 100vh;
+	}
 
-		img,
-		canvas {
-			display: none;
-			pointer-events: none;
-			position: absolute;
+	#canvas {
+		display: none;
+		pointer-events: none;
+		position: absolute;
+	}
+
+	#timestamp {
+		position: absolute;
+		left: 1em;
+		top: 1em;
+
+		color: white;
+
+		&.recording {
+			color: red;
 		}
 	}
 
@@ -98,27 +130,4 @@
 		max-width: 70vh;
 		height: auto;
 	}
-
-	// .text {
-	// 	font-size: 2.5em;
-	// 	line-height: 1.6;
-	// 	font-family: $font-family-text;
-	// 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-	// 		'ss05' 1;
-	// 	color: map-get($colors, 'foreground');
-
-	// 	font-weight: 200;
-
-	// 	p {
-	// 		margin: 0;
-	// 	}
-
-	// 	a {
-	// 		color: map-get($colors, 'foreground');
-	// 		font-family: $font-family-underline;
-	// 		font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-	// 			'ss05' 1, 'ss09' 1;
-	// 		text-decoration: none;
-	// 	}
-	// }
 </style>
