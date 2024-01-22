@@ -125,6 +125,10 @@ export default class Sketch {
 			this.frameIndex = 0;
 
 			this.playing = false;
+
+			if (this.displacementData) {
+				this.displacementData.fill(0.0);
+			}
 		}
 	}
 

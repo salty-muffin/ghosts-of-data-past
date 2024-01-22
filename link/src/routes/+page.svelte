@@ -10,6 +10,8 @@
 	import Sketch from './scene';
 	import { timestamp } from '$lib/stores/timestamp';
 
+	const MAXRECORDING = 10;
+
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
 
@@ -74,7 +76,7 @@
 				draw();
 				window.addEventListener('resize', draw);
 
-				sketch = new Sketch(container, canvas, 5);
+				sketch = new Sketch(container, canvas, MAXRECORDING);
 				sketch.animate();
 
 				relaxation = (sketch.relaxation - 0.99) * 10000;
