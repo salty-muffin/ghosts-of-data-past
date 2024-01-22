@@ -281,6 +281,7 @@ export default class Sketch {
 					if (get(timestamp).recording) {
 						const elapsedTime = this.elapsedTime.getElapsedTime();
 						timestamp.setTime(Math.floor(elapsedTime));
+
 						if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length) {
 							this.displacementTextureBuffer.set(data, this.frameIndex * this.frameSize);
 							this.frameIndex++;
@@ -289,27 +290,19 @@ export default class Sketch {
 						}
 					}
 				} else {
+					// if playing, get frame from the buffer
+
 					timestamp.setTime(Math.floor(this.elapsedTime.getElapsedTime()));
 
-					// if playing, get frame from the buffer
-					this.displacementTexture.image.data.set(
-						this.displacementTextureBuffer.subarray(
-							this.frameIndex * this.frameSize,
-							(this.frameIndex + 1) * this.frameSize
-						)
-					);
-
-					// console.log(
-					// 	this.displacementTexture.image.data.length,
-					// 	this.displacementTextureBuffer.subarray(
-					// 		this.frameIndex * this.frameSize,
-					// 		(this.frameIndex + 1) * this.frameSize
-					// 	).length
-					// );
-
-					this.frameIndex++;
-
-					if ((this.frameIndex + 1) * this.frameSize >= this.displacementTextureBuffer.length) {
+					if ((this.frameIndex + 1) * this.frameSize < this.displacementTextureBuffer.length) {
+						this.displacementTexture.image.data.set(
+							this.displacementTextureBuffer.subarray(
+								this.frameIndex * this.frameSize,
+								(this.frameIndex + 1) * this.frameSize
+							)
+						);
+						this.frameIndex++;
+					} else {
 						this.stop();
 					}
 				}
