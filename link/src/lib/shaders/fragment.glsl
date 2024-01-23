@@ -5,6 +5,8 @@ uniform vec2 uResolution;
 uniform bool uBlur;
 uniform int uBlurRadius;
 
+uniform float uScaler;
+
 varying vec2 vUv;
 
 void main() {
@@ -24,7 +26,7 @@ void main() {
         offset = texture(uDataTexture, vUv);
     }
 
-    vec4 mappedOffset = vec4(2) * (offset - 0.5);
+    vec4 mappedOffset = vec4(2) * vec4(uScaler) * (offset - 0.5);
     gl_FragColor = texture(uTexture, vUv + mappedOffset.rg);
     // gl_FragColor = offset;
 }

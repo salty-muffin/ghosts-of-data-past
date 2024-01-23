@@ -74,10 +74,13 @@ export default class Sketch {
 					value: [this.resolution.x, this.resolution.y]
 				},
 				uBlur: {
-					value: false
+					value: true
 				},
 				uBlurRadius: {
 					value: 50
+				},
+				uScaler: {
+					value: 1
 				}
 			},
 			vertexShader: vertex,
