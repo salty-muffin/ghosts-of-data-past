@@ -79,7 +79,7 @@
 <div class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
 	<!-- svelte-ignore a11y-media-has-caption -->
-	<video controls src="/videos/01.mp4" bind:this={displacement} />
+	<video controls src="/videos/01.webm" bind:this={displacement} />
 </div>
 
 <style global lang="scss">
@@ -95,33 +95,14 @@
 			pointer-events: none;
 			position: absolute;
 		}
+
+		video {
+			max-width: 100%;
+		}
 	}
 
 	.qr {
 		max-width: 70vh;
 		height: auto;
 	}
-
-	// .text {
-	// 	font-size: 2.5em;
-	// 	line-height: 1.6;
-	// 	font-family: $font-family-text;
-	// 	font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-	// 		'ss05' 1;
-	// 	color: map-get($colors, 'foreground');
-
-	// 	font-weight: 200;
-
-	// 	p {
-	// 		margin: 0;
-	// 	}
-
-	// 	a {
-	// 		color: map-get($colors, 'foreground');
-	// 		font-family: $font-family-underline;
-	// 		font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-	// 			'ss05' 1, 'ss09' 1;
-	// 		text-decoration: none;
-	// 	}
-	// }
 </style>
