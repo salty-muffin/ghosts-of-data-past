@@ -77,10 +77,10 @@ export default class Sketch {
 					value: true
 				},
 				uBlurRadius: {
-					value: 50
+					value: 9
 				},
 				uScaler: {
-					value: 1
+					value: 1.2
 				}
 			},
 			vertexShader: vertex,
