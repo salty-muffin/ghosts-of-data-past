@@ -1,3 +1,5 @@
+from typing import Union
+
 import os
 import struct
 import numpy as np
@@ -19,8 +21,15 @@ out_framerate = 30
 @click.option('--out', type=click.Path(file_okay=False), help="the path at which to store the images", required=True)
 @click.option('--in_framerate', type=int, help="the framerate used for recording in the browser", required=True)
 @click.option('--out_framerate', type=int, help="the framerate of the output", required=True)
+@click.option('--max', type=click.FloatRange(0.0, 1.0), help="the maximum value, the colors are scaled to", required=False)
 # fmt: on
-def main(filepath: str, out: str, in_framerate: int, out_framerate: int):
+def main(
+    filepath: str,
+    out: str,
+    in_framerate: int,
+    out_framerate: int,
+    max: Union[float, None],
+):
     if out_framerate > in_framerate or not (in_framerate / out_framerate).is_integer():
         raise ValueError("out_framerate must be a factor of in_framerate")
 
@@ -49,6 +58,16 @@ def main(filepath: str, out: str, in_framerate: int, out_framerate: int):
     num_frames = len(data) / (frame_width * frame_height * 2)
     print(f"frame width: {frame_width}, height: {frame_height}")
 
+    # finding max value and scaling accordingly
+    if not max:
+        print("finding max value")
+        max = np.max(data)
+        min = np.min(data)
+        max = max if max > abs(min) else abs(min)
+    print(f"max value is {max}. scaling accordingly")
+    data *= 1 / max
+    data = np.clip(data, -1.0, 1.0)
+
     # error, if incomplete frame at the end
     if not num_frames.is_integer():
         raise ValueError(f"the data is not matching the frame size: {num_frames}")
@@ -75,8 +94,7 @@ def main(filepath: str, out: str, in_framerate: int, out_framerate: int):
             ).reshape(frame_height, frame_width, 3),
             0,
         )
-
-    data = ((np.array(data) + 0.5) * np.iinfo(np.uint16).max).astype(np.uint16)
+    data = ((np.array(data) / 2 + 0.5) * np.iinfo(np.uint16).max).astype(np.uint16)
 
     # create outdir, if it does not exist yet
     os.makedirs(out, exist_ok=True)
