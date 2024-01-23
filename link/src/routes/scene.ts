@@ -228,6 +228,15 @@ export default class Sketch {
 		this.displacementTextureBuffer[1] = this.gridY;
 	}
 
+	getDisplacementBuffer() {
+		// this.displacementTextureBuffer.forEach((element) => {
+		// 	if (element != 0) {
+		// 		console.log(element);
+		// 	}
+		// });
+		return this.displacementTextureBuffer;
+	}
+
 	addObjects() {
 		const geometry = new THREE.PlaneGeometry(2, 2);
 

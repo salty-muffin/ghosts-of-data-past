@@ -10,12 +10,14 @@
 	import Sketch from './scene';
 	import { timestamp } from '$lib/stores/timestamp';
 
-	const MAXRECORDING = 10;
+	const MAXRECORDING = 3;
 
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
 
 	let show = false;
+	let download = false;
+	let url = '';
 
 	let sketch: Sketch;
 
@@ -103,6 +105,7 @@
 					}
 					if (e.key == 'r') {
 						sketch.resetRecording();
+						download = false;
 					}
 				});
 			};
@@ -114,67 +117,66 @@
 		}
 	});
 
-	const downloadData = () => {
+	const saveData = () => {
 		if (sketch) {
-			const blob = new Blob([sketch.displacementTextureBuffer]);
+			const blob = new Blob([sketch.getDisplacementBuffer()]);
 
-			const url = window.URL.createObjectURL(blob);
+			url = window.URL.createObjectURL(blob);
 
-			const a = document.createElement('a');
-			a.href = url;
-			a.download = 'distortion_data.dat';
-			a.target = '_blank';
-			a.style.display = 'none';
-			document.body.appendChild(a);
-			a.click();
-			a.remove();
-
-			setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+			download = true;
 		}
+	};
+
+	const downloadData = () => {
+		const a = document.createElement('a');
+		a.href = url;
+		a.download = 'distortion_data.dat';
+		a.target = '_blank';
+		a.style.display = 'none';
+		document.body.appendChild(a);
+		a.click();
+		a.remove();
+
+		setTimeout(() => window.URL.revokeObjectURL(url), 20000);
 	};
 </script>
 
 <div class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
-	{#key timestamp}
-		<span id="timestamp" class="ui" class:recording={$timestamp.recording}>{$timestamp.time}</span>
-		<span id="info" class="ui">
-			press SPACE for recording, P for playback, S to display extras & R to reset recording
-		</span>
-		<button id="save" class="ui" class:show on:click={downloadData}>save recording</button>
-		<div id="settings" class="ui" class:show>
-			<input
-				type="range"
-				id="relaxation"
-				name="relaxation"
-				min="0"
-				max="100"
-				step="5"
-				bind:value={relaxation}
-			/>
-			<label for="relaxation">relaxation</label>
-			<input
-				type="range"
-				id="radius"
-				name="radius"
-				min="0"
-				max="100"
-				step="5"
-				bind:value={radius}
-			/>
-			<label for="radius">radius</label>
-			<input
-				type="range"
-				id="strength"
-				name="strength"
-				min="0"
-				max="100"
-				step="5"
-				bind:value={strength}
-			/>
-			<label for="strength">strength</label>
-		</div>
-	{/key}
+	<span id="timestamp" class="ui" class:recording={$timestamp.recording}>{$timestamp.time}</span>
+	<span id="info" class="ui">
+		press SPACE for recording, P for playback, S to display extras & R to reset recording
+	</span>
+	<div class="ui" id="save" class:show>
+		<button on:click={saveData}>save recording</button>
+		{#if download}
+			<button id="download" on:click={downloadData}>download recording</button>
+		{/if}
+	</div>
+	<div id="settings" class="ui" class:show>
+		<input
+			type="range"
+			id="relaxation"
+			name="relaxation"
+			min="0"
+			max="100"
+			step="5"
+			bind:value={relaxation}
+		/>
+		<label for="relaxation">relaxation</label>
+		<input type="range" id="radius" name="radius" min="0" max="100" step="5" bind:value={radius} />
+		<label for="radius">radius</label>
+		<input
+			type="range"
+			id="strength"
+			name="strength"
+			min="0"
+			max="100"
+			step="5"
+			bind:value={strength}
+		/>
+		<label for="strength">strength</label>
+	</div>
 </div>
 
 <style global lang="scss">

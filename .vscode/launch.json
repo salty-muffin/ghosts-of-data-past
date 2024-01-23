@@ -70,6 +70,19 @@
                 // "--verbose"
             ],
             "console": "integratedTerminal"
+        },
+        {
+            "name": "parse link recording",
+            "type": "python",
+            "request": "launch",
+            "program": "parse_link_recording.py",
+            "args": [
+                "--filepath=distortion/distortion_data_01.dat",
+                "--out=distortion/img",
+                "--in_framerate=60",
+                "--out_framerate=30"
+            ],
+            "console": "integratedTerminal"
         }
     ]
 }
