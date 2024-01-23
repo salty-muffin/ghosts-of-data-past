@@ -13,6 +13,10 @@ export default class Sketch {
 	camera: THREE.OrthographicCamera;
 	renderer: THREE.Renderer;
 
+	clock: THREE.Clock;
+	delta = 0;
+	interval = 1 / 30;
+
 	plane?: THREE.Mesh;
 
 	resolution = { x: 0, y: 0 };
@@ -42,6 +46,8 @@ export default class Sketch {
 		this.renderer = new THREE.WebGLRenderer();
 		this.renderer.setSize(container.offsetWidth, container.offsetHeight);
 		container.appendChild(this.renderer.domElement);
+
+		this.clock = new THREE.Clock();
 
 		// adjust to viewport size
 		this.resize();
@@ -102,7 +108,13 @@ export default class Sketch {
 	animate() {
 		requestAnimationFrame(this.animate.bind(this));
 
-		this.renderer.render(this.scene, this.camera);
+		this.delta += this.clock.getDelta();
+
+		if (this.delta > this.interval) {
+			this.renderer.render(this.scene, this.camera);
+
+			this.delta = this.delta % this.interval;
+		}
 	}
 
 	resize() {
