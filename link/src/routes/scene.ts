@@ -74,7 +74,7 @@ export default class Sketch {
 					value: [this.resolution.x, this.resolution.y]
 				},
 				uBlur: {
-					value: true
+					value: false
 				},
 				uBlurRadius: {
 					value: 50
