@@ -144,7 +144,7 @@ export default class Sketch {
 	}
 
 	addObjects() {
-		const geometry = new THREE.PlaneGeometry(2, 2, 20, 20);
+		const geometry = new THREE.PlaneGeometry(2, 2, this.gridX / 2, this.gridY / 2);
 
 		this.texture = new THREE.Texture(this.canvas);
 		this.texture.needsUpdate = true;
