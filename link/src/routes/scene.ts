@@ -144,7 +144,7 @@ export default class Sketch {
 	}
 
 	addObjects() {
-		const geometry = new THREE.PlaneGeometry(2, 2);
+		const geometry = new THREE.PlaneGeometry(2, 2, 20, 20);
 
 		this.texture = new THREE.Texture(this.canvas);
 		this.texture.needsUpdate = true;
@@ -157,15 +157,6 @@ export default class Sketch {
 				},
 				uDataTexture: {
 					value: this.displacementTexture
-				},
-				uResolution: {
-					value: [this.resolution.x, this.resolution.y]
-				},
-				uBlur: {
-					value: true
-				},
-				uBlurRadius: {
-					value: 10
 				}
 			},
 			vertexShader: vertex,
