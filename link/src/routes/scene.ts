@@ -138,12 +138,6 @@ export default class Sketch {
 			this.material.uniforms.uDataTexture.value = this.displacementTexture;
 			this.material.uniforms.uDataTexture.value.needsUpdate = true;
 		}
-
-		if (this.geometry) {
-			this.geometry.dispose();
-		}
-		this.geometry = new THREE.PlaneGeometry(2, 2, this.gridX, this.gridY);
-		console.log(this.gridX, this.gridY, this.geometry);
 	}
 
 	addObjects() {
@@ -232,6 +226,16 @@ export default class Sketch {
 		const height = this.container.offsetHeight;
 		this.updateCanavas();
 		this.regenerateGrid();
+
+		if (this.geometry) {
+			this.geometry.dispose();
+		}
+		this.geometry = new THREE.PlaneGeometry(
+			2,
+			2,
+			width / this.gridDivider,
+			height / this.gridDivider
+		);
 
 		this.renderer.setSize(width, height);
 	}
