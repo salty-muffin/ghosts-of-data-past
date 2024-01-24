@@ -75,16 +75,15 @@ def main(
         # remove frames according to out framerate
         print("remove frames, if framerate change requires it")
 
-        print(len(sequence))
-        sequence = [
-            element
-            for index, element in enumerate(tqdm(sequence))
-            if int(index / (frame_width * frame_height * 2))
-            % int(in_framerate / out_framerate)
-            == 0
-        ]
-        print(len(sequence))
-        print(f"new size: {size(len(sequence))}")
+        if out_framerate != in_framerate:
+            sequence = [
+                element
+                for index, element in enumerate(tqdm(sequence))
+                if int(index / (frame_width * frame_height * 2))
+                % int(in_framerate / out_framerate)
+                == 0
+            ]
+            print(f"new size: {size(len(sequence))}")
 
         data.append(np.array(sequence))
 
