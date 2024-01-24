@@ -26,10 +26,10 @@ export default class Sketch {
 	playing = false;
 
 	plane?: THREE.Mesh;
+	geometry?: THREE.PlaneGeometry;
 
-	resolution = { x: 0, y: 0 };
-
-	gridX = 320;
+	gridDivider = 8;
+	gridX = 0;
 	gridY = 0;
 	relaxation = 0.995;
 	radius = 0.3;
@@ -99,8 +99,8 @@ export default class Sketch {
 			}
 		});
 		window.addEventListener('mousemove', (e) => {
-			this.mouse.x = e.clientX / this.resolution.x;
-			this.mouse.y = e.clientY / this.resolution.y;
+			this.mouse.x = e.clientX / this.container.offsetWidth;
+			this.mouse.y = e.clientY / this.container.offsetHeight;
 
 			this.mouse.vX = this.mouseDown ? this.mouse.x - this.mouse.prevX : 0;
 			this.mouse.vY = this.mouseDown ? this.mouse.y - this.mouse.prevY : 0;
@@ -163,8 +163,8 @@ export default class Sketch {
 	}
 
 	regenerateGrid() {
-		this.gridX = Math.floor(this.gridX);
-		this.gridY = Math.ceil(this.gridX * (this.resolution.y / this.resolution.x));
+		this.gridX = Math.floor(this.container.offsetWidth / this.gridDivider);
+		this.gridY = Math.floor(this.container.offsetHeight / this.gridDivider);
 
 		// buffer for the dispacement texture
 		const size = this.gridX * this.gridY;
@@ -213,6 +213,8 @@ export default class Sketch {
 	}
 
 	resetRecording() {
+		console.log('resetting');
+
 		this.stopRecording();
 		this.stop();
 
@@ -229,44 +231,30 @@ export default class Sketch {
 	}
 
 	getDisplacementBuffer() {
-		// this.displacementTextureBuffer.forEach((element) => {
-		// 	if (element != 0) {
-		// 		console.log(element);
-		// 	}
-		// });
 		return this.displacementTextureBuffer;
 	}
 
 	addObjects() {
-		const geometry = new THREE.PlaneGeometry(2, 2);
-
-		this.texture = new THREE.Texture(this.canvas);
-		this.texture.needsUpdate = true;
-		this.material = new THREE.ShaderMaterial({
-			extensions: { derivatives: true },
-			side: THREE.DoubleSide,
-			uniforms: {
-				uTexture: {
-					value: this.texture
+		if (this.geometry) {
+			this.texture = new THREE.Texture(this.canvas);
+			this.texture.needsUpdate = true;
+			this.material = new THREE.ShaderMaterial({
+				extensions: { derivatives: true },
+				side: THREE.DoubleSide,
+				uniforms: {
+					uTexture: {
+						value: this.texture
+					},
+					uDataTexture: {
+						value: this.displacementTexture
+					}
 				},
-				uDataTexture: {
-					value: this.displacementTexture
-				},
-				uResolution: {
-					value: [this.resolution.x, this.resolution.y]
-				},
-				uBlur: {
-					value: true
-				},
-				uBlurRadius: {
-					value: 10
-				}
-			},
-			vertexShader: vertex,
-			fragmentShader: fragment
-		});
-		this.plane = new THREE.Mesh(geometry, this.material);
-		this.scene.add(this.plane);
+				vertexShader: vertex,
+				fragmentShader: fragment
+			});
+			this.plane = new THREE.Mesh(this.geometry, this.material);
+			this.scene.add(this.plane);
+		}
 	}
 
 	updateCanavas() {
@@ -369,8 +357,15 @@ export default class Sketch {
 		this.updateCanavas();
 		this.regenerateGrid();
 
-		this.resolution = { x: this.container.offsetWidth, y: this.container.offsetHeight };
+		const width = this.container.offsetWidth;
+		const height = this.container.offsetHeight;
+		this.geometry = new THREE.PlaneGeometry(
+			2,
+			2,
+			Math.floor(width / this.gridDivider),
+			Math.floor(height / this.gridDivider)
+		);
 
-		this.renderer.setSize(this.resolution.x, this.resolution.y);
+		this.renderer.setSize(width, height);
 	}
 }
