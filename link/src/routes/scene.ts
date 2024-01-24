@@ -28,7 +28,7 @@ export default class Sketch {
 	plane?: THREE.Mesh;
 	geometry?: THREE.PlaneGeometry;
 
-	gridDivider = 8;
+	gridDivider = 16;
 	gridX = 0;
 	gridY = 0;
 	relaxation = 0.995;
@@ -359,6 +359,9 @@ export default class Sketch {
 
 		const width = this.container.offsetWidth;
 		const height = this.container.offsetHeight;
+		if (this.geometry) {
+			this.geometry.dispose();
+		}
 		this.geometry = new THREE.PlaneGeometry(
 			2,
 			2,
