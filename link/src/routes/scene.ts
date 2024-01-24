@@ -17,6 +17,8 @@ export default class Sketch {
 	delta = 0;
 	interval = 1 / 30;
 
+	gridDivider = 8;
+
 	plane?: THREE.Mesh;
 	geometry?: THREE.PlaneGeometry;
 
@@ -110,7 +112,12 @@ export default class Sketch {
 	resize() {
 		const width = this.container.offsetWidth;
 		const height = this.container.offsetHeight;
-		this.geometry = new THREE.PlaneGeometry(2, 2, Math.floor(width / 8), Math.floor(height / 8));
+		this.geometry = new THREE.PlaneGeometry(
+			2,
+			2,
+			Math.floor(width / this.gridDivider),
+			Math.floor(height / this.gridDivider)
+		);
 
 		this.renderer.setSize(width, height);
 	}
