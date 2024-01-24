@@ -28,8 +28,8 @@ export default class Sketch {
 
 	gridDivider = 16;
 	relaxation = 0.985;
-	radius = 0.3;
-	strength = 0.1;
+	radius = 0.1;
+	strength = 0.5;
 
 	mouseDown = false;
 
@@ -191,13 +191,14 @@ export default class Sketch {
 
 				for (let i = 0; i < this.gridX; i++) {
 					for (let j = 0; j < this.gridY; j++) {
-						const distance = (gridMouseX - i) ** 2 / 1 + (gridMouseY - j) ** 2;
+						const distanceSq = (gridMouseX - i) ** 2 / 1 + (gridMouseY - j) ** 2;
 						const maxDistSq = maxDist ** 2;
 
-						if (distance < maxDistSq) {
+						if (distanceSq < maxDistSq) {
 							const index = 2 * (i + this.gridX * j);
 
-							let power = maxDist / Math.sqrt(distance) - 1;
+							let power =
+								((maxDistSq - distanceSq) / maxDistSq) * ((maxDistSq - distanceSq) / maxDistSq);
 							power = clamp(power, 0, 10);
 							// if(distance <this.size/32) power = 1;
 							// power = 1;
