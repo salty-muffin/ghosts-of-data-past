@@ -80,7 +80,7 @@
                 "--dir=distortion",
                 "--out=distortion/concat.dat",
                 "--in_framerate=60",
-                "--out_framerate=60",
+                "--out_framerate=30",
                 // "--max=0.4"
             ],
             "console": "integratedTerminal"

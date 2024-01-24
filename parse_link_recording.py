@@ -48,7 +48,7 @@ def main(
         sequence = np.array(
             list(tqdm(struct.iter_unpack("f", raw_data), total=int(len(raw_data) / 4)))
         ).flatten()
-        print(f"loaded {size(len(sequence))}")
+        print(f"loaded {size(len(sequence) * 4)}")
 
         # error, if not enough data is present
         if not len(sequence) >= 2:
@@ -85,7 +85,7 @@ def main(
                 % int(in_framerate / out_framerate)
                 == 0
             ]
-            print(f"new size: {size(len(sequence))}")
+            print(f"new size: {size(len(sequence)*4)}")
 
         data.append(sequence)
 
