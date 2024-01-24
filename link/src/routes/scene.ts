@@ -14,8 +14,7 @@ export default class Sketch {
 	renderer: THREE.Renderer;
 
 	plane?: THREE.Mesh;
-
-	resolution = { x: 0, y: 0 };
+	geometry?: THREE.PlaneGeometry;
 
 	displacementTexture?: THREE.VideoTexture;
 	texture?: THREE.Texture;
@@ -54,41 +53,32 @@ export default class Sketch {
 	}
 
 	addObjects() {
-		const geometry = new THREE.PlaneGeometry(2, 2);
+		if (this.geometry) {
+			this.texture = new THREE.Texture(this.canvas);
+			this.texture.needsUpdate = true;
 
-		this.texture = new THREE.Texture(this.canvas);
-		this.texture.needsUpdate = true;
+			this.displacementTexture = new THREE.VideoTexture(this.displacementVideo);
+			this.material = new THREE.ShaderMaterial({
+				extensions: { derivatives: true },
+				side: THREE.DoubleSide,
+				uniforms: {
+					uTexture: {
+						value: this.texture
+					},
+					uDataTexture: {
+						value: this.displacementTexture
+					},
+					uScaler: {
+						value: 1
+					}
+				},
+				vertexShader: vertex,
+				fragmentShader: fragment
+			});
 
-		this.displacementTexture = new THREE.VideoTexture(this.displacementVideo);
-		this.material = new THREE.ShaderMaterial({
-			extensions: { derivatives: true },
-			side: THREE.DoubleSide,
-			uniforms: {
-				uTexture: {
-					value: this.texture
-				},
-				uDataTexture: {
-					value: this.displacementTexture
-				},
-				uResolution: {
-					value: [this.resolution.x, this.resolution.y]
-				},
-				uBlur: {
-					value: true
-				},
-				uBlurRadius: {
-					value: 50
-				},
-				uScaler: {
-					value: 1
-				}
-			},
-			vertexShader: vertex,
-			fragmentShader: fragment
-		});
-
-		this.plane = new THREE.Mesh(geometry, this.material);
-		this.scene.add(this.plane);
+			this.plane = new THREE.Mesh(this.geometry, this.material);
+			this.scene.add(this.plane);
+		}
 	}
 
 	updateCanavas() {
@@ -106,8 +96,10 @@ export default class Sketch {
 	}
 
 	resize() {
-		this.resolution = { x: this.container.offsetWidth, y: this.container.offsetHeight };
+		const width = this.container.offsetWidth;
+		const height = this.container.offsetHeight;
+		this.geometry = new THREE.PlaneGeometry(2, 2, Math.floor(width / 8), Math.floor(height / 8));
 
-		this.renderer.setSize(this.resolution.x, this.resolution.y);
+		this.renderer.setSize(width, height);
 	}
 }
