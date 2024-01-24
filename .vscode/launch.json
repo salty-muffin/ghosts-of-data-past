@@ -77,11 +77,11 @@
             "request": "launch",
             "program": "parse_link_recording.py",
             "args": [
-                "--filepath=distortion/distortion_data_01.dat",
+                "--filepath=distortion/distortion_data.dat",
                 "--out=distortion/img",
                 "--in_framerate=60",
                 "--out_framerate=30",
-                "--max=0.4"
+                // "--max=0.4"
             ],
             "console": "integratedTerminal"
         }

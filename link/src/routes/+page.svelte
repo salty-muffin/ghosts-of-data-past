@@ -10,7 +10,7 @@
 	import Sketch from './scene';
 	import { timestamp } from '$lib/stores/timestamp';
 
-	const MAXRECORDING = 3;
+	const MAXRECORDING = 60;
 
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
