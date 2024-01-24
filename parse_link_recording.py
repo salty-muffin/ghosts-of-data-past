@@ -1,9 +1,9 @@
 from typing import Union
 
 import os
+import glob
 import struct
 import numpy as np
-import numpngw
 import click
 from tqdm import tqdm
 from hurry.filesize import size
@@ -17,14 +17,14 @@ out_framerate = 30
 
 # fmt: off
 @click.command()
-@click.option('--filepath', type=click.Path(exists=True, dir_okay=False), help="the path to the distortion data file", required=True)
-@click.option('--out', type=click.Path(file_okay=False), help="the path at which to store the images", required=True)
+@click.option('--dir', type=click.Path(exists=True, file_okay=False), help="directory containing the files to be parsed & concatted", required=True)
+@click.option('--out', type=click.Path(dir_okay=False), help="where to save to result", required=True)
 @click.option('--in_framerate', type=int, help="the framerate used for recording in the browser", required=True)
 @click.option('--out_framerate', type=int, help="the framerate of the output", required=True)
 @click.option('--max', type=click.FloatRange(0.0, 1.0), help="the maximum value, the colors are scaled to", required=False)
 # fmt: on
 def main(
-    filepath: str,
+    dir: str,
     out: str,
     in_framerate: int,
     out_framerate: int,
@@ -34,77 +34,71 @@ def main(
         raise ValueError("out_framerate must be a factor of in_framerate")
 
     # open data binary file
-    print(f"opening {filepath}")
-    with open(filepath, "rb") as file:
-        raw_data = file.read()
+    print(f"opening {dir}")
+    data = []
+    frame_width = 0
+    frame_height = 0
+    for path in glob.glob(os.path.join(dir, "*.dat")):
+        with open(path, "rb") as file:
+            raw_data = file.read()
 
-    # load data into array and flatten it to one dimenstion ([float_0, float_1, ... , float_n])
-    print("loading data")
-    data = np.array(
-        list(tqdm(struct.iter_unpack("f", raw_data), total=int(len(raw_data) / 4)))
-    ).flatten()
-    print(f"loaded {size(len(data))}")
+        # load data into array and flatten it to one dimenstion ([float_0, float_1, ... , float_n])
+        print(f"loading data from {path}")
+        sequence = np.array(
+            list(tqdm(struct.iter_unpack("f", raw_data), total=int(len(raw_data) / 4)))
+        ).flatten()
+        print(f"loaded {size(len(sequence))}")
 
-    # error, if not enough data is present
-    if not len(data) >= 2:
-        raise ValueError(f"data is unreasonably small: {len(data)}")
+        # error, if not enough data is present
+        if not len(sequence) >= 2:
+            raise ValueError(f"data is unreasonably small: {len(sequence)}")
 
-    # extract frame size
-    print("extracting metadata")
-    metadata = data[:2]
-    data = data[2:]
-    frame_width = int(metadata[0])
-    frame_height = int(metadata[1])
-    num_frames = len(data) / (frame_width * frame_height * 2)
-    print(f"frame width: {frame_width}, height: {frame_height}")
+        # extract frame size
+        print("extracting metadata")
+        metadata = sequence[:2]
+        sequence = sequence[2:]
+        if not frame_width:
+            frame_width = int(metadata[0])
+            frame_height = int(metadata[1])
 
-    # finding max value and scaling accordingly
-    if not max:
-        print("finding max value")
-        max = np.max(data)
-        min = np.min(data)
-        max = max if max > abs(min) else abs(min)
-    print(f"max value is {max}. scaling accordingly")
-    data *= 1 / max
-    data = np.clip(data, -1.0, 1.0)
+            print(f"frame width: {frame_width}, height: {frame_height}")
+        else:
+            if frame_width != int(metadata[0]) or frame_height != int(metadata[1]):
+                raise ValueError("frame dimension mismatch detected")
 
-    # error, if incomplete frame at the end
-    if not num_frames.is_integer():
-        raise ValueError(f"the data is not matching the frame size: {num_frames}")
+        # scaling accordingly max value
+        if max:
+            print(f"max value is {max}. scaling accordingly")
+            sequence *= 1 / max
+            sequence = np.clip(sequence, -1.0, 1.0)
 
-    num_frames = int(num_frames)
+        # remove frames according to out framerate
+        print("remove frames, if framerate change requires it")
 
-    # split data into frames
-    print("split data into single frames")
-    data = np.split(data, num_frames)
-    print(f"frame count: {num_frames}")
+        print(len(sequence))
+        sequence = [
+            element
+            for index, element in enumerate(tqdm(sequence))
+            if int(index / (frame_width * frame_height * 2))
+            % int(in_framerate / out_framerate)
+            == 0
+        ]
+        print(len(sequence))
+        print(f"new size: {size(len(sequence))}")
 
-    # remove frames according to out framerate
-    print("remove frames, if framerate change requires it")
-    mask = list(range(0, len(data), int(in_framerate / out_framerate)))
-    data = [element for index, element in enumerate(data) if index in mask]
-    print(f"new frame count: {len(data)}")
+        data.append(np.array(sequence))
 
-    # split frame data into 16 bit RGB pixels
-    print("split every frame according to color data and process it")
-    for i, frame in enumerate(tqdm(data)):
-        data[i] = np.flip(
-            np.array(
-                [np.append(p, 0) for p in np.split(frame, len(frame) / 2)]
-            ).reshape(frame_height, frame_width, 3),
-            0,
-        )
-    data = ((np.array(data) / 2 + 0.5) * np.iinfo(np.uint16).max).astype(np.uint16)
+    print(f"concatenating {len(data)} sequences")
+    data = np.concatenate((np.array((frame_width, frame_height)), *data))
 
     # create outdir, if it does not exist yet
-    os.makedirs(out, exist_ok=True)
+    os.makedirs(os.path.dirname(out), exist_ok=True)
 
     # save data to pngs
-    print(f"saving frames to: {out}")
-    for index, frame in enumerate(tqdm(data)):
-        numpngw.write_png(
-            os.path.join(out, f"{str(index).zfill(len(str(len(data))))}.png"), frame
-        )
+    print(f"saving concatted data to: {out}")
+    data = data.tobytes()
+    with open(out, "wb") as file:
+        file.write(data)
 
 
 if __name__ == "__main__":

@@ -77,8 +77,8 @@
             "request": "launch",
             "program": "parse_link_recording.py",
             "args": [
-                "--filepath=distortion/distortion_data.dat",
-                "--out=distortion/img",
+                "--dir=distortion",
+                "--out=distortion/concat.dat",
                 "--in_framerate=60",
                 "--out_framerate=30",
                 // "--max=0.4"
