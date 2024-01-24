@@ -88,7 +88,9 @@ def main(
         data.append(np.array(sequence))
 
     print(f"concatenating {len(data)} sequences")
-    data = np.concatenate((np.array((frame_width, frame_height)), *data))
+    data = np.concatenate(
+        (np.array((frame_width, frame_height)).astype(np.float32), *data)
+    )
 
     # create outdir, if it does not exist yet
     os.makedirs(os.path.dirname(out), exist_ok=True)
