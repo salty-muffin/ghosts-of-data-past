@@ -65,7 +65,7 @@
 				draw();
 				window.addEventListener('resize', draw);
 
-				sketch = new Sketch(container, canvas, 'data/distortion_data.dat');
+				sketch = new Sketch(container, canvas, 'data/distortion_data.dat', 60);
 				sketch.animate();
 			};
 			if (image.complete) {

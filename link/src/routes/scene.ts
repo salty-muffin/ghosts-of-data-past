@@ -73,7 +73,6 @@ export default class Sketch {
 				this.frameCount = (this.displacementTextureBuffer.length - 2) / this.frameSize;
 
 				const frame = this.displacementTextureBuffer.subarray(2, 2 + this.frameSize);
-				console.log(this.gridX, this.gridY, this.frameSize, frame);
 				// use the buffer to create a DataTexture
 				this.displacementTexture = new THREE.DataTexture(
 					frame,
