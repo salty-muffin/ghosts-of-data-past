@@ -7,6 +7,7 @@ import numpy as np
 import click
 from tqdm import tqdm
 from hurry.filesize import size
+from itertools import chain
 
 # parameters
 filepath = os.path.join("distortion", "distortion_data_02.dat")
@@ -38,7 +39,7 @@ def main(
     data = []
     frame_width = 0
     frame_height = 0
-    for path in glob.glob(os.path.join(dir, "*.dat")):
+    for path in sorted(glob.glob(os.path.join(dir, "*.dat"))):
         with open(path, "rb") as file:
             raw_data = file.read()
 
@@ -72,9 +73,10 @@ def main(
             sequence *= 1 / max
             sequence = np.clip(sequence, -1.0, 1.0)
 
+        sequence = sequence.tolist()
+
         # remove frames according to out framerate
         print("remove frames, if framerate change requires it")
-
         if out_framerate != in_framerate:
             sequence = [
                 element
@@ -85,21 +87,19 @@ def main(
             ]
             print(f"new size: {size(len(sequence))}")
 
-        data.append(np.array(sequence))
+        data.append(sequence)
 
     print(f"concatenating {len(data)} sequences")
-    data = np.concatenate(
-        (np.array((frame_width, frame_height)).astype(np.float32), *data)
-    )
+    data = [float(frame_width), float(frame_height), *list(chain.from_iterable(data))]
 
     # create outdir, if it does not exist yet
     os.makedirs(os.path.dirname(out), exist_ok=True)
 
     # save data to pngs
     print(f"saving concatted data to: {out}")
-    data = data.tobytes()
+    buffer = struct.pack(f"{len(data)}f", *data)
     with open(out, "wb") as file:
-        file.write(data)
+        file.write(buffer)
 
 
 if __name__ == "__main__":
