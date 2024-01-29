@@ -39,16 +39,17 @@
 				);
 
 				// draw text
-				ctx.font = '1px "ABC Favorit Lining", sans-serif';
-				const textSize =
-					(container.offsetWidth /
-						ctx.measureText(
-							`${data.domain.replace('http://', '').replace('https://', '')}${
-								data.gate ? `/?gate=${data.gate}` : ''
-							}`
-						).width) *
-					0.5;
-				ctx.font = `${textSize}px "ABC Favorit Lining", sans-serif`;
+				// ctx.font = '1px "ABC Favorit Lining", sans-serif';
+				// const textSize =
+				// 	(container.offsetWidth /
+				// 		ctx.measureText(
+				// 			`${data.domain.replace('http://', '').replace('https://', '')}${
+				// 				data.gate ? `/?gate=${data.gate}` : ''
+				// 			}`
+				// 		).width) *
+				// 	0.5;
+				// ctx.font = `${textSize}px "ABC Favorit Lining", sans-serif`;
+				ctx.font = '35.3px "ABC Favorit Lining", sans-serif';
 				ctx.textAlign = 'center';
 				ctx.textBaseline = 'top';
 				ctx.fillStyle = 'rgb(255 255 255 / 100%)';
