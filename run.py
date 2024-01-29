@@ -92,7 +92,7 @@ def main() -> None:
         logging.info("building the link site...")
         subprocess.run(
             ["npm", "run", "build"],
-            cwd="link",
+            cwd=os.path.join("link", "site"),
             env=dict(os.environ, GATE=gate, DOMAIN=domain),
         )
 
@@ -119,8 +119,8 @@ def main() -> None:
 
         def link():
             logging.info("starting link server...")
-            process["link"] = subprocess.Popen(
-                ["npm", "run", "preview"],
+            processes["link"] = subprocess.Popen(
+                ["flask", "run", "--port", "8000"],
                 cwd="link",
             )
 
@@ -132,12 +132,7 @@ def main() -> None:
                     "chromium",
                     "--start-fullscreen",
                     "--incognito",
-                    os.path.join(
-                        "localhost:4173",
-                        "link",
-                        "build",
-                        "index.html",
-                    ),
+                    "http://localhost:8000",
                 ]
             )
 
@@ -172,7 +167,7 @@ def main() -> None:
         serve()
         link()
         browser()
-        # tunnel()
+        tunnel()
         generate()
 
         # check each program and restart it if it is not running
@@ -184,6 +179,8 @@ def main() -> None:
                         redis()
                     if name == "serve":
                         serve()
+                    if name == "link":
+                        link()
                     if name == "browser":
                         browser()
                     if name == "tunnel":
