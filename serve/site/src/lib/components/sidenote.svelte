@@ -8,6 +8,7 @@
 </script>
 
 <!-- svelte-ignore a11y-click-events-have-key-events -->
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <span
 	class="sidenote__marker"
 	class:sidenote--hover={hover}
@@ -21,14 +22,15 @@
 		show = !show;
 	}}>{id}</span
 >
+<!-- svelte-ignore a11y-no-static-element-interactions -->
 <div
 	class="sidenote sidenote--{left || right
 		? left
 			? 'left'
 			: 'right'
 		: id % 2 > 0
-		? 'left'
-		: 'right'}"
+			? 'left'
+			: 'right'}"
 	class:sidenote--hover={hover}
 	class:sidenote--show={show}
 	on:mouseenter={() => {
@@ -58,8 +60,17 @@
 
 		&.sidenote--hover {
 			font-family: $font-family-underline;
-			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-				'ss05' 1, 'ss09' 1, 'sups' 1;
+			font-feature-settings:
+				'calt' 1,
+				'liga' 1,
+				'rlig' 1,
+				'rvrn' 1,
+				'kern' 1,
+				'rclt' 1,
+				'ss04' 1,
+				'ss05' 1,
+				'ss09' 1,
+				'sups' 1;
 		}
 	}
 
@@ -96,8 +107,16 @@
 			color: map-get($colors, 'foreground');
 			// text-decoration: underline;
 			font-family: $font-family-underline;
-			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-				'ss05' 1, 'ss09' 1;
+			font-feature-settings:
+				'calt' 1,
+				'liga' 1,
+				'rlig' 1,
+				'rvrn' 1,
+				'kern' 1,
+				'rclt' 1,
+				'ss04' 1,
+				'ss05' 1,
+				'ss09' 1;
 			font-weight: 350;
 		}
 	}
@@ -106,15 +125,31 @@
 		.sidenote__marker {
 			color: map-get($colors, 'link');
 			font-family: $font-family-underline;
-			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-				'ss05' 1, 'ss09' 1;
+			font-feature-settings:
+				'calt' 1,
+				'liga' 1,
+				'rlig' 1,
+				'rvrn' 1,
+				'kern' 1,
+				'rclt' 1,
+				'ss04' 1,
+				'ss05' 1,
+				'ss09' 1;
 		}
 
 		.sidenote__close {
 			// text-decoration: underline;
 			font-family: $font-family-underline;
-			font-feature-settings: 'calt' 1, 'liga' 1, 'rlig' 1, 'rvrn' 1, 'kern' 1, 'rclt' 1, 'ss04' 1,
-				'ss05' 1, 'ss09' 1;
+			font-feature-settings:
+				'calt' 1,
+				'liga' 1,
+				'rlig' 1,
+				'rvrn' 1,
+				'kern' 1,
+				'rclt' 1,
+				'ss04' 1,
+				'ss05' 1,
+				'ss09' 1;
 			font-weight: 350;
 		}
 	}

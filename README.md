@@ -31,6 +31,8 @@ the same applies to the sounds used.
 
 the fonts used in this project are [abc favorit](https://abcdinamo.com/typefaces/favorit) variable and [pw smokey](https://www.dafont.com/pwsmokey.font). the fonts are not tracked in this repo for licensing reasons.
 
+the distortion effects on the link page are inspired by this [repo](https://github.com/akella/DistortedPixels) by [akella](https://github.com/akella).
+
 ## mentions
 
 the work on this project was sponsored by the [kulturstiftung des freistaates sachsen](https://kdfs.de). this measure is co-financed by tax funds on the basis of the of the budget passed by the saxon state parliament.

@@ -23,3 +23,4 @@ dependencies:
       - flask-socketio==5.1.2
       - redis==4.3.2
       - walrus==0.9.1
+      - hurry.filesize==0.9

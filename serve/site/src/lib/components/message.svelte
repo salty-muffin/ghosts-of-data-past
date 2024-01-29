@@ -34,6 +34,7 @@
 		{/if}
 		{#if imageURL}
 			<!-- svelte-ignore a11y-click-events-have-key-events -->
+			<!-- svelte-ignore a11y-no-noninteractive-element-interactions -->
 			<img
 				class="message__image"
 				src={imageURL}
@@ -64,6 +65,7 @@
 </div>
 {#if imageURL && showLargeImage}
 	<!-- svelte-ignore a11y-click-events-have-key-events -->
+	<!-- svelte-ignore a11y-no-static-element-interactions -->
 	<div
 		class="message__image-large"
 		transition:fade={{ duration: 1000 }}
@@ -113,7 +115,9 @@
 		margin: 0 0 0.2em 0;
 
 		// non-breathing setting
-		font-variation-settings: 'wght' 500, 'ital' 0;
+		font-variation-settings:
+			'wght' 500,
+			'ital' 0;
 
 		font-size: map-get($sender-size, 'sm');
 	}
@@ -145,7 +149,9 @@
 		margin: 0;
 
 		// non-breathing setting
-		font-variation-settings: 'wght' 250, 'ital' 0;
+		font-variation-settings:
+			'wght' 250,
+			'ital' 0;
 
 		line-height: map-get($message-line-height, 'sm');
 		font-size: map-get($message-text-size, 'sm');
@@ -156,7 +162,9 @@
 		margin: 0.5em 0 0 0.5em;
 
 		// non-breathing setting
-		font-variation-settings: 'wght' 350, 'ital' 0;
+		font-variation-settings:
+			'wght' 350,
+			'ital' 0;
 
 		font-size: map-get($timestamp-size, 'sm');
 	}
@@ -171,13 +179,19 @@
 
 	.message--breathing {
 		.message__sender {
-			font-variation-settings: 'wght' var(--h-weight), 'ital' var(--h-italic);
+			font-variation-settings:
+				'wght' var(--h-weight),
+				'ital' var(--h-italic);
 		}
 		.message__text {
-			font-variation-settings: 'wght' var(--b-weight), 'ital' var(--b-italic);
+			font-variation-settings:
+				'wght' var(--b-weight),
+				'ital' var(--b-italic);
 		}
 		.message__timestamp {
-			font-variation-settings: 'wght' var(--t-weight), 'ital' var(--t-italic);
+			font-variation-settings:
+				'wght' var(--t-weight),
+				'ital' var(--t-italic);
 		}
 	}
 
