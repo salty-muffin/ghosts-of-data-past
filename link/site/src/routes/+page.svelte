@@ -67,14 +67,13 @@
 				window.addEventListener('resize', draw);
 
 				sketch = new Sketch(container, canvas, 'data/sequence_drip_slow.dat', 30);
+				sketch.updateCanvas();
 				sketch.animate();
 			};
 			if (image.complete) {
-				setTimeout(init, 3000);
+				init();
 			} else {
-				image.addEventListener('load', () => {
-					setTimeout(init, 3000);
-				});
+				image.addEventListener('load', init);
 			}
 		}
 	});
