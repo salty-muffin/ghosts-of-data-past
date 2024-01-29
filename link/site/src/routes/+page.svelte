@@ -20,8 +20,8 @@
 		image.src = data.qr;
 
 		// draw text & qr code on canvas
-		const ctx = canvas.getContext('2d', { alpha: false });
-		if (ctx) {
+		const context = canvas.getContext('2d', { alpha: false });
+		if (context) {
 			const draw = () => {
 				// get current height
 				canvas.width = container.offsetWidth;
@@ -30,7 +30,11 @@
 				// draw image
 				const imageSize = container.offsetHeight * 0.5;
 
-				ctx.drawImage(
+				// clear
+				context.clearRect(0, 0, canvas.width, canvas.height);
+
+				// draw qrcode
+				context.drawImage(
 					image,
 					(container.offsetWidth - imageSize) / 2,
 					(container.offsetHeight - imageSize) / 2,
@@ -39,21 +43,21 @@
 				);
 
 				// draw text
-				// ctx.font = '1px "ABC Favorit Lining", sans-serif';
+				// context.font = '1px "ABC Favorit Lining", sans-serif';
 				// const textSize =
 				// 	(container.offsetWidth /
-				// 		ctx.measureText(
+				// 		context.measureText(
 				// 			`${data.domain.replace('http://', '').replace('https://', '')}${
 				// 				data.gate ? `/?gate=${data.gate}` : ''
 				// 			}`
 				// 		).width) *
 				// 	0.5;
-				// ctx.font = `${textSize}px "ABC Favorit Lining", sans-serif`;
-				ctx.font = '35.3px "ABC Favorit Lining", sans-serif';
-				ctx.textAlign = 'center';
-				ctx.textBaseline = 'top';
-				ctx.fillStyle = 'rgb(255 255 255 / 100%)';
-				ctx.fillText(
+				// context.font = `${textSize}px "ABC Favorit Lining", sans-serif`;
+				context.font = '35.3px "ABC Favorit Lining", sans-serif';
+				context.textAlign = 'center';
+				context.textBaseline = 'top';
+				context.fillStyle = 'rgb(255 255 255 / 100%)';
+				context.fillText(
 					`${data.domain.replace('http://', '').replace('https://', '')}${
 						data.gate ? `/?gate=${data.gate}` : ''
 					}`,
@@ -63,12 +67,16 @@
 			};
 
 			const init = () => {
-				draw();
-				window.addEventListener('resize', draw);
-
 				sketch = new Sketch(container, canvas, 'data/sequence_drip_slow.dat', 30);
-				sketch.updateCanvas();
 				sketch.animate();
+
+				// redraw canvas
+				setTimeout(() => {
+					draw();
+					sketch.updateCanvas();
+				}, 2000);
+
+				window.addEventListener('resize', draw);
 			};
 			if (image.complete) {
 				init();
@@ -79,7 +87,7 @@
 	});
 </script>
 
-<div class="link" bind:this={container}>
+<div style="font-family: 'ABC Favorit Lining', sans-serif;" class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
 </div>
 
