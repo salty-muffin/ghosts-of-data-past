@@ -65,7 +65,7 @@
 				draw();
 				window.addEventListener('resize', draw);
 
-				sketch = new Sketch(container, canvas, 'data/sequence_drip.dat', 60);
+				sketch = new Sketch(container, canvas, 'data/sequence_drip_slow.dat', 30);
 				sketch.animate();
 			};
 			if (image.complete) {
@@ -87,11 +87,26 @@
 	.link {
 		width: 100vw;
 		height: 100vh;
+		overflow: hidden;
 	}
 
 	#canvas {
 		display: none;
 		pointer-events: none;
 		position: absolute;
+	}
+
+	@keyframes qrMove {
+		from {
+			transform: translateX(-10px);
+		}
+
+		to {
+			transform: translateX(10px);
+		}
+	}
+
+	canvas {
+		animation: 30s infinite alternate linear qrMove;
 	}
 </style>
