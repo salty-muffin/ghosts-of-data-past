@@ -89,15 +89,16 @@ export default class Sketch {
 
 		// set up mouse event listeners
 		window.addEventListener('mousedown', (e) => {
-			if (e.button == 0) {
+			if (e.button == 2) {
 				this.mouseDown = true;
 			}
 		});
 		window.addEventListener('mouseup', (e) => {
-			if (e.button == 0) {
+			if (e.button == 2) {
 				this.mouseDown = false;
 			}
 		});
+		window.oncontextmenu = () => false;
 		window.addEventListener('mousemove', (e) => {
 			this.mouse.x = e.clientX / this.container.offsetWidth;
 			this.mouse.y = e.clientY / this.container.offsetHeight;

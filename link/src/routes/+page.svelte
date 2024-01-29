@@ -10,7 +10,7 @@
 	import Sketch from './scene';
 	import { timestamp } from '$lib/stores/timestamp';
 
-	const MAXRECORDING = 60;
+	const MAXRECORDING = 45;
 
 	let container: HTMLDivElement;
 	let canvas: HTMLCanvasElement;
@@ -143,9 +143,12 @@
 
 <div class="link" bind:this={container}>
 	<canvas id="canvas" bind:this={canvas} />
-	<span id="timestamp" class="ui" class:recording={$timestamp.recording}>{$timestamp.time}</span>
+	<span id="timestamp" class="ui" class:recording={$timestamp.recording}
+		>{$timestamp.time} / {MAXRECORDING}</span
+	>
 	<span id="info" class="ui">
-		press SPACE for recording, P for playback, S to display extras & R to reset recording
+		LMouse to distort, SPACE for recording, P for playback, S to display extras & R to reset
+		recording
 	</span>
 	<div class="ui" id="save" class:show>
 		<button on:click={saveData}>save recording</button>
