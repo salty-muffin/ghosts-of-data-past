@@ -124,6 +124,7 @@ export default class Sketch {
 			this.texture = new THREE.Texture(this.canvas);
 			this.material.uniforms.uTexture.value = this.texture;
 			this.texture.needsUpdate = true;
+			this.material.needsUpdate = true;
 
 			this.frameIndex = 0;
 		}

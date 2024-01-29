@@ -67,6 +67,7 @@
 			};
 
 			const init = () => {
+				draw();
 				sketch = new Sketch(container, canvas, 'data/sequence_drip_slow.dat', 30);
 				sketch.animate();
 
@@ -74,7 +75,7 @@
 				setTimeout(() => {
 					draw();
 					sketch.updateCanvas();
-				}, 2000);
+				}, 3000);
 
 				window.addEventListener('resize', draw);
 			};
