@@ -70,9 +70,11 @@
 				sketch.animate();
 			};
 			if (image.complete) {
-				init();
+				setTimeout(init, 3000);
 			} else {
-				image.addEventListener('load', init);
+				image.addEventListener('load', () => {
+					setTimeout(init, 3000);
+				});
 			}
 		}
 	});
