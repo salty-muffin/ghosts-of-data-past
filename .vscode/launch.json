@@ -6,7 +6,7 @@
     "configurations": [
         {
             "name": "Python: Current File",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal",
@@ -14,7 +14,7 @@
         },
         {
             "name": "run",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "run.py",
             "args": [
@@ -24,7 +24,7 @@
         },
         {
             "name": "test models",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "test_models.py",
             "args": [
@@ -39,7 +39,7 @@
         },
         {
             "name": "generate",
-            "type": "python",
+            "type": "debugpy",
             "request": "launch",
             "program": "generate/generate.py",
             "args": [
