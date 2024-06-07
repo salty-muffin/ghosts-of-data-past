@@ -9,6 +9,9 @@
 	import { writing } from '$lib/stores/writing';
 	import { lost } from '$lib/stores/lost';
 
+	import { sound } from '$lib/stores/audio';
+	import { muted } from '$lib/stores/muted';
+
 	import Message from '$lib/components/message.svelte';
 	import Writing from '$lib/components/writing.svelte';
 	import Nav from '$lib/components/nav.svelte';
@@ -124,7 +127,7 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<!-- <Message
+			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -152,8 +155,8 @@
 				timestamp={1651313416949}
 				displaySender={false}
 				attributes={data.chatAttributes}
-			/> -->
-			<!-- <Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
+			/>
+			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" />
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -202,6 +205,29 @@
 				<h4 slot="unmuted">mute</h4>
 			</MuteButton>
 		</Nav>
+		{#if !$sound}
+			<div class="chat__overlay">
+				<div class="chat__overlay-enter">
+					<button
+						on:click={() => {
+							$muted = !$muted;
+							sound.instanciate();
+						}}
+					>
+						<h1>enter</h1>
+					</button>
+				</div>
+				<div class="chat__overlay-muted">
+					<button
+						on:click={() => {
+							sound.instanciate();
+						}}
+					>
+						<h1>muted</h1>
+					</button>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -268,6 +294,53 @@
 		flex-shrink: 0;
 	}
 
+	.chat__overlay {
+		position: absolute;
+		inset: 0;
+
+		background-color: map-get($colors, 'background');
+
+		div {
+			pointer-events: none;
+		}
+
+		button {
+			pointer-events: all;
+
+			background: none;
+			border: none;
+			padding: 0;
+			cursor: pointer;
+		}
+
+		h1 {
+			font-size: map-get($intro-size, 'sm');
+			margin: 0;
+			text-align: center;
+
+			@media (hover: none) {
+				color: map-get($colors, 'foreground');
+			}
+		}
+	}
+
+	.chat__overlay-enter {
+		position: absolute;
+		inset: 0;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+	.chat__overlay-muted {
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
 	@media only screen and (min-width: $chat-width) {
 		.chat__container {
 			// add borders as the screen grows
@@ -297,6 +370,12 @@
 		.message--spaced {
 			margin-top: map-get($margin-secondary, 'md');
 		}
+
+		.chat__overlay {
+			h4 {
+				font-size: map-get($intro-size, 'md');
+			}
+		}
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
@@ -310,6 +389,12 @@
 
 		.message--spaced {
 			margin-top: map-get($margin-secondary, 'lg');
+		}
+
+		.chat__overlay {
+			h4 {
+				font-size: map-get($intro-size, 'lg');
+			}
 		}
 	}
 </style>
