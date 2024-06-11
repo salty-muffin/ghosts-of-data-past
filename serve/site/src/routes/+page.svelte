@@ -17,6 +17,10 @@
 	import Nav from '$lib/components/nav.svelte';
 	import MuteButton from '$lib/components/mute-button.svelte';
 
+	import { DotLottieSvelte } from '@lottiefiles/dotlottie-svelte';
+
+	import type { DotLottie } from '@lottiefiles/dotlottie-svelte';
+
 	// get chat attributes from endpoint
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -117,6 +121,10 @@
 		});
 		observedIndex = $messages.length - 1;
 	});
+
+	// lottie stuff
+	let enterLottie: undefined | DotLottie;
+	let mutedLottie: undefined | DotLottie;
 </script>
 
 <svelte:head>
@@ -205,25 +213,42 @@
 				<h4 slot="unmuted">mute</h4>
 			</MuteButton>
 		</Nav>
+
 		{#if !$sound}
 			<div class="chat__overlay">
 				<div class="chat__overlay-enter">
 					<button
+						class="chat__overlay-button"
 						on:click={() => {
 							$muted = !$muted;
 							sound.instanciate();
 						}}
 					>
-						<h1>enter</h1>
+						<DotLottieSvelte
+							src="/lotties/enterParallel.lottie"
+							autoplay
+							dotLottieRefCallback={(ref) => {
+								enterLottie = ref;
+								enterLottie.addEventListener('complete', () => {
+									if (mutedLottie) mutedLottie.play();
+								});
+							}}
+						/>
 					</button>
 				</div>
 				<div class="chat__overlay-muted">
 					<button
+						class="chat__overlay-button"
 						on:click={() => {
 							sound.instanciate();
 						}}
 					>
-						<h1>muted</h1>
+						<DotLottieSvelte
+							src="/lotties/mutedParallel.lottie"
+							dotLottieRefCallback={(ref) => {
+								mutedLottie = ref;
+							}}
+						/>
 					</button>
 				</div>
 			</div>
@@ -312,16 +337,6 @@
 			padding: 0;
 			cursor: pointer;
 		}
-
-		h1 {
-			font-size: map-get($intro-size, 'sm');
-			margin: 0;
-			text-align: center;
-
-			@media (hover: none) {
-				color: map-get($colors, 'foreground');
-			}
-		}
 	}
 
 	.chat__overlay-enter {
@@ -331,6 +346,10 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		button {
+			width: 70%;
+		}
 	}
 	.chat__overlay-muted {
 		position: absolute;
@@ -339,6 +358,22 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
+
+		button {
+			width: 60%;
+		}
+	}
+
+	.chat__overlay-button {
+		opacity: 0.5;
+
+		&:hover {
+			opacity: 1;
+		}
+
+		@media (hover: none) {
+			opacity: 1;
+		}
 	}
 
 	@media only screen and (min-width: $chat-width) {
@@ -370,12 +405,6 @@
 		.message--spaced {
 			margin-top: map-get($margin-secondary, 'md');
 		}
-
-		.chat__overlay {
-			h4 {
-				font-size: map-get($intro-size, 'md');
-			}
-		}
 	}
 
 	@media only screen and (min-width: map-get($breakpoint, 'lg')) {
@@ -389,12 +418,6 @@
 
 		.message--spaced {
 			margin-top: map-get($margin-secondary, 'lg');
-		}
-
-		.chat__overlay {
-			h4 {
-				font-size: map-get($intro-size, 'lg');
-			}
 		}
 	}
 </style>
