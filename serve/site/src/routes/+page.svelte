@@ -1,6 +1,7 @@
 <script lang="ts">
 	// imports
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	import { FontAnimator } from '$lib/components/font-animation';
 	import { cubicInOut } from 'svelte/easing';
@@ -135,7 +136,7 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<Message
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -164,7 +165,7 @@
 				displaySender={false}
 				attributes={data.chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" />
+			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -215,7 +216,7 @@
 		</Nav>
 
 		{#if !$sound}
-			<div class="chat__overlay">
+			<div class="chat__overlay" transition:fade={{ duration: 2000 }}>
 				<div class="chat__overlay-enter">
 					<button
 						class="chat__overlay-button"
