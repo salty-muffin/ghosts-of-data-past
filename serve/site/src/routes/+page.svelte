@@ -1,6 +1,7 @@
 <script lang="ts">
 	// imports
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	import { FontAnimator } from '$lib/components/font-animation';
 	import { cubicInOut } from 'svelte/easing';
@@ -18,8 +19,6 @@
 	import MuteButton from '$lib/components/mute-button.svelte';
 
 	import { DotLottieSvelte } from '@lottiefiles/dotlottie-svelte';
-
-	import type { DotLottie } from '@lottiefiles/dotlottie-svelte';
 
 	// get chat attributes from endpoint
 	import type { PageData } from './$types';
@@ -121,10 +120,6 @@
 		});
 		observedIndex = $messages.length - 1;
 	});
-
-	// lottie stuff
-	let enterLottie: undefined | DotLottie;
-	let mutedLottie: undefined | DotLottie;
 </script>
 
 <svelte:head>
@@ -135,7 +130,7 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<Message
+			<!-- <Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -164,7 +159,7 @@
 				displaySender={false}
 				attributes={data.chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" />
+			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -215,7 +210,7 @@
 		</Nav>
 
 		{#if !$sound}
-			<div class="chat__overlay">
+			<div class="chat__overlay" transition:fade={{ duration: 2000 }}>
 				<div class="chat__overlay-enter">
 					<button
 						class="chat__overlay-button"
@@ -224,16 +219,7 @@
 							sound.instanciate();
 						}}
 					>
-						<DotLottieSvelte
-							src="/lotties/enterParallel.lottie"
-							autoplay
-							dotLottieRefCallback={(ref) => {
-								enterLottie = ref;
-								enterLottie.addEventListener('complete', () => {
-									if (mutedLottie) mutedLottie.play();
-								});
-							}}
-						/>
+						<DotLottieSvelte src="/lotties/enter.lottie" loop autoplay />
 					</button>
 				</div>
 				<div class="chat__overlay-muted">
@@ -243,12 +229,7 @@
 							sound.instanciate();
 						}}
 					>
-						<DotLottieSvelte
-							src="/lotties/mutedParallel.lottie"
-							dotLottieRefCallback={(ref) => {
-								mutedLottie = ref;
-							}}
-						/>
+						<DotLottieSvelte src="/lotties/muted.lottie" loop autoplay speed={0.95} />
 					</button>
 				</div>
 			</div>
