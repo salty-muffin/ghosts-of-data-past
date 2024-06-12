@@ -34,6 +34,8 @@
 	// chat wrapper element
 	let chat: HTMLElement | undefined;
 
+	let mounted = false;
+
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
 	const headerAnimation = new FontAnimator({ weight: 500, italic: 0 }, { weight: 600, italic: 10 });
@@ -69,6 +71,8 @@
 
 			// append next animation frame
 			animation = requestAnimationFrame(update);
+
+			mounted = true;
 		});
 
 		// only animate when in view
@@ -130,7 +134,7 @@
 	<div class="chat__container">
 		<div class="chat__messages" id="chat__messages" bind:this={messagesWrapper}>
 			<div class="chat__placeholder" />
-			<!-- <Message
+			<Message
 				id="Zp7nVKxeiaY3UE5B9Ptjnm"
 				sender="scientist"
 				text="First, I find your quite negative assessment of cybernetics rather sympathetic. The temptation to use principles of cybernetics as a way to tighten the grip on society is indeed a grim risk we face."
@@ -159,7 +163,7 @@
 				displaySender={false}
 				attributes={data.chatAttributes}
 			/>
-			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
+			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" />
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -214,6 +218,7 @@
 				<div class="chat__overlay-enter">
 					<button
 						class="chat__overlay-button"
+						class:mounted
 						on:click={() => {
 							$muted = !$muted;
 							sound.instanciate();
@@ -225,6 +230,7 @@
 				<div class="chat__overlay-muted">
 					<button
 						class="chat__overlay-button"
+						class:mounted
 						on:click={() => {
 							sound.instanciate();
 						}}
@@ -304,7 +310,7 @@
 		position: absolute;
 		inset: 0;
 
-		background-color: map-get($colors, 'background');
+		background-color: transparentize(map-get($colors, 'background'), 0.1);
 
 		div {
 			pointer-events: none;
@@ -346,14 +352,19 @@
 	}
 
 	.chat__overlay-button {
-		opacity: 0.5;
+		opacity: 0;
+		transition: opacity 4s;
 
-		&:hover {
-			opacity: 1;
-		}
+		&.mounted {
+			opacity: 0.5;
 
-		@media (hover: none) {
-			opacity: 1;
+			&:hover {
+				opacity: 1;
+			}
+
+			@media (hover: none) {
+				opacity: 1;
+			}
 		}
 	}
 
