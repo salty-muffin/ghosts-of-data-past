@@ -20,8 +20,6 @@
 
 	import { DotLottieSvelte } from '@lottiefiles/dotlottie-svelte';
 
-	import type { DotLottie } from '@lottiefiles/dotlottie-svelte';
-
 	// get chat attributes from endpoint
 	import type { PageData } from './$types';
 	export let data: PageData;
@@ -35,6 +33,8 @@
 
 	// chat wrapper element
 	let chat: HTMLElement | undefined;
+
+	let mounted = false;
 
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
@@ -71,6 +71,8 @@
 
 			// append next animation frame
 			animation = requestAnimationFrame(update);
+
+			mounted = true;
 		});
 
 		// only animate when in view
@@ -122,10 +124,6 @@
 		});
 		observedIndex = $messages.length - 1;
 	});
-
-	// lottie stuff
-	let enterLottie: undefined | DotLottie;
-	let mutedLottie: undefined | DotLottie;
 </script>
 
 <svelte:head>
@@ -220,36 +218,24 @@
 				<div class="chat__overlay-enter">
 					<button
 						class="chat__overlay-button"
+						class:mounted
 						on:click={() => {
 							$muted = !$muted;
 							sound.instanciate();
 						}}
 					>
-						<DotLottieSvelte
-							src="/lotties/enterParallel.lottie"
-							autoplay
-							dotLottieRefCallback={(ref) => {
-								enterLottie = ref;
-								enterLottie.addEventListener('complete', () => {
-									if (mutedLottie) mutedLottie.play();
-								});
-							}}
-						/>
+						<DotLottieSvelte src="/lotties/enter.lottie" loop autoplay />
 					</button>
 				</div>
 				<div class="chat__overlay-muted">
 					<button
 						class="chat__overlay-button"
+						class:mounted
 						on:click={() => {
 							sound.instanciate();
 						}}
 					>
-						<DotLottieSvelte
-							src="/lotties/mutedParallel.lottie"
-							dotLottieRefCallback={(ref) => {
-								mutedLottie = ref;
-							}}
-						/>
+						<DotLottieSvelte src="/lotties/muted.lottie" loop autoplay speed={0.95} />
 					</button>
 				</div>
 			</div>
@@ -324,7 +310,7 @@
 		position: absolute;
 		inset: 0;
 
-		background-color: map-get($colors, 'background');
+		background-color: transparentize(map-get($colors, 'background'), 0.1);
 
 		div {
 			pointer-events: none;
@@ -366,14 +352,19 @@
 	}
 
 	.chat__overlay-button {
-		opacity: 0.5;
+		opacity: 0;
+		transition: opacity 4s;
 
-		&:hover {
-			opacity: 1;
-		}
+		&.mounted {
+			opacity: 0.5;
 
-		@media (hover: none) {
-			opacity: 1;
+			&:hover {
+				opacity: 1;
+			}
+
+			@media (hover: none) {
+				opacity: 1;
+			}
 		}
 	}
 
