@@ -31,14 +31,13 @@ def main() -> None:
         handlers=[
             logging.FileHandler(
                 os.path.join(
-                    "logs",
-                    f'run_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
-                    ),
-                encoding="utf-8",
+                    "logs", f'run_{datetime.now().strftime("%Y_%m_%d_%H_%M_%S")}.log'
                 ),
+                encoding="utf-8",
+            ),
             logging.StreamHandler(),
-            ],
-        )
+        ],
+    )
 
     # parse arguments
     parser = argparse.ArgumentParser()
@@ -82,9 +81,8 @@ def main() -> None:
         f'--write_deviation={",".join(str(n) for n in conf["write_deviation"])}',  # minimun & maximum deviation of the write time
         f'--read_deviation={",".join(str(n) for n in conf["read_deviation"])}',  # minimun & maximum deviation of the read time
         "--rapid" if conf["rapid"] else None,  # skip all wait times
-        "--verbose"
-        if conf["verbose"] else None,  # print additional information
-        ]
+        "--verbose" if conf["verbose"] else None,  # print additional information
+    ]
     # filter out none
     settings = list(filter(lambda setting: setting is not None, settings))
 
@@ -96,17 +94,14 @@ def main() -> None:
             ["npm", "run", "build"],
             cwd=os.path.join("link", "site"),
             env=dict(os.environ, GATE=gate, DOMAIN=domain),
-            )
+        )
 
         logging.info("building the serve site...")
-        subprocess.run(["npm", "run", "build"],
-                       cwd=os.path.join("serve", "site"))
+        subprocess.run(["npm", "run", "build"], cwd=os.path.join("serve", "site"))
 
         def redis():
             logging.info("starting redis...")
-            processes["redis"] = subprocess.Popen([
-                "redis-server", "redis.conf"
-                ])
+            processes["redis"] = subprocess.Popen(["redis-server", "redis.conf"])
 
         def serve():
             logging.info("starting site server...")
@@ -118,58 +113,55 @@ def main() -> None:
                     "ghosts-cpu",
                     "python3",
                     os.path.join("serve", "app.py"),
-                    ],
+                ],
                 env=dict(os.environ, GATE=gate),
-                )
+            )
 
         def link():
             logging.info("starting link server...")
             processes["link"] = subprocess.Popen(
+                ["conda", "run", "-n", "ghosts-cpu", "flask", "run", "--port", "8000"],
+                cwd="link",
+            )
+
+        def browser():
+            logging.info("starting browser in 5 sec...")
+            time.sleep(5)
+            processes["browser"] = subprocess.Popen(
+                [
+                    "chromium",
+                    "--start-fullscreen",
+                    "--incognito",
+                    "http://localhost:8000",
+                ]
+            )
+
+        def tunnel():
+            logging.info("starting ngrok tunnel...")
+            processes["tunnel"] = subprocess.Popen(
+                [
+                    "ngrok",
+                    "http",
+                    # "--region=eu",
+                    f'--domain={domain.replace("http://", "").replace("https://", "")}',
+                    "5000",
+                ]
+            )
+
+        def generate():
+            logging.info("starting generation...")
+            processes["generate"] = subprocess.Popen(
                 [
                     "conda",
                     "run",
                     "-n",
                     "ghosts-cpu",
-                    "flask",
-                    "run",
-                    "--port",
-                    "8000"
-                ],
-                cwd="link",
-                )
-
-        def browser():
-            logging.info("starting browser in 5 sec...")
-            time.sleep(5)
-            processes["browser"] = subprocess.Popen([
-                "chromium",
-                "--start-fullscreen",
-                "--incognito",
-                "http://localhost:8000",
-                ])
-
-        def tunnel():
-            logging.info("starting ngrok tunnel...")
-            processes["tunnel"] = subprocess.Popen([
-                "ngrok",
-                "http",
-                "--region=eu",
-                f'--hostname={domain.replace("http://", "").replace("https://", "")}',
-                "5000",
-                ])
-
-        def generate():
-            logging.info("starting generation...")
-            processes["generate"] = subprocess.Popen([
-                "conda",
-                "run",
-                "-n",
-                "ghosts-cpu",
-                "python3",
-                os.path.join("generate", "generate.py"),
-                # '--verbose',
-                *settings,
-                ])
+                    "python3",
+                    os.path.join("generate", "generate.py"),
+                    # '--verbose',
+                    *settings,
+                ]
+            )
 
         redis()
         serve()
@@ -182,9 +174,7 @@ def main() -> None:
         while True:
             for name, process in processes.items():
                 if process.poll() is not None:
-                    logging.warning(
-                        f"{name} got terminated. attempting restart..."
-                        )
+                    logging.warning(f"{name} got terminated. attempting restart...")
                     if name == "redis":
                         redis()
                     if name == "serve":
