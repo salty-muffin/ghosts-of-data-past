@@ -42,6 +42,7 @@ def main() -> None:
     # parse arguments
     parser = argparse.ArgumentParser()
     parser.add_argument("domain")
+    parser.add_argument("--conversation_dir")
     args = parser.parse_args()
 
     # set gate (access code) and domain to later be used as environment variables
@@ -82,6 +83,11 @@ def main() -> None:
         f'--read_deviation={",".join(str(n) for n in conf["read_deviation"])}',  # minimun & maximum deviation of the read time
         "--rapid" if conf["rapid"] else None,  # skip all wait times
         "--verbose" if conf["verbose"] else None,  # print additional information
+        (
+            f"--conversation_dir={args.conversation_dir}"
+            if args.conversation_dir
+            else None
+        ),
     ]
     # filter out none
     settings = list(filter(lambda setting: setting is not None, settings))
@@ -196,13 +202,13 @@ def main() -> None:
         logging.error(f"program terminated due to error: {ex}")
     except KeyboardInterrupt:
         logging.info("program terminated by user")
-
-    logging.info("exiting...")
-    # in case of any exception (including KeyboardInterrupt) terminate all processes
-    for process in processes.values():
-        if process:
-            process.kill()
-            process.wait()
+    finally:
+        logging.info("exiting...")
+        # in case of any exception (including KeyboardInterrupt) terminate all processes
+        for process in processes.values():
+            if process:
+                process.kill()
+                process.wait()
 
 
 if __name__ == "__main__":

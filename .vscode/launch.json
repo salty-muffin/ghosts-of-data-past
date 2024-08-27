@@ -23,6 +23,17 @@
             "console": "integratedTerminal"
         },
         {
+            "name": "run from dir",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "run.py",
+            "args": [
+                "https://link.ghostsonthe.net",
+                "--conversation_dir=out/01"
+            ],
+            "console": "integratedTerminal"
+        },
+        {
             "name": "test models",
             "type": "debugpy",
             "request": "launch",
