@@ -1,6 +1,7 @@
 <script lang="ts">
 	// imports
 	import { beforeUpdate, afterUpdate, onMount } from 'svelte';
+	import { fade } from 'svelte/transition';
 
 	import { FontAnimator } from '$lib/components/font-animation';
 	import { cubicInOut } from 'svelte/easing';
@@ -9,10 +10,15 @@
 	import { writing } from '$lib/stores/writing';
 	import { lost } from '$lib/stores/lost';
 
+	import { sound } from '$lib/stores/audio';
+	import { muted } from '$lib/stores/muted';
+
 	import Message from '$lib/components/message.svelte';
 	import Writing from '$lib/components/writing.svelte';
 	import Nav from '$lib/components/nav.svelte';
 	import MuteButton from '$lib/components/mute-button.svelte';
+
+	import { DotLottieSvelte } from '@lottiefiles/dotlottie-svelte';
 
 	// get chat attributes from endpoint
 	import type { PageData } from './$types';
@@ -27,6 +33,8 @@
 
 	// chat wrapper element
 	let chat: HTMLElement | undefined;
+
+	let mounted = false;
 
 	// setting up breathing animation parameters & animators
 	const duration = 5000;
@@ -63,6 +71,8 @@
 
 			// append next animation frame
 			animation = requestAnimationFrame(update);
+
+			mounted = true;
 		});
 
 		// only animate when in view
@@ -152,8 +162,8 @@
 				timestamp={1651313416949}
 				displaySender={false}
 				attributes={data.chatAttributes}
-			/> -->
-			<!-- <Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
+			/>
+			<Writing writer="scientist" attributes={data.chatAttributes} class="message--spaced" /> -->
 
 			{#each $messages as message, index (message.id)}
 				<!-- add top margin, if this message's sender differs from the previous one -->
@@ -202,6 +212,34 @@
 				<h4 slot="unmuted">mute</h4>
 			</MuteButton>
 		</Nav>
+
+		{#if !$sound}
+			<div class="chat__overlay" transition:fade={{ duration: 2000 }}>
+				<div class="chat__overlay-enter">
+					<button
+						class="chat__overlay-button"
+						class:mounted
+						on:click={() => {
+							$muted = !$muted;
+							sound.instanciate();
+						}}
+					>
+						<DotLottieSvelte src="/lotties/enter.lottie" loop autoplay />
+					</button>
+				</div>
+				<div class="chat__overlay-muted">
+					<button
+						class="chat__overlay-button"
+						class:mounted
+						on:click={() => {
+							sound.instanciate();
+						}}
+					>
+						<DotLottieSvelte src="/lotties/muted.lottie" loop autoplay speed={0.95} />
+					</button>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
 
@@ -266,6 +304,68 @@
 		left: 0;
 		right: 0; */
 		flex-shrink: 0;
+	}
+
+	.chat__overlay {
+		position: absolute;
+		inset: 0;
+
+		background-color: transparentize(map-get($colors, 'background'), 0.1);
+
+		div {
+			pointer-events: none;
+		}
+
+		button {
+			pointer-events: all;
+
+			background: none;
+			border: none;
+			padding: 0;
+			cursor: pointer;
+		}
+	}
+
+	.chat__overlay-enter {
+		position: absolute;
+		inset: 0;
+
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		button {
+			width: 70%;
+		}
+	}
+	.chat__overlay-muted {
+		position: absolute;
+		inset: auto 0 0 0;
+		height: 50%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+
+		button {
+			width: 60%;
+		}
+	}
+
+	.chat__overlay-button {
+		opacity: 0;
+		transition: opacity 4s;
+
+		&.mounted {
+			opacity: 0.5;
+
+			&:hover {
+				opacity: 1;
+			}
+
+			@media (hover: none) {
+				opacity: 1;
+			}
+		}
 	}
 
 	@media only screen and (min-width: $chat-width) {
